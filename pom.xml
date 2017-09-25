@@ -5,7 +5,7 @@
 	<artifactId>pizzeria</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>pizzeria Maven Webapp</name>
+	<name>pizzeria webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
@@ -28,6 +28,38 @@
 			<version>42.1.4</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>23.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>2.10.0</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-dbcp2</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.javamoney</groupId>
+			<artifactId>moneta</artifactId>
+			<version>1.1</version>
+		</dependency>
+
 
 	</dependencies>
 	<build>
