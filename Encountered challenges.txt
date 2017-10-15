@@ -1,0 +1,3 @@
+1. If the user logs in by sending data to the system via a POST request, how do I redirect them to the previous page?
+Solution: add a hidden input field to the login form: 
+<input type="hidden" name="from" value="${pageContext.request.requestURI}">
