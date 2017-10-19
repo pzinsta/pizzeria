@@ -1,5 +1,7 @@
 package pzinsta.pizzeria.model.pizza;
 
+import javax.money.MonetaryAmount;
+
 public class Pizza {
 	private long id;
 
@@ -66,5 +68,9 @@ public class Pizza {
 
 	public void setSize(PizzaSize size) {
 		this.size = size;
+	}
+	
+	public MonetaryAmount getCost() {
+		return crust.getPrice().add(left.getCost()).add(right.getCost()).multiply(1); //TODO include pizza's size into the calculation instead of 1
 	}
 }

@@ -1,7 +1,9 @@
 package pzinsta.pizzeria.model.order;
 
+import static java.math.BigDecimal.ZERO;
+import static pzinsta.pizzeria.util.Utils.fromBigDecimal;
+
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -51,8 +53,8 @@ public class Order {
 		this.status = state;
 	}
 
-	public MonetaryAmount getTotal() {
-		return null;
+	public MonetaryAmount getCost() {
+		return orderItems.stream().map(OrderItem::getCost).reduce(fromBigDecimal(ZERO), MonetaryAmount::add);
 	}
 
 	public Collection<OrderItem> getOrderItems() {

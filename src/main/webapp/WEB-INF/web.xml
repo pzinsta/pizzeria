@@ -11,11 +11,6 @@
 	</servlet>
 
 	<servlet>
-		<servlet-name>Index</servlet-name>
-		<jsp-file>/index.jsp</jsp-file>
-	</servlet>
-
-	<servlet>
 		<servlet-name>SignUp</servlet-name>
 		<jsp-file>/signUp.jsp</jsp-file>
 	</servlet>
@@ -66,11 +61,6 @@
 	<servlet-mapping>
 		<servlet-name>LogInHandler</servlet-name>
 		<url-pattern>/log-in/submit</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>Index</servlet-name>
-		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

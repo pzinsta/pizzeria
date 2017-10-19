@@ -2,6 +2,8 @@ package pzinsta.pizzeria.model.order;
 
 import java.util.UUID;
 
+import javax.money.MonetaryAmount;
+
 import pzinsta.pizzeria.model.pizza.Pizza;
 
 public class OrderItem {
@@ -33,4 +35,7 @@ public class OrderItem {
 		return id;
 	}
 
+	public MonetaryAmount getCost() {
+		return pizza.getCost();
+	}
 }

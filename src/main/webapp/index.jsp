@@ -8,11 +8,7 @@
 <body>
     <header>
         <h1>Welcome to Pizzeria</h1>
-        Welcome,
-        <c:choose>
-            <c:when test="${empty customer}">Guest</c:when>
-            <c:otherwise>${customer.firstName}</c:otherwise>
-        </c:choose>
+        Welcome, <c:out value="${customer.firstName}" default="Guest"></c:out>
         <c:if test="${empty customer}"><%@ include file="WEB-INF/fragments/logIn.jspf" %></c:if>
     </header>
     <nav>

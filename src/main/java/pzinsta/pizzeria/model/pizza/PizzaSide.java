@@ -1,6 +1,11 @@
 package pzinsta.pizzeria.model.pizza;
 
+import static java.math.BigDecimal.ZERO;
+import static pzinsta.pizzeria.util.Utils.fromBigDecimal;
+
 import java.util.Collection;
+
+import javax.money.MonetaryAmount;
 
 public class PizzaSide {
 	private long id;
@@ -37,5 +42,9 @@ public class PizzaSide {
 
 	public boolean containsDoubledIngredient(long ingredientId) {
 		return items.stream().anyMatch(pizzaItem -> pizzaItem.getIngredient().getId() == ingredientId && pizzaItem.getQuantity() == 2);
+	}
+	
+	public MonetaryAmount getCost() {
+		return items.stream().map(PizzaItem::getCost).reduce(fromBigDecimal(ZERO), MonetaryAmount::add);
 	}
 }

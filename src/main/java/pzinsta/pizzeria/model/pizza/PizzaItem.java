@@ -2,6 +2,8 @@ package pzinsta.pizzeria.model.pizza;
 
 import java.util.Objects;
 
+import javax.money.MonetaryAmount;
+
 public class PizzaItem {
 	private Ingredient ingredient;
 	private int quantity;
@@ -34,5 +36,9 @@ public class PizzaItem {
 	@Override
 	public int hashCode() {
 		return Objects.hash(getIngredient(), getQuantity());
+	}
+	
+	public MonetaryAmount getCost() {
+		return ingredient.getPrice().multiply(quantity);
 	}
 }
