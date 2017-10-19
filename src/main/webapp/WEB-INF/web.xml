@@ -1,7 +1,119 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee" xmlns:web="http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee">
 
-<web-app>
-  <display-name>Archetype Created Web Application</display-name>
+	<display-name>Archetype Created Web Application</display-name>
+	<servlet>
+		<servlet-name>LogInHandler</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.LogInHandlerServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Index</servlet-name>
+		<jsp-file>/index.jsp</jsp-file>
+	</servlet>
+
+	<servlet>
+		<servlet-name>SignUp</servlet-name>
+		<jsp-file>/signUp.jsp</jsp-file>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>SignUpHandlerServlet</display-name>
+		<servlet-name>SignUpHandlerServlet</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.SignUpHandlerServlet
+		</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>LogOutHandlerServlet</display-name>
+		<servlet-name>LogOutHandlerServlet</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.LogOutHandlerServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>PizzaBuilderServlet</display-name>
+		<servlet-name>PizzaBuilderServlet</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.PizzaBuilderServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>RemoveOrderItemServlet</display-name>
+		<servlet-name>RemoveOrderItemServlet</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.RemoveOrderItemServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>EditOrderItemServlet</display-name>
+		<servlet-name>EditOrderItemServlet</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.EditOrderItemServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>CheckoutServlet</display-name>
+		<servlet-name>CheckoutServlet</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.CheckoutServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>LogInHandler</servlet-name>
+		<url-pattern>/log-in/submit</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Index</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>SignUp</servlet-name>
+		<url-pattern>/sign-up</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>SignUpHandlerServlet</servlet-name>
+		<url-pattern>/sign-up/submit</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>LogOutHandlerServlet</servlet-name>
+		<url-pattern>/log-out</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>PizzaBuilderServlet</servlet-name>
+		<url-pattern>/pizza-builder</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>RemoveOrderItemServlet</servlet-name>
+		<url-pattern>/order/remove</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>EditOrderItemServlet</servlet-name>
+		<url-pattern>/order/edit</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>CheckoutServlet</servlet-name>
+		<url-pattern>/checkout</url-pattern>
+	</servlet-mapping>
+
+
+
+	<session-config>
+		<session-timeout>600</session-timeout>
+	</session-config>
+
+	<jsp-confg>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<scripting-invalid>
+				true
+			</scripting-invalid>
+		</jsp-property-group>
+	</jsp-confg>
 </web-app>

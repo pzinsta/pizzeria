@@ -1,6 +1,10 @@
 package pzinsta.pizzeria.model.pizza;
 
+import java.util.Objects;
+
 import javax.money.MonetaryAmount;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 public class Ingredient {
 	private long id;
@@ -38,5 +42,19 @@ public class Ingredient {
 
 	public void setType(IngredientType type) {
 		this.type = type;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Ingredient)) {
+			return false;
+		}
+		Ingredient that = (Ingredient) obj;
+		return this.getId() == that.getId();
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
 	}
 }

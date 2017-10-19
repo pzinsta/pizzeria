@@ -1,5 +1,7 @@
 package pzinsta.pizzeria.model.pizza;
 
+import java.util.Objects;
+
 public class PizzaItem {
 	private Ingredient ingredient;
 	private int quantity;
@@ -20,4 +22,17 @@ public class PizzaItem {
 		this.quantity = quantity;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof PizzaItem)) {
+			return false;
+		}
+		PizzaItem that = (PizzaItem) obj;
+		return Objects.equals(this.getIngredient(), that.getIngredient()) && (this.getQuantity() == that.getQuantity());
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(getIngredient(), getQuantity());
+	}
 }

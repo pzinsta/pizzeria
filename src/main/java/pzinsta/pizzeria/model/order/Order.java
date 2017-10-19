@@ -1,16 +1,21 @@
 package pzinsta.pizzeria.model.order;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Optional;
 
 import javax.money.MonetaryAmount;
+
+import org.apache.commons.lang3.StringUtils;
 
 import pzinsta.pizzeria.model.Customer;
 
 public class Order {
 	private long id;
 	private Customer customer;
-	private Collection<OrderItem> pizzas;
+	private Collection<OrderItem> orderItems = new HashSet<>();
 	private Instant placed;
 	private OrderStatus status; // refactor to the State pattern?
 
@@ -45,17 +50,24 @@ public class Order {
 	public void setStatus(OrderStatus state) {
 		this.status = state;
 	}
-	
+
 	public MonetaryAmount getTotal() {
 		return null;
 	}
 
-	public Collection<OrderItem> getPizzas() {
-		return pizzas;
+	public Collection<OrderItem> getOrderItems() {
+		return orderItems;
 	}
 
-	public void setPizzas(Collection<OrderItem> pizzas) {
-		this.pizzas = pizzas;
+	public void addOrderItem(OrderItem orderItem) {
+		orderItems.add(orderItem);
 	}
 
+	public void removeOrderItemById(String orderItemId) {
+		orderItems.removeIf(item -> StringUtils.equals(orderItemId, item.getId()));
+	}
+
+	public Optional<OrderItem> getOrderItemById(String orderItemId) {
+		return orderItems.stream().filter(item -> StringUtils.equals(orderItemId, item.getId())).findFirst();
+	}
 }

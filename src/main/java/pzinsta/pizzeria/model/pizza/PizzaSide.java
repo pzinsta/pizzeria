@@ -30,5 +30,12 @@ public class PizzaSide {
 	public void setItems(Collection<PizzaItem> items) {
 		this.items = items;
 	}
+	
+	public boolean containsIngredient(long ingredientId) {
+		return items.stream().map(pizzaItem -> pizzaItem.getIngredient().getId()).anyMatch(i -> i == ingredientId);
+	}
 
+	public boolean containsDoubledIngredient(long ingredientId) {
+		return items.stream().anyMatch(pizzaItem -> pizzaItem.getIngredient().getId() == ingredientId && pizzaItem.getQuantity() == 2);
+	}
 }

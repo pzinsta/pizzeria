@@ -1,0 +1,10 @@
+<%@page import="org.apache.commons.lang3.ObjectUtils"%>
+    <c:if test="${not empty error}"><span>${error}</span></c:if>
+	<form action="<c:url value="/log-in/submit"/>" method="POST">
+		<label for="email">Email</label>
+		<input type="email" autofocus="autofocus" required="required" placeholder="you@example.com" name="email"> 
+		<label for="password">Password</label>
+		<input type="password" required="required" name="password" placeholder="********">
+        <input type="hidden" name="from" value="${ObjectUtils.firstNonNull(param.from, requestScope['javax.servlet.forward.request_uri'], pageContext.request.requestURI)}">
+		<input type="submit" value="Login">	
+	</form>

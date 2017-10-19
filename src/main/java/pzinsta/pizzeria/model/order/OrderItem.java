@@ -1,11 +1,18 @@
 package pzinsta.pizzeria.model.order;
 
+import java.util.UUID;
+
 import pzinsta.pizzeria.model.pizza.Pizza;
 
 public class OrderItem {
+	private String id; //not to be persisted
 	private Pizza pizza;
 	private int quantity;
 
+	public OrderItem() {
+		id = UUID.randomUUID().toString();
+	}
+	
 	public Pizza getPizza() {
 		return pizza;
 	}
@@ -21,4 +28,9 @@ public class OrderItem {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+
+	public String getId() {
+		return id;
+	}
+
 }
