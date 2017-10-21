@@ -2,15 +2,12 @@ package pzinsta.pizzeria.web.checkout;
 
 import java.io.IOException;
 import java.util.Deque;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -22,24 +19,22 @@ public class CheckoutController {
 		previousCheckoutStatesStack = new ConcurrentLinkedDeque<>();
 		currentState = OrderNotConfirmedCheckoutState.getInstance();
 	}
-	
+
 	public void handlePost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		if (goBack(request)) {
-			previousStep();
-			redirect(request, response); //why redirect?
-		} else {
-			CheckoutState nextState = currentState.handlePost(request, response);
-			if(nextState != currentState) {
-				previousCheckoutStatesStack.push(currentState);
-				currentState = nextState;
-			}
+		if (goBack(request) && currentState.isReturnToPreviousStateAllowed(request)) {
+			currentState = previousCheckoutStatesStack.pop();
 			forwardToView(request, response);
+			return;
 		}
-	}
 
-	private void redirect(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		response.sendRedirect(request.getRequestURI());
+		CheckoutState nextState = currentState.handlePost(request, response);
+		if (nextState != currentState) {
+			previousCheckoutStatesStack.push(currentState);
+			currentState = nextState;
+		}
+
+		forwardToView(request, response);
 	}
 
 	private boolean goBack(HttpServletRequest request) {
@@ -49,20 +44,15 @@ public class CheckoutController {
 	public void handleGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		CheckoutState nextState = currentState.handleGet(request, response);
-		if(nextState != currentState) {
+		if (nextState != currentState) {
 			previousCheckoutStatesStack.push(currentState);
 			currentState = nextState;
 		}
 		forwardToView(request, response);
 	}
 
-	private void previousStep() {
-		currentState = previousCheckoutStatesStack.pop();
-	}
-
 	private void forwardToView(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher(currentState.getView());
 		requestDispatcher.forward(request, response);
 	}

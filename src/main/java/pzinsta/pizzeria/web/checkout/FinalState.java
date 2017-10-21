@@ -10,11 +10,10 @@ import javax.servlet.http.HttpSession;
 public class FinalState implements CheckoutState {
 
 	private final static FinalState INSTANCE = new FinalState();
-	
+
 	private FinalState() {
-		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Override
 	public String getView() {
 		return "WEB-INF/checkout/finish.jsp";
@@ -23,11 +22,6 @@ public class FinalState implements CheckoutState {
 	@Override
 	public CheckoutState handlePost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		return this;
-	}
-	
-	@Override
-	public CheckoutState next(HttpSession httpSession) {
 		return this;
 	}
 

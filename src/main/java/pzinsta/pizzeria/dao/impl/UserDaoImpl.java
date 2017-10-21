@@ -1,20 +1,19 @@
 package pzinsta.pizzeria.dao.impl;
 
-import java.sql.Array;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 import javax.sql.DataSource;
 
-import com.google.common.collect.ImmutableSet;
-
 import pzinsta.pizzeria.dao.UserDao;
+import pzinsta.pizzeria.model.Customer;
 import pzinsta.pizzeria.model.User;
 import pzinsta.pizzeria.util.DatasourceFactory;
 
@@ -24,11 +23,13 @@ public class UserDaoImpl implements UserDao {
 	private static final String SELECT_USER_COUNT_BY_EMAIL = "SELECT COUNT(id) FROM users WHERE email = ?";
 	private static final String INSERT_USER = "INSERT INTO users (first_name, last_name, email, phone_number) VALUES (?, ?, ?, ?)";
 	private static final String INSERT_REGISTERED_USER = "INSERT INTO registered_user (id, hashed_password) VALUES(?, ?)";
+	private static final String INSERT_CUSTOMER = "INSERT INTO customer (user_id, registered_user_id, address) VALUES (?, ?, ?)";
 	private static final String SELECT_ROLE_ID_BY_NAME = "SELECT id FROM role where name = ANY (?)";
 	private static final String INSERT_ROLE_ID_USER_ID = "INSERT INTO user_role (user_id, role_id) VALUES (?, ?)";
 	private static final String SELECT_HASHED_PASSWORD_BY_USER_ID = "SELECT hashed_password FROM registered_user WHERE id = ?";
-	private static final String SELECT_USER_BY_EMAIL= "SELECT * FROM users INNER JOIN registered_user ON users.id = registered_user.id WHERE users.email = ?";
-	
+	private static final String SELECT_CUSTOMER_BY_EMAIL = "SELECT * FROM users INNER JOIN registered_user ON users.id = registered_user.id INNER JOIN customer ON users.id = customer.user_id WHERE users.email = ?";
+	private static final String UPDATE_CUSTOMER_REGISTERED_USER_ID = "UPDATE customer SET registered_user_id = user_id WHERE user_id = ?";
+
 	private DataSource dataSource = DatasourceFactory.getDataSource();
 
 	private Set<String> getUserRoles(long id, Connection connection) throws SQLException {
@@ -57,32 +58,42 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User createCustomer(User user) {
+	public Customer createCustomer(Customer customer) {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_USER,
 						Statement.RETURN_GENERATED_KEYS)) {
-			preparedStatement.setString(1, user.getFirstName());
-			preparedStatement.setString(2, user.getLastName());
-			preparedStatement.setString(3, user.getEmail());
-			preparedStatement.setString(4, user.getPhoneNumber());
+			preparedStatement.setString(1, customer.getFirstName());
+			preparedStatement.setString(2, customer.getLastName());
+			preparedStatement.setString(3, customer.getEmail());
+			preparedStatement.setString(4, customer.getPhoneNumber());
 			preparedStatement.executeUpdate();
 			ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
 			generatedKeys.next();
-			user.setId(generatedKeys.getLong(1));
+			customer.setId(generatedKeys.getLong(1));
+
+			PreparedStatement preparedStatement2 = connection.prepareStatement(INSERT_CUSTOMER);
+			preparedStatement2.setLong(1, customer.getId());
+			preparedStatement2.setNull(2, Types.INTEGER);
+			preparedStatement2.setString(3, customer.getAddress());
+			preparedStatement2.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		return user;
+		return customer;
 	}
 
 	@Override
-	public User createRegisteredCustomer(User user, String hashedPassword) {
-		User customer = createCustomer(user);
+	public Customer createRegisteredCustomer(Customer customer, String hashedPassword) {
+		customer = createCustomer(customer);
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(INSERT_REGISTERED_USER)) {
-			preparedStatement.setLong(1, user.getId());
+			preparedStatement.setLong(1, customer.getId());
 			preparedStatement.setString(2, hashedPassword);
 			preparedStatement.executeUpdate();
+
+			PreparedStatement preparedStatement2 = connection.prepareStatement(UPDATE_CUSTOMER_REGISTERED_USER_ID);
+			preparedStatement2.setLong(1, customer.getId());
+			preparedStatement2.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
@@ -108,20 +119,22 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public Optional<User> getUserByEmail(String email) {
+	public Optional<Customer> getCustomerByEmail(String email) {
 		try (Connection connection = dataSource.getConnection();
-				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_USER_BY_EMAIL)) {
+				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CUSTOMER_BY_EMAIL)) {
 			preparedStatement.setString(1, email);
 			preparedStatement.setMaxRows(1);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
-				User user = new User();
-				user.setId(resultSet.getLong("id"));
-				user.setFirstName(resultSet.getString("first_name"));
-				user.setLastName(resultSet.getString("last_name"));
-				user.setPhoneNumber(resultSet.getString("phone_number"));
-				user.setRoles(getUserRoles(user.getId(), connection));
-				return Optional.ofNullable(user);
+				Customer customer = new Customer();
+				customer.setId(resultSet.getLong("id"));
+				customer.setFirstName(resultSet.getString("first_name"));
+				customer.setLastName(resultSet.getString("last_name"));
+				customer.setPhoneNumber(resultSet.getString("phone_number"));
+				customer.setAddress(resultSet.getString("address"));
+				customer.setEmail(resultSet.getString("email"));
+				customer.setRoles(getUserRoles(customer.getId(), connection));
+				return Optional.ofNullable(customer);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

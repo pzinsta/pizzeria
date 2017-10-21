@@ -50,7 +50,8 @@
     </c:forEach>
     Grand total:
     ${order.cost}
-    <form method="POST">
+    <form method="POST" action="<c:url value="/checkout"/>">
+        <input type="hidden" name="page" value="confirm">
         <input type="submit" name="action" value="confirm">
         <a href="<c:url value="/"/>">cancel</a>
     </form>

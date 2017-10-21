@@ -1,13 +1,13 @@
 package pzinsta.pizzeria.service;
 
 import java.util.Optional;
-import java.util.Set;
 
 import pzinsta.pizzeria.model.Customer;
-import pzinsta.pizzeria.model.User;
 
 public interface UserService {
-	Customer createCustomer(User user);
-	Customer createRegisteredCustomer(User user, String password);
-	Optional<User> getRegisteredUserByEmailAndPassword(String email, String password);
+	Customer createCustomer(Customer customer);
+
+	Customer createRegisteredCustomer(Customer customer, String password);
+
+	Optional<Customer> getRegisteredCustomerByEmailAndPassword(String email, String password);
 }
