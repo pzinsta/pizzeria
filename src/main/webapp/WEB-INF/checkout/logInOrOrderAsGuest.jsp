@@ -9,26 +9,28 @@
 </head>
 <body>
     Log In    
+    
     <%@ include file="../fragments/logIn.jspf" %>
+    
     <form method="POST" action="<c:url value="/checkout"/>">
         <label for="email">Email address</label>
-        <input type="text" name="email" id="email" value="${customer.email}">
+        <input type="text" name="email" id="email" value="${unregisteredCustomer.email}">
         <span>${validationErrors.email}</span>
         
         <label for="first-name">First name</label>
-        <input type="text" name="first-name" id="first-name" required="required" value="${customer.firstName}">
+        <input type="text" name="first-name" id="first-name" required="required" value="${unregisteredCustomer.firstName}">
         <span>${validationErrors.firstName}</span>
         
         <label for="last-name">Last name</label>
-        <input type="text" name="last-name" id="last-name" value="${customer.lastName}">
+        <input type="text" name="last-name" id="last-name" value="${unregisteredCustomer.lastName}">
         <span>${validationErrors.lastName}</span>
         
         <label for="phone-number">Phone number</label>
-        <input type="tel" name="phone-number" id="phone-number" required="required" value="${customer.phoneNumber}">
+        <input type="tel" name="phone-number" id="phone-number" required="required" value="${unregisteredCustomer.phoneNumber}">
         <span>${validationErrors.phoneNumber}</span>
         
         <label for="address">Address</label>
-        <input type="text" name="address" id="address" required="required" value="${customer.address}">
+        <input type="text" name="address" id="address" required="required" value="${unregisteredCustomer.address}">
         <span>${validationErrors.address}</span>
         
         <input type="hidden" name="page" value="logInOrOrderAsGuest">

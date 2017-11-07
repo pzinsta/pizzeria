@@ -24,6 +24,13 @@ public class FinalState implements CheckoutState {
 			throws ServletException, IOException {
 		return this;
 	}
+	
+	@Override
+	public CheckoutState handleGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.getSession().removeAttribute("checkoutController");
+		return this;
+	}
 
 	public static FinalState getInstance() {
 		return INSTANCE;

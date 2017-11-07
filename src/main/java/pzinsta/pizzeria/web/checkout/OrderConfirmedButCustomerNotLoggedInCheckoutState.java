@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import pzinsta.pizzeria.model.Customer;
@@ -39,7 +40,7 @@ class OrderConfirmedButCustomerNotLoggedInCheckoutState implements CheckoutState
 			customer.setAddress(request.getParameter("address"));
 			customer.setEmail(request.getParameter("email"));
 			customer.setPhoneNumber(request.getParameter("phone-number"));
-			request.getSession().setAttribute("customer", customer);
+			request.getSession().setAttribute("unregisteredCustomer", customer);
 			return CustomerInformationNotConfirmedCheckoutState.getInstance();
 		}
 
@@ -54,7 +55,8 @@ class OrderConfirmedButCustomerNotLoggedInCheckoutState implements CheckoutState
 	public CheckoutState handleGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Object customer = request.getSession().getAttribute("customer");
-		return customer == null ? this : CustomerInformationNotConfirmedCheckoutState.getInstance();
+		Object unregisteredCustomer = request.getSession().getAttribute("unregisteredCustomer");
+		return ObjectUtils.firstNonNull(customer, unregisteredCustomer) == null ? this : CustomerInformationNotConfirmedCheckoutState.getInstance();
 	}
 
 	public static OrderConfirmedButCustomerNotLoggedInCheckoutState getInstance() {

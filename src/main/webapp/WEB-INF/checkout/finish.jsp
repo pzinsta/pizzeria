@@ -8,7 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-    The order is placed.
+    The order has been placed.
     <a href="<c:url value="/"/>">Finish</a>
 </body>
 </html>

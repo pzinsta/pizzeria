@@ -19,7 +19,9 @@
         </c:if>
 
         <a href="<c:url value="/pizza-builder"/>">pizza builder</a>
-        <a href="<c:url value="/checkout"/>">checkout</a>
+        <c:if test="${not empty order.orderItems}">
+            <a href="<c:url value="/checkout"/>">checkout</a>
+        </c:if>
         <c:if test="${not empty customer or not empty user}">
             <a href="<c:url value="/log-out"/>">log out</a>
         </c:if>

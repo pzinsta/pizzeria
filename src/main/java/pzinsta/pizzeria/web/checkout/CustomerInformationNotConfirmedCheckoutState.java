@@ -3,6 +3,7 @@ package pzinsta.pizzeria.web.checkout;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import pzinsta.pizzeria.model.Customer;
@@ -26,13 +27,13 @@ public class CustomerInformationNotConfirmedCheckoutState implements CheckoutSta
 			return this;
 		}
 
-		Customer customer = (Customer) request.getSession().getAttribute("customer");
+		Customer customer = (Customer) ObjectUtils.firstNonNull(request.getSession().getAttribute("customer"), request.getSession().getAttribute("unregisteredCustomer"));
 		customer.setFirstName(request.getParameter("first-name"));
 		customer.setLastName(request.getParameter("last-name"));
 		customer.setAddress(request.getParameter("address"));
 		customer.setEmail(request.getParameter("email"));
 		customer.setPhoneNumber(request.getParameter("phone-number"));
-		request.getSession().setAttribute("customer", customer);
+		
 		return OrderNotPayedForCheckoutState.getInstance();
 	}
 

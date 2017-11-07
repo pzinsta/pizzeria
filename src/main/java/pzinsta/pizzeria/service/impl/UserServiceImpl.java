@@ -55,4 +55,9 @@ public class UserServiceImpl implements UserService {
 		return Optional.empty();
 	}
 
+	@Override
+	public void updateCustomer(Customer customer) {
+		userDao.updateCustomer(customer);
+	}
+
 }

@@ -18,4 +18,6 @@ public interface UserDao {
 	Optional<Customer> getCustomerByEmail(String email);
 
 	Optional<String> getHashedPasswordByUserId(long id);
+
+	void updateCustomer(Customer customer);
 }

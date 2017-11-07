@@ -22,8 +22,10 @@ public class UserDaoImpl implements UserDao {
 	private static final String SELECT_ROLES_BY_USER_ID = "SELECT name FROM role WHERE id IN (SELECT role_id FROM user_role WHERE user_id = ?)";
 	private static final String SELECT_USER_COUNT_BY_EMAIL = "SELECT COUNT(id) FROM users WHERE email = ?";
 	private static final String INSERT_USER = "INSERT INTO users (first_name, last_name, email, phone_number) VALUES (?, ?, ?, ?)";
+	private static final String UPDATE_USER = "UPDATE users SET first_name = ?, last_name = ?, email = ?, phone_number = ? WHERE id = ?";
 	private static final String INSERT_REGISTERED_USER = "INSERT INTO registered_user (id, hashed_password) VALUES(?, ?)";
 	private static final String INSERT_CUSTOMER = "INSERT INTO customer (user_id, registered_user_id, address) VALUES (?, ?, ?)";
+	private static final String UPDATE_CUSTOMER = "UPDATE customer SET address = ? WHERE user_id = ?";
 	private static final String SELECT_ROLE_ID_BY_NAME = "SELECT id FROM role where name = ANY (?)";
 	private static final String INSERT_ROLE_ID_USER_ID = "INSERT INTO user_role (user_id, role_id) VALUES (?, ?)";
 	private static final String SELECT_HASHED_PASSWORD_BY_USER_ID = "SELECT hashed_password FROM registered_user WHERE id = ?";
@@ -158,6 +160,26 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 		}
 		return Optional.empty();
+	}
+
+	@Override
+	public void updateCustomer(Customer customer) {
+		try(Connection connection = dataSource.getConnection()) {
+			PreparedStatement updateUserPreparedStatement = connection.prepareStatement(UPDATE_USER);
+			updateUserPreparedStatement.setString(1, customer.getFirstName());
+			updateUserPreparedStatement.setString(2, customer.getLastName());
+			updateUserPreparedStatement.setString(3, customer.getEmail());
+			updateUserPreparedStatement.setString(4, customer.getPhoneNumber());
+			updateUserPreparedStatement.setLong(5, customer.getId());
+			updateUserPreparedStatement.executeUpdate();
+			
+			PreparedStatement updateCustomerPreparedStatement = connection.prepareStatement(UPDATE_CUSTOMER);
+			updateCustomerPreparedStatement.setString(1, customer.getAddress());
+			updateCustomerPreparedStatement.setLong(2, customer.getId());
+			updateCustomerPreparedStatement.executeUpdate();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }

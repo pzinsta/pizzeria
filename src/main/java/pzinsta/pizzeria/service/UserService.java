@@ -10,4 +10,6 @@ public interface UserService {
 	Customer createRegisteredCustomer(Customer customer, String password);
 
 	Optional<Customer> getRegisteredCustomerByEmailAndPassword(String email, String password);
+	
+	void updateCustomer(Customer customer);
 }

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,11 @@
 <title>Confirm the customer information</title>
 </head>
 <body>
+
+Please check the following information. If it's not accurate, update the values.
+
+    <c:set scope="page" value="${empty customer ? unregisteredCustomer : customer}" var="customer"/>
+
     <form method="POST" action="<c:url value="/checkout"/>">
         <label for="email">Email address</label>
         <input type="text" name="email" id="email" value="${customer.email}">

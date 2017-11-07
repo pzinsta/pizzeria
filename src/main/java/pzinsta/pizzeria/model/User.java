@@ -5,7 +5,7 @@ import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 
 public class User {
-	private long id;
+	private Long id;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -16,7 +16,7 @@ public class User {
 		roles = ImmutableSet.of(UserRole.UNREGISTERED.toString());
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 

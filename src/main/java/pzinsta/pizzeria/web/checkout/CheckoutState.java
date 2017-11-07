@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 interface CheckoutState {
+	
 	String getView();
 
 	default CheckoutState handlePost(HttpServletRequest request, HttpServletResponse response)
