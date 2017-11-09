@@ -57,6 +57,13 @@
 		<servlet-name>CheckoutServlet</servlet-name>
 		<servlet-class>pzinsta.pizzeria.web.servlet.CheckoutServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>ProfileServlet</display-name>
+		<servlet-name>ProfileServlet</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.ProfileServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>LogInHandler</servlet-name>
@@ -90,6 +97,10 @@
 	<servlet-mapping>
 		<servlet-name>CheckoutServlet</servlet-name>
 		<url-pattern>/checkout</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>ProfileServlet</servlet-name>
+		<url-pattern>/profile</url-pattern>
 	</servlet-mapping>
 
 

@@ -8,7 +8,9 @@
 <body>
     <header>
         <h1>Welcome to Pizzeria</h1>
-        Welcome, <c:out value="${customer.firstName}" default="Guest"></c:out>
+        <c:if test="${not empty customer}">
+            Welcome, <a href="<c:url value="/profile"></c:url>">${customer.firstName}</a>
+        </c:if>
         <c:if test="${empty customer}"><%@ include file="WEB-INF/fragments/logIn.jspf" %></c:if>
     </header>
     <nav>
