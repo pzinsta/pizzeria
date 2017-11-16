@@ -21,5 +21,6 @@ public interface PizzaService {
 	Pizza buildPizza(long crustId, long pizzaSizeId, int quantity, long bakeStyleId, long cutStyleId,
 			Map<String, String[]> ingredientsParametersMap);
 	void savePizza(Pizza pizza);
+	Pizza getPizza(Long id);
 
 }

@@ -1,0 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:forEach items="${pizzaItems}" var="item">
+  ${item.ingredient.name} ${item.ingredient.price} x ${item.quantity} = ${item.cost} <br>
+</c:forEach>

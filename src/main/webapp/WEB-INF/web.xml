@@ -64,6 +64,27 @@
 		<servlet-name>ProfileServlet</servlet-name>
 		<servlet-class>pzinsta.pizzeria.web.servlet.ProfileServlet</servlet-class>
 	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>StaffLoginServlet</display-name>
+		<servlet-name>StaffLoginServlet</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.StaffLoginServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>DashboardServlet</display-name>
+		<servlet-name>DashboardServlet</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.DashboardServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>UpdateOrderStatusServlet</display-name>
+		<servlet-name>UpdateOrderStatusServlet</servlet-name>
+		<servlet-class>pzinsta.pizzeria.web.servlet.UpdateOrderStatusServlet</servlet-class>
+	</servlet>
 
 	<servlet-mapping>
 		<servlet-name>LogInHandler</servlet-name>
@@ -101,6 +122,18 @@
 	<servlet-mapping>
 		<servlet-name>ProfileServlet</servlet-name>
 		<url-pattern>/profile</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>StaffLoginServlet</servlet-name>
+		<url-pattern>/staff/login</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>DashboardServlet</servlet-name>
+		<url-pattern>/staff/dashboard</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>UpdateOrderStatusServlet</servlet-name>
+		<url-pattern>/staff/order/update-status</url-pattern>
 	</servlet-mapping>
 
 

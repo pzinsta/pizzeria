@@ -34,5 +34,7 @@ public interface PizzaDao {
 	Optional<CutStyle> getCutStyleById(long cutStyleId);
 
 	void savePizza(Pizza pizza);
+
+	Pizza getPizza(Long id);
 	
 }

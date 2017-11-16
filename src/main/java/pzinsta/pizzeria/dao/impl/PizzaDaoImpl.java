@@ -8,7 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,6 +29,7 @@ import pzinsta.pizzeria.model.pizza.PizzaItem;
 import pzinsta.pizzeria.model.pizza.PizzaSide;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
 import pzinsta.pizzeria.util.DatasourceFactory;
+import pzinsta.pizzeria.util.Utils;
 
 public class PizzaDaoImpl implements PizzaDao {
 
@@ -45,7 +48,12 @@ public class PizzaDaoImpl implements PizzaDao {
 	private static final String INSERT_PIZZASIDE = "INSERT INTO pizzaside (name) VALUES (?)";
 	private static final String INSERT_PIZZASIDE_INGREDIENT = "INSERT INTO pizzaside_ingredient (pizzaside_id, ingredient_id, quantity) VALUES (?, ?, ?)";
 	private static final String INSERT_PIZZA = "INSERT INTO pizza (crust_id, pizzasize_id, left_pizzaside_id, right_pizzaside_id, bakestyle_id, cutstyle_id) VALUES (?, ?, ?, ?, ?, ?)";
-
+	private static final String SELECT_PIZZA_BY_ID = "SELECT * FROM pizza WHERE id = ?";
+	private static final String SELECT_PIZZASIDE_BY_ID = "SELECT * FROM pizzaside WHERE id = ?";
+	private static final String SELECT_INGREDIENT_IDS_AND_QUANTITIES_BY_PIZZASIDE_ID = "SELECT * FROM pizzaside_ingredient WHERE pizzaside_id = ?";
+	private static final String SELECT_INGREDIENT_BY_ID = "SELECT * FROM ingredient WHERE id = ?";
+	private static final String SELECT_INGREDIENT_TYPE_BY_ID = "SELECT * from ingredient_type WHERE id = ?";
+	
 	@Override
 	public Set<Crust> getCrusts() {
 		try (Connection connection = dataSource.getConnection();
@@ -309,6 +317,96 @@ public class PizzaDaoImpl implements PizzaDao {
 		ResultSet leftSideKey = preparedStatement.getGeneratedKeys();
 		leftSideKey.next();
 		leftSide.setId(leftSideKey.getLong(1));
+	}
+
+	@Override
+	public Pizza getPizza(Long id) {
+		Pizza pizza = new Pizza();
+		pizza.setId(id);
+		try (Connection connection = dataSource.getConnection()) {
+			PreparedStatement selectPizzaByIdPreparedStatement = connection.prepareStatement(SELECT_PIZZA_BY_ID);
+			selectPizzaByIdPreparedStatement.setLong(1, id);
+			ResultSet resultSet = selectPizzaByIdPreparedStatement.executeQuery();
+			resultSet.next();
+			pizza.setBakeStyle(getBakeStyleById(resultSet.getLong("bakestyle_id")).orElse(null));
+			pizza.setCrust(getCrustById(resultSet.getLong("crust_id")).orElse(null));
+			pizza.setCutStyle(getCutStyleById(resultSet.getLong("cutstyle_id")).orElse(null));
+			pizza.setSize(getPizzaSizeById(resultSet.getLong("pizzasize_id")).orElse(null));
+			pizza.setLeft(getPizzaSideById(resultSet.getLong("left_pizzaside_id")));
+			pizza.setRight(getPizzaSideById(resultSet.getLong("right_pizzaside_id")));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pizza;
+	}
+	
+	private PizzaSide getPizzaSideById(Long id) {
+		PizzaSide pizzaSide = new PizzaSide();
+		pizzaSide.setId(id);
+		try(Connection connection = dataSource.getConnection()) {
+			PreparedStatement selectPizzaSideByIdPreparedStatement = connection.prepareStatement(SELECT_PIZZASIDE_BY_ID);
+			selectPizzaSideByIdPreparedStatement.setLong(1, id);
+			ResultSet resultSet = selectPizzaSideByIdPreparedStatement.executeQuery();
+			resultSet.next();
+			pizzaSide.setName(resultSet.getString("name"));
+			pizzaSide.setItems(getPizzaItemsByPizzaSideId(id));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return pizzaSide;
+	}
+	
+	private Collection<PizzaItem> getPizzaItemsByPizzaSideId(Long id) {
+		Collection<PizzaItem> pizzaItems = new LinkedHashSet<>();
+		try(Connection connection = dataSource.getConnection()) {
+			PreparedStatement selectIngredientIdsAndQuantitiesByPizzaSideIdPrepareStatement = connection.prepareStatement(SELECT_INGREDIENT_IDS_AND_QUANTITIES_BY_PIZZASIDE_ID);
+			selectIngredientIdsAndQuantitiesByPizzaSideIdPrepareStatement.setLong(1, id);
+			ResultSet resultSet = selectIngredientIdsAndQuantitiesByPizzaSideIdPrepareStatement.executeQuery();
+			while (resultSet.next()) {
+				PizzaItem pizzaItem = new PizzaItem();
+				pizzaItem.setQuantity(resultSet.getInt("quantity"));
+				pizzaItem.setIngredient(getIngredientById(resultSet.getLong("ingredient_id")));
+				pizzaItems.add(pizzaItem);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return pizzaItems;
+	}
+	
+	private Ingredient getIngredientById(Long id) {
+		Ingredient ingredient = new Ingredient();
+		ingredient.setId(id);
+		try(Connection connection = dataSource.getConnection()) {
+			PreparedStatement selectIngredientByIdPreparedStatement = connection.prepareStatement(SELECT_INGREDIENT_BY_ID);
+			selectIngredientByIdPreparedStatement.setLong(1, id);
+			ResultSet resultSet = selectIngredientByIdPreparedStatement.executeQuery();
+			resultSet.next();
+			ingredient.setName(resultSet.getString("name"));
+			ingredient.setPrice(Utils.fromBigDecimal(resultSet.getBigDecimal("price")));
+			ingredient.setType(getIngredientTypeById(resultSet.getLong("ingredient_type_id")));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ingredient;
+	}
+	
+	private IngredientType getIngredientTypeById(Long id) {
+		IngredientType ingredientType = new IngredientType();
+		ingredientType.setId(id);
+		try(Connection connection = dataSource.getConnection()) {
+			PreparedStatement selectIngredientTypeById = connection.prepareStatement(SELECT_INGREDIENT_TYPE_BY_ID);
+			selectIngredientTypeById.setLong(1, id);
+			ResultSet resultSet = selectIngredientTypeById.executeQuery();
+			resultSet.next();
+			ingredientType.setName(resultSet.getString("name"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ingredientType;
 	}
 
 }

@@ -15,6 +15,6 @@ public class Utils {
 	}
 	
 	public static boolean isRegisteredUser(User user) {
-		return user.getRoles().contains(UserRole.REGISTERED);
+		return user.getRoles().contains(UserRole.REGISTERED_CUSTOMER);
 	}
 }

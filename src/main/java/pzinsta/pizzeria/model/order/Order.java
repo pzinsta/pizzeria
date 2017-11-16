@@ -4,6 +4,7 @@ import static java.math.BigDecimal.ZERO;
 import static pzinsta.pizzeria.util.Utils.fromBigDecimal;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -17,7 +18,7 @@ import pzinsta.pizzeria.model.Customer;
 public class Order {
 	private long id;
 	private Customer customer;
-	private Collection<OrderItem> orderItems = new HashSet<>();
+	private Collection<OrderItem> orderItems = new ArrayList<>();
 	private Instant placed;
 	private OrderStatus status; // refactor to the State pattern?
 

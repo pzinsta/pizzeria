@@ -136,4 +136,9 @@ public class PizzaServiceImpl implements PizzaService {
 		pizzaDao.savePizza(pizza);
 	}
 
+	@Override
+	public Pizza getPizza(Long id) {
+		return pizzaDao.getPizza(id);
+	}
+
 }

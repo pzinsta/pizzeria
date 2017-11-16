@@ -10,10 +10,10 @@ public class User {
 	private String lastName;
 	private String email;
 	private String phoneNumber;
-	private Set<String> roles;
+	private Set<UserRole> roles;
 	
 	public User() {
-		roles = ImmutableSet.of(UserRole.UNREGISTERED.toString());
+		roles = ImmutableSet.of(UserRole.UNREGISTERED_CUSTOMER);
 	}
 
 	public Long getId() {
@@ -56,15 +56,15 @@ public class User {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public Set<String> getRoles() {
+	public Set<UserRole> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<String> roles) {
+	public void setRoles(Set<UserRole> roles) {
 		this.roles = roles;
 	}
 	
 	public boolean hasRole(String role) {
-		return roles.contains(role);
+		return roles.contains(UserRole.valueOf(role));
 	}
 }

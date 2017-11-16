@@ -49,7 +49,7 @@ public class OrderNotPayedForCheckoutState implements CheckoutState {
 		
 		Order order = (Order) request.getSession().getAttribute("order");
 		order.setPlaced(Instant.now());
-		order.setStatus(OrderStatus.PAYED);
+		order.setStatus(OrderStatus.PAID);
 		
 		Customer customer = (Customer) ObjectUtils.firstNonNull(request.getSession().getAttribute("customer"), request.getSession().getAttribute("unregisteredCustomer"));
 		order.setCustomer(customer);
@@ -57,6 +57,8 @@ public class OrderNotPayedForCheckoutState implements CheckoutState {
 		orderService.saveOrder(order);
 		
 		request.getSession().removeAttribute("order");
+		
+	    request.getSession().removeAttribute("checkoutController");
 		
 		return FinalState.getInstance();
 	}
