@@ -5,15 +5,21 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="<c:url value="/css/main.css"/>">
 <title>Insert title here</title>
 </head>
 <body>
+<div>
     ${order.cost} is due. Click the "Pay" button to pay for the order.
+    </div>
+    <div>
     This is just a stub page. In theory, we could probably integrate Paypal or something similar.
+    </div>
     <form action="<c:url value="/checkout"/>" method="POST">
         <input type="hidden" name="page" value="payment">
-        <input type="submit" name="action" value="pay">
-        <input type="submit" name="action" value="back">
+        <input type="submit" name="action" value="Pay" class="btn">
+        <input type="submit" name="action" value="Back" class="btn">
     </form>
+    
 </body>
 </html>

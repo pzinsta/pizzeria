@@ -5,10 +5,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="<c:url value="/css/main.css"/>">
 <title>Insert title here</title>
 </head>
 <body>
-    The order has been placed.
-    <a href="<c:url value="/"/>">Finish</a>
+    <h1>The order has been placed.</h1>
+    <a href="<c:url value="/"/>" class="btn">Finish</a>
+    
 </body>
 </html>

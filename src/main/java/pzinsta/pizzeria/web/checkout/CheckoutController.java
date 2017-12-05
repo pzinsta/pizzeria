@@ -38,7 +38,7 @@ public class CheckoutController {
 	}
 
 	private boolean goBack(HttpServletRequest request) {
-		return StringUtils.equals(request.getParameter("action"), "back");
+		return StringUtils.equalsIgnoreCase(request.getParameter("action"), "back");
 	}
 
 	public void handleGet(HttpServletRequest request, HttpServletResponse response)

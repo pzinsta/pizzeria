@@ -1,0 +1,4 @@
+    <footer id="main-footer" class="grid">
+        <div>Pizzeria</div>
+        <div>Developed by <a href="https://github.com/pzinsta" target="_blank" class="link">pzinsta</a></div>
+    </footer>

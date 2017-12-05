@@ -33,7 +33,7 @@ class OrderConfirmedButCustomerNotLoggedInCheckoutState implements CheckoutState
 
 		String action = request.getParameter("action");
 
-		if (StringUtils.equals(action, "order as a guest")) {
+		if (StringUtils.equalsIgnoreCase(action, "order as a guest")) {
 			Customer customer = new Customer();
 			customer.setFirstName(request.getParameter("first-name"));
 			customer.setLastName(request.getParameter("last-name"));
