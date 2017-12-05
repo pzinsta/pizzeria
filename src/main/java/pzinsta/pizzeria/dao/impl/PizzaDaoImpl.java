@@ -1,7 +1,5 @@
 package pzinsta.pizzeria.dao.impl;
 
-import static org.mockito.Mockito.ignoreStubs;
-
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -59,7 +57,7 @@ public class PizzaDaoImpl implements PizzaDao {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CRUSTS)) {
 			ResultSet resultSet = preparedStatement.executeQuery();
-			Set<Crust> crusts = new HashSet<>();
+			Set<Crust> crusts = new LinkedHashSet<>();
 			while (resultSet.next()) {
 				Crust crust = new Crust();
 				crust.setId(resultSet.getLong("id"));
@@ -80,7 +78,7 @@ public class PizzaDaoImpl implements PizzaDao {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_BAKE_STYLES)) {
 			ResultSet resultSet = preparedStatement.executeQuery();
-			Set<BakeStyle> bakeStyles = new HashSet<>();
+			Set<BakeStyle> bakeStyles = new LinkedHashSet<>();
 			while (resultSet.next()) {
 				BakeStyle bakeStyle = new BakeStyle();
 				bakeStyle.setId(resultSet.getLong("id"));
@@ -98,7 +96,7 @@ public class PizzaDaoImpl implements PizzaDao {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_CUT_STYLES)) {
 			ResultSet resultSet = preparedStatement.executeQuery();
-			Set<CutStyle> cutStyles = new HashSet<>();
+			Set<CutStyle> cutStyles = new LinkedHashSet<>();
 			while (resultSet.next()) {
 				CutStyle cutStyle = new CutStyle();
 				cutStyle.setId(resultSet.getLong("id"));
@@ -116,7 +114,7 @@ public class PizzaDaoImpl implements PizzaDao {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_INGREDIENT_TYPES)) {
 			ResultSet resultSet = preparedStatement.executeQuery();
-			Set<IngredientType> ingredientTypes = new HashSet<>();
+			Set<IngredientType> ingredientTypes = new LinkedHashSet<>();
 			while (resultSet.next()) {
 				IngredientType ingredientType = new IngredientType();
 				ingredientType.setId(resultSet.getLong("id"));
@@ -135,7 +133,7 @@ public class PizzaDaoImpl implements PizzaDao {
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_INGREDIENTS)) {
 			ResultSet resultSet = preparedStatement.executeQuery();
 
-			Set<Ingredient> ingredients = new HashSet<>();
+			Set<Ingredient> ingredients = new LinkedHashSet<>();
 
 			while (resultSet.next()) {
 				Ingredient ingredient = new Ingredient();
@@ -176,7 +174,7 @@ public class PizzaDaoImpl implements PizzaDao {
 		try (Connection connection = dataSource.getConnection();
 				PreparedStatement preparedStatement = connection.prepareStatement(SELECT_PIZZA_SIZES)) {
 			ResultSet resultSet = preparedStatement.executeQuery();
-			Set<PizzaSize> pizzaSizes = new HashSet<>();
+			Set<PizzaSize> pizzaSizes = new LinkedHashSet<>();
 			while (resultSet.next()) {
 				PizzaSize pizzaSize = new PizzaSize();
 				pizzaSize.setId(resultSet.getLong("id"));
