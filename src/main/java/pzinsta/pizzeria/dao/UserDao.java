@@ -3,8 +3,6 @@ package pzinsta.pizzeria.dao;
 import java.util.Optional;
 import java.util.Set;
 
-import com.google.common.collect.ImmutableSet;
-
 import pzinsta.pizzeria.model.Customer;
 import pzinsta.pizzeria.model.User;
 import pzinsta.pizzeria.model.UserRole;

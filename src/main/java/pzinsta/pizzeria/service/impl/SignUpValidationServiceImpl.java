@@ -1,7 +1,6 @@
 package pzinsta.pizzeria.service.impl;
 
 import pzinsta.pizzeria.dao.UserDao;
-import pzinsta.pizzeria.model.User;
 import pzinsta.pizzeria.service.SignUpValidationService;
 
 public class SignUpValidationServiceImpl implements SignUpValidationService {

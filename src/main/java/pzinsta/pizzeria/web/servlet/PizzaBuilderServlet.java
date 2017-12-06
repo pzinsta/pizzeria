@@ -1,11 +1,9 @@
 package pzinsta.pizzeria.web.servlet;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.servlet.RequestDispatcher;
@@ -18,19 +16,22 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Maps;
 
-import pzinsta.pizzeria.dao.impl.PizzaDaoImpl;
 import pzinsta.pizzeria.model.order.Order;
 import pzinsta.pizzeria.model.order.OrderItem;
 import pzinsta.pizzeria.model.pizza.Ingredient;
 import pzinsta.pizzeria.model.pizza.IngredientType;
 import pzinsta.pizzeria.model.pizza.Pizza;
 import pzinsta.pizzeria.service.PizzaService;
-import pzinsta.pizzeria.service.impl.PizzaServiceImpl;
 
 public class PizzaBuilderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private PizzaService pizzaService = new PizzaServiceImpl(new PizzaDaoImpl());
+	private PizzaService pizzaService;
 
+	@Override
+	public void init() throws ServletException {
+	    pizzaService = (PizzaService) getServletContext().getAttribute("pizzaService");
+	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setAttribute("bakeStyles", pizzaService.getBakeStyles());

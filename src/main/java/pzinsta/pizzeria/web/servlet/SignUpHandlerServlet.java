@@ -1,7 +1,6 @@
 package pzinsta.pizzeria.web.servlet;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,22 +13,23 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import com.google.common.collect.ImmutableSet;
-
-import pzinsta.pizzeria.dao.impl.UserDaoImpl;
 import pzinsta.pizzeria.model.Customer;
 import pzinsta.pizzeria.model.User;
 import pzinsta.pizzeria.service.SignUpValidationService;
 import pzinsta.pizzeria.service.UserService;
-import pzinsta.pizzeria.service.impl.SignUpValidationServiceImpl;
-import pzinsta.pizzeria.service.impl.UserServiceImpl;
 
 public class SignUpHandlerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
-	private UserService userService = new UserServiceImpl(new UserDaoImpl());
-	private SignUpValidationService validationService = new SignUpValidationServiceImpl(new UserDaoImpl());
+	private UserService userService;
+	private SignUpValidationService signUpValidationService;
 
+	@Override
+	public void init() throws ServletException {
+	    userService = (UserService) getServletContext().getAttribute("userService");
+	    signUpValidationService = (SignUpValidationService) getServletContext().getAttribute("signUpValidationService");
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String email = request.getParameter("email");
@@ -82,7 +82,7 @@ public class SignUpHandlerServlet extends HttpServlet {
 			errors.put("password", "Passwords do not match.");
 		}
 		
-		if(!validationService.isEmailValid(user.getEmail())) {
+		if(!signUpValidationService.isEmailValid(user.getEmail())) {
 			errors.put("email", "Email is already present.");
 		}
 		

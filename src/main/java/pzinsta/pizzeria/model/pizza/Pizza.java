@@ -71,6 +71,7 @@ public class Pizza {
 	}
 	
 	public MonetaryAmount getCost() {
-		return crust.getPrice().add(left.getCost()).add(right.getCost()).multiply(1); //TODO include pizza's size into the calculation instead of 1
+	    //TODO include pizza's size into the calculation instead of 1
+		return crust.getPrice().add(left.getCost()).add(right.getCost()).multiply(1);
 	}
 }

@@ -135,7 +135,24 @@
 		<servlet-name>UpdateOrderStatusServlet</servlet-name>
 		<url-pattern>/staff/order/update-status</url-pattern>
 	</servlet-mapping>
+	<filter>
+		<description>
+		</description>
+		<display-name>StaffFilter</display-name>
+		<filter-name>StaffFilter</filter-name>
+		<filter-class>pzinsta.pizzeria.web.filter.StaffFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>StaffFilter</filter-name>
+		<url-pattern>/staff/dashboard</url-pattern>
+	</filter-mapping>
 
+
+    <listener>
+        <listener-class>
+            pzinsta.pizzeria.web.listener.ContextListener
+        </listener-class>
+    </listener>
 
 
 	<session-config>

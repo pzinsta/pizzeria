@@ -2,7 +2,6 @@ package pzinsta.pizzeria.service.impl;
 
 import java.util.Optional;
 
-import org.apache.commons.collections4.CollectionUtils;
 import org.mindrot.jbcrypt.BCrypt;
 
 import com.google.common.collect.ImmutableSet;

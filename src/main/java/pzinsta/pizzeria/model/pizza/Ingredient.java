@@ -4,8 +4,6 @@ import java.util.Objects;
 
 import javax.money.MonetaryAmount;
 
-import org.apache.commons.lang3.builder.EqualsBuilder;
-
 public class Ingredient {
 	private long id;
 	private String name;

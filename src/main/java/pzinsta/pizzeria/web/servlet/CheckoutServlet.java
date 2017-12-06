@@ -14,14 +14,12 @@ public class CheckoutServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		CheckoutController checkoutController = retrieveCheckoutController(request);
-		checkoutController.handleGet(request, response);
+		retrieveCheckoutController(request).handleGet(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		CheckoutController checkoutController = retrieveCheckoutController(request);
-		checkoutController.handlePost(request, response);
+		retrieveCheckoutController(request).handlePost(request, response);
 	}
 
 	private CheckoutController retrieveCheckoutController(HttpServletRequest request) {

@@ -83,52 +83,35 @@ public class PizzaServiceImpl implements PizzaService {
 	}
 
 	private Collection<PizzaItem> extractIngredientItemsForRightSide(Map<String, String[]> ingredientsParametersMap) {
-		Collection<PizzaItem> pizzaItems = new ArrayList<>();
-		ImmutableMap<Long, Ingredient> ingredientsMap = Maps.uniqueIndex(pizzaDao.getIngredients(), Ingredient::getId);
-		for(Map.Entry<String, String[]> entry : ingredientsParametersMap.entrySet()) {
-		 	String ingredientIdString = FluentIterable.from(Splitter.on(":").limit(2).trimResults().omitEmptyStrings().split(entry.getKey())).last().get();
-		 	String[] values = entry.getValue();
-		 	boolean anyMatch = Stream.of(values).anyMatch(Predicates.equalTo("right").or(Predicates.equalTo("whole")));
-		 	if (anyMatch) {
-		 		long ingredientId = Long.parseLong(ingredientIdString);
-		 		PizzaItem pizzaItem = new PizzaItem();
-		 		Ingredient ingredient = ingredientsMap.get(ingredientId);
-		 		pizzaItem.setIngredient(ingredient);
-		 		if (Stream.of(values).anyMatch("double"::equals)) {
-		 			pizzaItem.setQuantity(2);
-		 		}
-		 		else {
-		 			pizzaItem.setQuantity(1);
-		 		}
-		 		pizzaItems.add(pizzaItem);
-		 	}
-		}
-		return pizzaItems;
+        return extractIngredientItems(ingredientsParametersMap, "right");
 	}
 
-	// TODO: copypaste
 	private Collection<PizzaItem> extractIngredientItemsForLeftSide(Map<String, String[]> ingredientsParametersMap) {
-		Collection<PizzaItem> pizzaItems = new ArrayList<>();
-		ImmutableMap<Long, Ingredient> ingredientsMap = Maps.uniqueIndex(pizzaDao.getIngredients(), Ingredient::getId);
-		for(Map.Entry<String, String[]> entry : ingredientsParametersMap.entrySet()) {
-		 	String ingredientIdString = FluentIterable.from(Splitter.on(":").limit(2).trimResults().omitEmptyStrings().split(entry.getKey())).last().get();
-		 	String[] values = entry.getValue();
-		 	boolean anyMatch = Stream.of(values).anyMatch(Predicates.equalTo("left").or(Predicates.equalTo("whole")));
-		 	if (anyMatch) {
-		 		long ingredientId = Long.parseLong(ingredientIdString);
-		 		PizzaItem pizzaItem = new PizzaItem();
-		 		Ingredient ingredient = ingredientsMap.get(ingredientId);
-		 		pizzaItem.setIngredient(ingredient);
-		 		if (Stream.of(values).anyMatch("double"::equals)) {
-		 			pizzaItem.setQuantity(2);
-		 		}
-		 		else {
-		 			pizzaItem.setQuantity(1);
-		 		}
-		 		pizzaItems.add(pizzaItem);
-		 	}
-		}
-		return pizzaItems;
+		return extractIngredientItems(ingredientsParametersMap, "left");
+	}
+	
+	private Collection<PizzaItem> extractIngredientItems(Map<String, String[]> ingredientsParametersMap, String side) {
+	       Collection<PizzaItem> pizzaItems = new ArrayList<>();
+	        ImmutableMap<Long, Ingredient> ingredientsMap = Maps.uniqueIndex(pizzaDao.getIngredients(), Ingredient::getId);
+	        for(Map.Entry<String, String[]> entry : ingredientsParametersMap.entrySet()) {
+	            String ingredientIdString = FluentIterable.from(Splitter.on(":").limit(2).trimResults().omitEmptyStrings().split(entry.getKey())).last().get();
+	            String[] values = entry.getValue();
+	            boolean anyMatch = Stream.of(values).anyMatch(Predicates.equalTo(side).or(Predicates.equalTo("whole")));
+	            if (anyMatch) {
+	                long ingredientId = Long.parseLong(ingredientIdString);
+	                PizzaItem pizzaItem = new PizzaItem();
+	                Ingredient ingredient = ingredientsMap.get(ingredientId);
+	                pizzaItem.setIngredient(ingredient);
+	                if (Stream.of(values).anyMatch("double"::equals)) {
+	                    pizzaItem.setQuantity(2);
+	                }
+	                else {
+	                    pizzaItem.setQuantity(1);
+	                }
+	                pizzaItems.add(pizzaItem);
+	            }
+	        }
+	        return pizzaItems;
 	}
 	
 	@Override

@@ -16,27 +16,28 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.google.common.collect.Maps;
 
-import pzinsta.pizzeria.dao.impl.PizzaDaoImpl;
 import pzinsta.pizzeria.model.order.Order;
 import pzinsta.pizzeria.model.order.OrderItem;
 import pzinsta.pizzeria.model.pizza.Ingredient;
 import pzinsta.pizzeria.model.pizza.IngredientType;
 import pzinsta.pizzeria.model.pizza.Pizza;
 import pzinsta.pizzeria.service.PizzaService;
-import pzinsta.pizzeria.service.impl.PizzaServiceImpl;
-
 
 public class EditOrderItemServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private PizzaService pizzaService = new PizzaServiceImpl(new PizzaDaoImpl());
-
+	private PizzaService pizzaService;
+	
+	@Override
+	public void init() throws ServletException {
+	    pizzaService = (PizzaService) getServletContext().getAttribute("pizzaService");
+	}
+	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String orderItemId = request.getParameter("orderItemId");
 		Optional<Order> orderOptional = Optional.ofNullable((Order)request.getSession().getAttribute("order"));
 		Optional<OrderItem> orderItemOptional = orderOptional.flatMap((order) -> order.getOrderItemById(orderItemId));
 		orderItemOptional.ifPresent(orderItem -> request.setAttribute("orderItem", orderItem));
 		
-		//TODO: refactor duplicate code here and in the PizzaBuilderServlet
 		request.setAttribute("bakeStyles", pizzaService.getBakeStyles());
 		request.setAttribute("crusts", pizzaService.getCrusts());
 		request.setAttribute("ingredientTypes", pizzaService.getIngredientTypes());
@@ -51,7 +52,6 @@ public class EditOrderItemServlet extends HttpServlet {
 		requestDispatcher.forward(request, response);
 	}
 
-	// TODO: copypaste
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		long crustId = Long.parseLong(request.getParameter("crust"));
 		long pizzaSizeId = Long.parseLong(request.getParameter("pizzaSize"));

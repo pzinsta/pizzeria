@@ -6,7 +6,6 @@ import static pzinsta.pizzeria.util.Utils.fromBigDecimal;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
 
 import javax.money.MonetaryAmount;
@@ -20,7 +19,7 @@ public class Order {
 	private Customer customer;
 	private Collection<OrderItem> orderItems = new ArrayList<>();
 	private Instant placed;
-	private OrderStatus status; // refactor to the State pattern?
+	private OrderStatus status;
 
 	public long getId() {
 		return id;
