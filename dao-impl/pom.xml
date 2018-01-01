@@ -7,4 +7,11 @@
   </parent>
   <artifactId>dao-impl</artifactId>
   <packaging>jar</packaging>
+  <dependencies>
+  	<dependency>
+  		<groupId>pzinsta</groupId>
+  		<artifactId>dao-api</artifactId>
+  		<version>0.0.1-SNAPSHOT</version>
+  	</dependency>
+  </dependencies>
 </project>
