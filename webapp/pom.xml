@@ -8,7 +8,11 @@
 	</parent>
 	<artifactId>webapp</artifactId>
 	<packaging>war</packaging>
-	
+
+	<properties>
+		<spring.version>5.0.2.RELEASE</spring.version>
+	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>pzinsta</groupId>
@@ -24,7 +28,13 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>5.0.2.RELEASE</version>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<dependency>
