@@ -1,19 +1,13 @@
 package pzinsta.pizzeria.model.pizza;
 
-import javax.money.MonetaryAmount;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-
 import org.hibernate.annotations.Check;
-
 import pzinsta.pizzeria.model.Constants;
 
+import javax.money.MonetaryAmount;
+import javax.persistence.*;
+
 @Entity
-@Check(constraints = "left <> right")
+@Check(constraints = "left_pizzaside_id <> right_pizzaside_id")
 public class Pizza {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
@@ -25,11 +19,11 @@ public class Pizza {
     @ManyToOne
 	private PizzaSize size;
 
-    @Column(unique = true)
+    @JoinColumn(unique = true, name = "left_pizzaside_id")
     @OneToOne
 	private PizzaSide left;
     
-    @Column(unique = true)
+    @JoinColumn(unique = true, name = "right_pizzaside_id")
     @OneToOne
 	private PizzaSide right;
 

@@ -23,7 +23,6 @@ public class Review {
     @ManyToOne(optional = false)
 	private Customer customer;
     
-    @Generated(GenerationTime.INSERT)
     @CreationTimestamp
 	private Instant date;
 	

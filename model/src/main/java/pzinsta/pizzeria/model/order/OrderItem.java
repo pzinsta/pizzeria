@@ -1,14 +1,10 @@
 package pzinsta.pizzeria.model.order;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -16,7 +12,7 @@ import javax.validation.constraints.NotNull;
 import pzinsta.pizzeria.model.pizza.Pizza;
 
 @Entity
-public class OrderItem {
+public class OrderItem implements Serializable {
     @Transient
 	private String id; //not to be persisted
     
@@ -25,7 +21,7 @@ public class OrderItem {
     private Order order;
     
     @Id
-    @Column(unique = true)
+    @JoinColumn(unique = true)
     @OneToOne
 	private Pizza pizza;
 	

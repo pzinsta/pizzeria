@@ -1,20 +1,17 @@
 package pzinsta.pizzeria.model;
 
-import java.time.Instant;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenerationTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "registered_user")
 @PrimaryKeyJoinColumn(name = "user_id")
 public class RegisteredUser extends User {
-    @org.hibernate.annotations.Generated(GenerationTime.INSERT)
     @CreationTimestamp
     private Instant registrationDate;
     

@@ -28,7 +28,7 @@ public class PizzaSide {
     
     @NotNull
     @Size(max = 100)
-    @ColumnDefault("Custom")
+    @ColumnDefault("'Custom'")
 	private String name;
     
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pizzaSide")

@@ -27,6 +27,8 @@ import org.javamoney.moneta.Money;
 
 import pzinsta.pizzeria.model.Customer;
 import pzinsta.pizzeria.model.Constants;
+import pzinsta.pizzeria.model.Deliveryperson;
+import pzinsta.pizzeria.model.Manager;
 
 @Entity
 @Table(name = "orders")
@@ -42,13 +44,18 @@ public class Order {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
 	private Collection<OrderItem> orderItems = new ArrayList<>();
 
-    @Generated(GenerationTime.INSERT)
     @CreationTimestamp
 	private Instant placedDate;
 	
     @Enumerated(EnumType.STRING)
 	private OrderStatus status;
-	
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Manager manager;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Deliveryperson deliveryperson;
+
 	public long getId() {
 		return id;
 	}
@@ -99,5 +106,21 @@ public class Order {
 
 	public Optional<OrderItem> getOrderItemById(String orderItemId) {
 		return orderItems.stream().filter(item -> StringUtils.equals(orderItemId, item.getId())).findFirst();
+	}
+
+	public Manager getManager() {
+		return manager;
+	}
+
+	public void setManager(Manager manager) {
+		this.manager = manager;
+	}
+
+	public Deliveryperson getDeliveryperson() {
+		return deliveryperson;
+	}
+
+	public void setDeliveryperson(Deliveryperson deliveryperson) {
+		this.deliveryperson = deliveryperson;
 	}
 }
