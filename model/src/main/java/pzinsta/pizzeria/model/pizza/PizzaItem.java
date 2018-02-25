@@ -84,4 +84,13 @@ public class PizzaItem {
     public void setIngredient(Ingredient ingredient) {
         this.ingredient = ingredient;
     }
+
+    public PizzaSide getPizzaSide() {
+        return pizzaSide;
+    }
+
+    public void setPizzaSide(PizzaSide pizzaSide) {
+        this.pizzaSide = pizzaSide;
+    }
+
 }
