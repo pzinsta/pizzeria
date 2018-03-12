@@ -1,0 +1,1 @@
+${pizzaItem.ingredient.name} x ${pizzaItem.quantity}

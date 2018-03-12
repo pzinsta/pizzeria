@@ -1,38 +1,36 @@
 package pzinsta.pizzeria.model.order;
 
-import java.io.Serializable;
-import java.util.UUID;
+import pzinsta.pizzeria.model.pizza.Pizza;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.*;
-import javax.validation.constraints.Max;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import pzinsta.pizzeria.model.pizza.Pizza;
+import java.io.Serializable;
 
 @Entity
 public class OrderItem implements Serializable {
     @Transient
 	private String id; //not to be persisted
-    
+
     @Id
     @ManyToOne(optional = false)
     private Order order;
-    
+
     @Id
     @JoinColumn(unique = true)
     @OneToOne
 	private Pizza pizza;
-	
+
     @NotNull
     @Min(1)
 	private int quantity;
 
-	public OrderItem() {
-		id = UUID.randomUUID().toString();
-	}
-	
 	public Pizza getPizza() {
 		return pizza;
 	}
@@ -54,7 +52,7 @@ public class OrderItem implements Serializable {
 	}
 
 	public MonetaryAmount getCost() {
-		return pizza.getCost();
+		return pizza.getCost().multiply(quantity);
 	}
 
     public Order getOrder() {
@@ -63,5 +61,9 @@ public class OrderItem implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

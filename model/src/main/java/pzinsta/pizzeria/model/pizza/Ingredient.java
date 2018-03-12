@@ -1,19 +1,24 @@
 package pzinsta.pizzeria.model.pizza;
 
-import java.util.Objects;
-
-import javax.money.MonetaryAmount;
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import pzinsta.pizzeria.model.Constants;
 import pzinsta.pizzeria.model.MonetaryAmountAttributeConverter;
+
+import javax.money.MonetaryAmount;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @Entity
 public class Ingredient {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
+	@NotNull
 	private Long id;
     
     @NotNull
@@ -21,7 +26,6 @@ public class Ingredient {
     @Column(unique = true)
 	private String name;
     
-    //TODO : mapping
 	@Convert(converter = MonetaryAmountAttributeConverter.class)
 	private MonetaryAmount price;
 	

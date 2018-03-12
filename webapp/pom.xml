@@ -9,10 +9,6 @@
     <artifactId>webapp</artifactId>
     <packaging>war</packaging>
 
-    <properties>
-        <spring.version>5.0.2.RELEASE</spring.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>pzinsta</groupId>

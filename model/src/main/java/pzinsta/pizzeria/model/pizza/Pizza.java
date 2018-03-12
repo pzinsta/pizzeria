@@ -4,7 +4,12 @@ import org.hibernate.annotations.Check;
 import pzinsta.pizzeria.model.Constants;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 @Check(constraints = "left_pizzaside_id <> right_pizzaside_id")
@@ -53,7 +58,7 @@ public class Pizza {
 		return left;
 	}
 
-	public void setLeft(PizzaSide left) {
+	public void setLeftPizzaSide(PizzaSide left) {
 		this.left = left;
 	}
 
@@ -61,7 +66,7 @@ public class Pizza {
 		return right;
 	}
 
-	public void setRight(PizzaSide right) {
+	public void setRightPizzaSide(PizzaSide right) {
 		this.right = right;
 	}
 

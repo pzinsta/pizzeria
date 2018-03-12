@@ -1,13 +1,13 @@
 package pzinsta.pizzeria.dao.impl;
 
-import java.util.List;
+import pzinsta.pizzeria.dao.GenericDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-
-import pzinsta.pizzeria.dao.GenericDAO;
+import java.util.List;
+import java.util.Optional;
 
 public abstract class GenericDAOImpl<T, ID> implements GenericDAO<T, ID>{
     @PersistenceContext
@@ -24,8 +24,8 @@ public abstract class GenericDAOImpl<T, ID> implements GenericDAO<T, ID>{
     }
     
     @Override
-    public T findById(ID id) {
-        return entityManager.find(entityClass, id);
+    public Optional<T> findById(ID id) {
+        return Optional.ofNullable(entityManager.find(entityClass, id));
     }
     
     @Override
