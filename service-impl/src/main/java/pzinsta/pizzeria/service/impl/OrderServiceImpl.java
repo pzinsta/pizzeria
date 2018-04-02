@@ -31,7 +31,6 @@ import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -165,7 +164,6 @@ public class OrderServiceImpl implements OrderService {
 
     private OrderItem createOrderItem(PizzaOrderDTO pizzaOrderDTO) {
         OrderItem orderItem = new OrderItem();
-        orderItem.setId(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE);
         orderItem.setPizza(createPizza(pizzaOrderDTO));
         orderItem.setQuantity(pizzaOrderDTO.getQuantity());
         return orderItem;

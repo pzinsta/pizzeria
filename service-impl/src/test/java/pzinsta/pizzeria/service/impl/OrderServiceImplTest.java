@@ -22,6 +22,7 @@ import pzinsta.pizzeria.model.pizza.BakeStyle;
 import pzinsta.pizzeria.model.pizza.Crust;
 import pzinsta.pizzeria.model.pizza.CutStyle;
 import pzinsta.pizzeria.model.pizza.Ingredient;
+import pzinsta.pizzeria.model.pizza.IngredientType;
 import pzinsta.pizzeria.model.pizza.Pizza;
 import pzinsta.pizzeria.model.pizza.PizzaItem;
 import pzinsta.pizzeria.model.pizza.PizzaSide;
@@ -204,6 +205,39 @@ public class OrderServiceImplTest {
 
         // then
         verify(cart).removeOrderItemById(42);
+    }
+
+    @Test
+    public void shouldGetIngredientById() throws Exception {
+        // given
+        Long ingredientId = 42L;
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(42L);
+        when(ingredientDAO.findById(ingredientId)).thenReturn(Optional.of(ingredient));
+
+        // when
+        Ingredient result = orderService.getIngredientById(ingredientId);
+
+        // then
+        assertThat(result).isSameAs(ingredient);
+    }
+
+    @Test
+    public void shouldGetIngredientTypeByIngredientId() throws Exception {
+        // given
+        IngredientType ingredientType = new IngredientType();
+        Long ingredientId = 42L;
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(ingredientId);
+        ingredient.setIngredientType(ingredientType);
+
+        when(ingredientDAO.findById(ingredientId)).thenReturn(Optional.of(ingredient));
+
+        // when
+        IngredientType result = orderService.getIngredientTypeByIngredientId(ingredientId);
+
+        // then
+        assertThat(result).isSameAs(ingredientType);
     }
 
     private void assertThatOrderItemsAreEqual(OrderItem capturedOrderItem, OrderItem expectedOrderItem) {
