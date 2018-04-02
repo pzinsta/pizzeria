@@ -1,6 +1,7 @@
-package pzinsta.pizzeria.model;
+package pzinsta.pizzeria.model.user;
 
-import java.time.Instant;
+import org.hibernate.annotations.CreationTimestamp;
+import pzinsta.pizzeria.model.Constants;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,10 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
+import java.time.Instant;
 
 @Entity
 public class Review {

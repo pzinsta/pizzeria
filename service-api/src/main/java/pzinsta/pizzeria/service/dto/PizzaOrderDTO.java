@@ -3,6 +3,7 @@ package pzinsta.pizzeria.service.dto;
 import java.util.Map;
 
 public class PizzaOrderDTO {
+    private Long id;
     private Long crustId;
     private Long pizzaSizeId;
     private Long bakeStyleId;
@@ -65,5 +66,13 @@ public class PizzaOrderDTO {
 
     public void setRightSideIngredientIdByQuantity(Map<Long, Integer> rightSideIngredientIdByQuantity) {
         this.rightSideIngredientIdByQuantity = rightSideIngredientIdByQuantity;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

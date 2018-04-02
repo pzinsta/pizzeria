@@ -16,7 +16,7 @@ import pzinsta.pizzeria.dao.CrustDAO;
 import pzinsta.pizzeria.dao.CutStyleDAO;
 import pzinsta.pizzeria.dao.IngredientDAO;
 import pzinsta.pizzeria.dao.PizzaSizeDAO;
-import pzinsta.pizzeria.model.order.Order;
+import pzinsta.pizzeria.model.order.Cart;
 import pzinsta.pizzeria.model.order.OrderItem;
 import pzinsta.pizzeria.model.pizza.BakeStyle;
 import pzinsta.pizzeria.model.pizza.Crust;
@@ -37,7 +37,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class PizzaBuilderServiceImplTest {
+public class OrderServiceImplTest {
 
     private static final int PIZZA_QUANTITY = 6;
 
@@ -72,10 +72,10 @@ public class PizzaBuilderServiceImplTest {
     private IngredientDAO ingredientDAO;
 
     @InjectMocks
-    private PizzaBuilderServiceImpl pizzaBuilderService;
+    private OrderServiceImpl orderService;
 
     @Spy
-    private Order order;
+    private Cart cart;
 
     @Captor
     private ArgumentCaptor<OrderItem> orderItemArgumentCaptor;
@@ -87,7 +87,7 @@ public class PizzaBuilderServiceImplTest {
         when(crustDAO.findAll()).thenReturn(crusts);
 
         // when
-        Collection<Crust> result = pizzaBuilderService.getCrusts();
+        Collection<Crust> result = orderService.getCrusts();
 
         // then
         assertThat(result).isSameAs(crusts);
@@ -100,7 +100,7 @@ public class PizzaBuilderServiceImplTest {
         when(pizzaSizeDAO.findAll()).thenReturn(pizzaSizes);
 
         // when
-        Collection<PizzaSize> result = pizzaBuilderService.getPizzaSizes();
+        Collection<PizzaSize> result = orderService.getPizzaSizes();
 
         // then
         assertThat(result).isSameAs(pizzaSizes);
@@ -113,7 +113,7 @@ public class PizzaBuilderServiceImplTest {
         when(bakeStyleDAO.findAll()).thenReturn(bakeStyles);
 
         // when
-        Collection<BakeStyle> result = pizzaBuilderService.getBakeStyles();
+        Collection<BakeStyle> result = orderService.getBakeStyles();
 
         // then
         assertThat(result).isSameAs(bakeStyles);
@@ -126,7 +126,7 @@ public class PizzaBuilderServiceImplTest {
         when(cutStyleDAO.findAll()).thenReturn(cutStyles);
 
         // when
-        Collection<CutStyle> result = pizzaBuilderService.getCutStyles();
+        Collection<CutStyle> result = orderService.getCutStyles();
 
         // then
         assertThat(result).isSameAs(cutStyles);
@@ -135,11 +135,11 @@ public class PizzaBuilderServiceImplTest {
     @Test
     public void shouldGenerateListOfQuantities() throws Exception {
         // given
-        pizzaBuilderService.setMinQuantity(3);
-        pizzaBuilderService.setMaxQuantity(7);
+        orderService.setMinQuantity(3);
+        orderService.setMaxQuantity(7);
 
         // when
-        Collection<Integer> result = pizzaBuilderService.getQuantities();
+        Collection<Integer> result = orderService.getQuantities();
 
         // then
         assertThat(result).containsExactly(3, 4, 5, 6, 7);
@@ -152,14 +152,14 @@ public class PizzaBuilderServiceImplTest {
         when(ingredientDAO.findAll()).thenReturn(ingredients);
 
         // when
-        Collection<Ingredient> result = pizzaBuilderService.getIngredients();
+        Collection<Ingredient> result = orderService.getIngredients();
 
         // then
         assertThat(result).isSameAs(ingredients);
     }
 
     @Test
-    public void shouldAddPizzaOrderItemToOrder() throws Exception {
+    public void shouldAddPizzaOrderItemToCart() throws Exception {
         // given
         PizzaOrderDTO pizzaOrderDTO = createPizzaOrderDTO();
 
@@ -174,13 +174,36 @@ public class PizzaBuilderServiceImplTest {
         });
 
         // when
-        pizzaBuilderService.addOrderItemToOrder(pizzaOrderDTO);
+        orderService.addOrderItemToCart(pizzaOrderDTO);
 
         // then
-        verify(order).addOrderItem(orderItemArgumentCaptor.capture());
+        verify(cart).addOrderItem(orderItemArgumentCaptor.capture());
         OrderItem capturedOrderItem = orderItemArgumentCaptor.getValue();
 
         assertThatOrderItemsAreEqual(capturedOrderItem, createExpectedOrderItem());
+    }
+
+    @Test
+    public void shouldEmptyCart() throws Exception {
+        // given
+
+        // when
+        orderService.emptyCart();
+
+        // then
+        verify(cart).reset();
+    }
+
+    @Test
+    public void shouldRemoveOrderItemAtIndex() throws Exception {
+        // given
+        int index = 42;
+
+        // when
+        orderService.removeOrderItem(index);
+
+        // then
+        verify(cart).removeOrderItemById(42);
     }
 
     private void assertThatOrderItemsAreEqual(OrderItem capturedOrderItem, OrderItem expectedOrderItem) {
@@ -191,7 +214,7 @@ public class PizzaBuilderServiceImplTest {
 
     private OrderItem createExpectedOrderItem() {
         OrderItem expectedOrderItem = new OrderItem();
-        expectedOrderItem.setOrder(order);
+        expectedOrderItem.setOrder(cart.getOrder());
         expectedOrderItem.setQuantity(PIZZA_QUANTITY);
 
         Pizza expectedPizza = createExpectedPizza();
@@ -264,6 +287,9 @@ public class PizzaBuilderServiceImplTest {
     private PizzaItem createPizzaItem(PizzaSide pizzaSide, Long ingredientId, int quantity) {
         Ingredient ingredient = new Ingredient();
         ingredient.setId(ingredientId);
-        return new PizzaItem(pizzaSide, ingredient, quantity);
+        PizzaItem pizzaItem = new PizzaItem();
+        pizzaItem.setQuantity(quantity);
+        pizzaItem.setIngredient(ingredient);
+        return pizzaItem;
     }
 }

@@ -1,4 +1,6 @@
-package pzinsta.pizzeria.model;
+package pzinsta.pizzeria.model.user;
+
+import pzinsta.pizzeria.model.Constants;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

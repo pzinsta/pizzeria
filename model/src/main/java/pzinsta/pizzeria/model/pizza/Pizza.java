@@ -4,16 +4,18 @@ import org.hibernate.annotations.Check;
 import pzinsta.pizzeria.model.Constants;
 
 import javax.money.MonetaryAmount;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+import java.io.Serializable;
 
 @Entity
 @Check(constraints = "left_pizzaside_id <> right_pizzaside_id")
-public class Pizza {
+public class Pizza implements Serializable {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
 	private Long id;
@@ -25,12 +27,12 @@ public class Pizza {
 	private PizzaSize size;
 
     @JoinColumn(unique = true, name = "left_pizzaside_id")
-    @OneToOne
-	private PizzaSide left;
+    @OneToOne(cascade = CascadeType.ALL)
+	private PizzaSide leftPizzaSide;
     
     @JoinColumn(unique = true, name = "right_pizzaside_id")
-    @OneToOne
-	private PizzaSide right;
+    @OneToOne(cascade = CascadeType.ALL)
+	private PizzaSide rightPizzaSide;
 
 	@ManyToOne
 	private BakeStyle bakeStyle;
@@ -54,20 +56,20 @@ public class Pizza {
 		this.crust = crust;
 	}
 
-	public PizzaSide getLeft() {
-		return left;
+	public PizzaSide getLeftPizzaSide() {
+		return leftPizzaSide;
 	}
 
 	public void setLeftPizzaSide(PizzaSide left) {
-		this.left = left;
+		this.leftPizzaSide = left;
 	}
 
-	public PizzaSide getRight() {
-		return right;
+	public PizzaSide getRightPizzaSide() {
+		return rightPizzaSide;
 	}
 
 	public void setRightPizzaSide(PizzaSide right) {
-		this.right = right;
+		this.rightPizzaSide = right;
 	}
 
 	public BakeStyle getBakeStyle() {
@@ -96,6 +98,6 @@ public class Pizza {
 	
 	public MonetaryAmount getCost() {
 	    //TODO include pizza's size into the calculation instead of 1
-		return crust.getPrice().add(left.getCost()).add(right.getCost()).multiply(1);
+		return crust.getPrice().add(leftPizzaSide.getCost()).add(rightPizzaSide.getCost()).multiply(1);
 	}
 }

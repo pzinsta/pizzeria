@@ -8,6 +8,9 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 public class PizzaBuilderForm {
+
+    private String id;
+
     @NotNull
     private Long crustId;
 

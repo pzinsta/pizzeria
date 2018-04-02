@@ -1,16 +1,17 @@
 package pzinsta.pizzeria.model.pizza;
 
+import pzinsta.pizzeria.model.Constants;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import pzinsta.pizzeria.model.Constants;
+import java.io.Serializable;
 
 @Entity
-public class BakeStyle {
+public class BakeStyle implements Serializable {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
 	private Long id;

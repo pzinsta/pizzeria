@@ -6,40 +6,49 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pzinsta.pizzeria.dao.BakeStyleDAO;
 import pzinsta.pizzeria.dao.CrustDAO;
+import pzinsta.pizzeria.dao.CustomerDAO;
 import pzinsta.pizzeria.dao.CutStyleDAO;
 import pzinsta.pizzeria.dao.IngredientDAO;
+import pzinsta.pizzeria.dao.OrderDAO;
 import pzinsta.pizzeria.dao.PizzaSizeDAO;
+import pzinsta.pizzeria.model.order.Cart;
 import pzinsta.pizzeria.model.order.Order;
 import pzinsta.pizzeria.model.order.OrderItem;
+import pzinsta.pizzeria.model.order.OrderStatus;
 import pzinsta.pizzeria.model.pizza.BakeStyle;
 import pzinsta.pizzeria.model.pizza.Crust;
 import pzinsta.pizzeria.model.pizza.CutStyle;
 import pzinsta.pizzeria.model.pizza.Ingredient;
+import pzinsta.pizzeria.model.pizza.IngredientType;
 import pzinsta.pizzeria.model.pizza.Pizza;
 import pzinsta.pizzeria.model.pizza.PizzaItem;
 import pzinsta.pizzeria.model.pizza.PizzaSide;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
-import pzinsta.pizzeria.service.PizzaBuilderService;
+import pzinsta.pizzeria.model.user.Customer;
+import pzinsta.pizzeria.service.OrderService;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
 
-@Service
-public class PizzaBuilderServiceImpl implements PizzaBuilderService {
+@Service("orderService")
+public class OrderServiceImpl implements OrderService {
 
     private CrustDAO crustDAO;
     private PizzaSizeDAO pizzaSizeDAO;
     private BakeStyleDAO bakeStyleDAO;
     private CutStyleDAO cutStyleDAO;
     private IngredientDAO ingredientDAO;
+    private OrderDAO orderDAO;
+    private CustomerDAO customerDAO;
 
-    private Order order;
+    private Cart cart;
 
     @Value("${pizza.quantity.min}")
     private int minQuantity;
@@ -83,14 +92,80 @@ public class PizzaBuilderServiceImpl implements PizzaBuilderService {
     }
 
     @Override
-    public void addOrderItemToOrder(PizzaOrderDTO pizzaOrderDTO) {
-        order.addOrderItem(createOrderItem(pizzaOrderDTO));
+    public void addOrderItemToCart(PizzaOrderDTO pizzaOrderDTO) {
+        cart.addOrderItem(createOrderItem(pizzaOrderDTO));
+    }
+
+    @Override
+    public void removeOrderItem(int orderItemIndex) {
+        cart.removeOrderItemById(orderItemIndex);
+    }
+
+    @Override
+    public void emptyCart() {
+        cart.reset();
+    }
+
+    @Override
+    public void replaceOrderItem(int orderItemIndex, PizzaOrderDTO pizzaOrderDTO) {
+        cart.removeOrderItemById(orderItemIndex);
+        cart.addOrderItem(createOrderItem(pizzaOrderDTO));
+    }
+
+    @Override
+    public PizzaOrderDTO getPizzaOrderDTOByOrderItemId(int orderItemIndex) {
+        return createPizzaOrderDTO(cart.getOrderItemById(orderItemIndex).orElseThrow(RuntimeException::new));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public IngredientType getIngredientTypeByIngredientId(Long ingredientId) {
+        return ingredientDAO.findById(ingredientId).orElseThrow(RuntimeException::new).getIngredientType();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Ingredient getIngredientById(Long ingredientId) {
+        return ingredientDAO.findById(ingredientId).orElseThrow(RuntimeException::new);
+    }
+
+    @Override
+    @Transactional
+    public void postOrder(Customer customer) {
+        Order order = new Order();
+        order.setStatus(OrderStatus.PAID);
+        order.setOrderItems(cart.getOrderItems());
+        order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
+        customerDAO.saveOrUpdate(customer);
+        customer.getOrders().add(order);
+        order.setCustomer(customer);
+        orderDAO.saveOrUpdate(order);
+    }
+
+    private PizzaOrderDTO createPizzaOrderDTO(OrderItem orderItem) {
+        PizzaOrderDTO pizzaOrderDTO = new PizzaOrderDTO();
+        pizzaOrderDTO.setId(orderItem.getId());
+        pizzaOrderDTO.setQuantity(orderItem.getQuantity());
+
+        Pizza pizza = orderItem.getPizza();
+        pizzaOrderDTO.setBakeStyleId(pizza.getBakeStyle().getId());
+        pizzaOrderDTO.setCrustId(pizza.getCrust().getId());
+        pizzaOrderDTO.setCutStyleId(pizza.getCutStyle().getId());
+        pizzaOrderDTO.setPizzaSizeId(pizza.getSize().getId());
+
+        pizzaOrderDTO.setLeftSideIngredientIdByQuantity(getIngredientsByQuantity(pizza.getLeftPizzaSide()));
+        pizzaOrderDTO.setRightSideIngredientIdByQuantity(getIngredientsByQuantity(pizza.getRightPizzaSide()));
+
+        return pizzaOrderDTO;
+    }
+
+    private Map<Long, Integer> getIngredientsByQuantity(PizzaSide pizzaSide) {
+        return pizzaSide.getPizzaItems().stream().collect(Collectors.toMap(pizzaItem -> pizzaItem.getIngredient().getId(), PizzaItem::getQuantity));
     }
 
     private OrderItem createOrderItem(PizzaOrderDTO pizzaOrderDTO) {
         OrderItem orderItem = new OrderItem();
-        orderItem.setId(UUID.randomUUID().toString());
-        orderItem.setOrder(order);
+        orderItem.setId(UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE);
         orderItem.setPizza(createPizza(pizzaOrderDTO));
         orderItem.setQuantity(pizzaOrderDTO.getQuantity());
         return orderItem;
@@ -135,7 +210,10 @@ public class PizzaBuilderServiceImpl implements PizzaBuilderService {
 
     private PizzaItem createPizzaItem(PizzaSide leftPizzaSide, Map.Entry<Long, Integer> longIntegerEntry) {
         Ingredient ingredient = ingredientDAO.findById(longIntegerEntry.getKey()).orElseThrow(RuntimeException::new);
-        return new PizzaItem(leftPizzaSide, ingredient, longIntegerEntry.getValue());
+        PizzaItem pizzaItem = new PizzaItem();
+        pizzaItem.setQuantity(longIntegerEntry.getValue());
+        pizzaItem.setIngredient(ingredient);
+        return pizzaItem;
     }
 
     public int getMaxQuantity() {
@@ -154,10 +232,10 @@ public class PizzaBuilderServiceImpl implements PizzaBuilderService {
         this.minQuantity = minQuantity;
     }
 
-
     public CrustDAO getCrustDAO() {
         return crustDAO;
     }
+
 
     @Autowired
     public void setCrustDAO(CrustDAO crustDAO) {
@@ -200,12 +278,30 @@ public class PizzaBuilderServiceImpl implements PizzaBuilderService {
         this.ingredientDAO = ingredientDAO;
     }
 
-    public Order getOrder() {
-        return order;
+    public OrderDAO getOrderDAO() {
+        return orderDAO;
     }
 
     @Autowired
-    public void setOrder(Order order) {
-        this.order = order;
+    public void setOrderDAO(OrderDAO orderDAO) {
+        this.orderDAO = orderDAO;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    @Autowired
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    public CustomerDAO getCustomerDAO() {
+        return customerDAO;
+    }
+
+    @Autowired
+    public void setCustomerDAO(CustomerDAO customerDAO) {
+        this.customerDAO = customerDAO;
     }
 }

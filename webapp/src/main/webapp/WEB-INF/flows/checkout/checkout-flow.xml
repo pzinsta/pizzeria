@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+    <on-start>
+        <evaluate expression="userService.createNewCustomer()" result="flowScope.customer"/>
+    </on-start>
+
+    <view-state id="orderConfirmation" view="checkout/orderConfirmation">
+        <transition on="continue" to="isCustomerLoggedIn"/>
+        <transition on="edit" to="editOrder"/>
+        <transition on="cancel" to="endState"/>
+    </view-state>
+
+    <decision-state id="isCustomerLoggedIn">
+        <if test="currentUser != null" then="customerInformationConfirmation" else="suggestLoggingIn"/>
+    </decision-state>
+
+    <!--TODO: refactor to subflows? -->
+    <view-state id="editOrder" view="checkout/editOrder">
+        <transition on="continue" to="orderConfirmation"/>
+    </view-state>
+
+    <!--TODO: new feature - order type-->
+    <!--<view-state id="selectOrderType" view="checkout/selectOrderType">-->
+    <!--<transition on="carryOut" to="" -->
+    <!--</view-state>-->
+
+    <view-state id="customerInformationConfirmation" view="checkout/customerInformationConfirmation">
+        <on-render>
+            <evaluate expression="userService.getCustomerByUsername(currentUser.name).get()"
+                      result="flowScope.customer"/>
+        </on-render>
+        <transition on="continue" to="payment"/>
+        <transition on="cancel" to="endState"/>
+    </view-state>
+
+    <view-state id="suggestLoggingIn" view="checkout/suggestLoggingIn">
+        <transition on="continue" to="isCustomerLoggedIn"/>
+        <transition on="orderAsGuest" to="enterGuestInformation"/>
+        <transition on="cancel" to="endState"/>
+    </view-state>
+
+    <view-state id="enterGuestInformation" view="checkout/enterGuestInformation" model="customer">
+        <transition on="continue" to="payment"/>
+        <transition on="cancel" to="endState"/>
+    </view-state>
+
+    <view-state id="payment" view="checkout/payment">
+        <transition on="continue" to="postOrder"/>
+        <transition on="cancel" to="endState"/>
+    </view-state>
+
+    <action-state id="postOrder">
+        <evaluate expression="orderService.postOrder(customer)"/>
+        <transition to="orderConfirmed"/>
+    </action-state>
+
+    <view-state id="orderConfirmed" view="checkout/orderConfirmed">
+        <transition on="finish" to="clearCart"/>
+    </view-state>
+
+    <action-state id="clearCart">
+        <evaluate expression="orderService.emptyCart()"/>
+        <transition to="endState"/>
+    </action-state>
+
+    <end-state id="endState" view="externalRedirect:/"/>
+</flow>

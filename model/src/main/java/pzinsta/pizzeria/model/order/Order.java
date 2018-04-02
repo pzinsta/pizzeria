@@ -1,13 +1,15 @@
 package pzinsta.pizzeria.model.order;
 
-import static java.math.BigDecimal.ZERO;
-
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Optional;
+import com.google.common.collect.Range;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.validator.constraints.Length;
+import org.javamoney.moneta.Money;
+import pzinsta.pizzeria.model.Constants;
+import pzinsta.pizzeria.model.Manager;
+import pzinsta.pizzeria.model.user.Customer;
 
 import javax.money.MonetaryAmount;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -18,49 +20,46 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.io.Serializable;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Generated;
-import org.hibernate.annotations.GenerationTime;
-import org.javamoney.moneta.Money;
-
-import pzinsta.pizzeria.model.Customer;
-import pzinsta.pizzeria.model.Constants;
-import pzinsta.pizzeria.model.Deliveryperson;
-import pzinsta.pizzeria.model.Manager;
+import static java.math.BigDecimal.ZERO;
 
 @Entity
 @Table(name = "orders")
-public class Order {
+public class Order implements Serializable {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
-	private long id;
+	private Long id;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     @JoinColumn (name = "customer_id")
 	private Customer customer;
-    
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
-	private Collection<OrderItem> orderItems = new ArrayList<>();
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
+	private List<OrderItem> orderItems = new ArrayList<>();
 
     @CreationTimestamp
 	private Instant placedDate;
-	
+
     @Enumerated(EnumType.STRING)
 	private OrderStatus status;
 
+    // TODO remove this and add order events like paid, ready for pickup/delivery etc. for order tracking
     @ManyToOne(fetch = FetchType.LAZY)
     private Manager manager;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Deliveryperson deliveryperson;
+    @Length(max = 1000)
+    private String comment;
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -89,26 +88,39 @@ public class Order {
 	}
 
 	public MonetaryAmount getCost() {
+		// TODO
 		return orderItems.stream().map(OrderItem::getCost).reduce(Money.of(ZERO, "USD"), MonetaryAmount::add);
 	}
 
-	public Collection<OrderItem> getOrderItems() {
+	public List<OrderItem> getOrderItems() {
 		return orderItems;
+	}
+
+	public void setOrderItems(List<OrderItem> orderItems) {
+		this.orderItems = orderItems;
 	}
 
 	public void addOrderItem(OrderItem orderItem) {
 		orderItems.add(orderItem);
+		orderItem.setOrder(this);
 	}
 
-	public void removeOrderItemById(String orderItemId) {
-		orderItems.removeIf(item -> StringUtils.equals(orderItemId, item.getId()));
+	public void removeOrderItemById(int orderItemIndex) {
+		Range<Integer> validIndexes = Range.closedOpen(0, orderItems.size());
+		if (validIndexes.contains(orderItemIndex)) {
+			orderItems.remove(orderItemIndex);
+		}
 	}
 
-	public Optional<OrderItem> getOrderItemById(String orderItemId) {
-		return orderItems.stream().filter(item -> StringUtils.equals(orderItemId, item.getId())).findFirst();
+	public Optional<OrderItem> getOrderItemByIndex(int orderItemIndex) {
+        return isIndexPresent(orderItemIndex) ? Optional.of(orderItems.get(orderItemIndex)) : Optional.empty();
 	}
 
-	public Manager getManager() {
+    private boolean isIndexPresent(int orderItemIndex) {
+        return Range.closedOpen(0, orderItems.size()).contains(orderItemIndex);
+    }
+
+    public Manager getManager() {
 		return manager;
 	}
 
@@ -116,11 +128,15 @@ public class Order {
 		this.manager = manager;
 	}
 
-	public Deliveryperson getDeliveryperson() {
-		return deliveryperson;
+	public void removeAllOrderItems() {
+		orderItems.clear();
 	}
 
-	public void setDeliveryperson(Deliveryperson deliveryperson) {
-		this.deliveryperson = deliveryperson;
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 }

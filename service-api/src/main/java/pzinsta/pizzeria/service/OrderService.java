@@ -4,12 +4,14 @@ import pzinsta.pizzeria.model.pizza.BakeStyle;
 import pzinsta.pizzeria.model.pizza.Crust;
 import pzinsta.pizzeria.model.pizza.CutStyle;
 import pzinsta.pizzeria.model.pizza.Ingredient;
+import pzinsta.pizzeria.model.pizza.IngredientType;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
+import pzinsta.pizzeria.model.user.Customer;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 
 import java.util.Collection;
 
-public interface PizzaBuilderService {
+public interface OrderService {
 
     Collection<Crust> getCrusts();
 
@@ -23,5 +25,20 @@ public interface PizzaBuilderService {
 
     Collection<Integer> getQuantities();
 
-    void addOrderItemToOrder(PizzaOrderDTO pizzaOrderDTO);
+    void addOrderItemToCart(PizzaOrderDTO pizzaOrderDTO);
+
+    void removeOrderItem(int orderItemIndex);
+
+    void emptyCart();
+
+    void replaceOrderItem(int orderItemIndex, PizzaOrderDTO pizzaOrderDTO);
+
+    PizzaOrderDTO getPizzaOrderDTOByOrderItemId(int orderItemIndex);
+
+    IngredientType getIngredientTypeByIngredientId(Long ingredientId);
+
+    Ingredient getIngredientById(Long ingredientId);
+
+    void postOrder(Customer customer);
+
 }

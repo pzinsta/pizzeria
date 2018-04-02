@@ -12,10 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
-public class Ingredient {
+public class Ingredient  implements Serializable {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
 	@NotNull

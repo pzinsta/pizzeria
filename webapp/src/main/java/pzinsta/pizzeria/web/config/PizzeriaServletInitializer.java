@@ -11,7 +11,7 @@ public class PizzeriaServletInitializer extends AbstractAnnotationConfigDispatch
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class<?>[] { WebConfig.class };
+        return new Class<?>[] { WebConfig.class, WebFlowConfig.class };
     }
 
     @Override

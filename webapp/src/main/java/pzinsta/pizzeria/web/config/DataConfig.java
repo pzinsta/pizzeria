@@ -24,10 +24,17 @@ import java.util.Properties;
 @PropertySource("classpath:datasource.properties")
 public class DataConfig {
 
+    @Value("${datasource.driverClassName}")
+    private String driverClassName;
+    @Value("${datasource.url}")
+    private String url;
+    @Value("${datasource.username}")
+    private String username;
+    @Value("${datasource.password}")
+    private String password;
+
     @Bean
-    public DataSource dataSource(@Value("${datasource.driverClassName}") String driverClassName,
-            @Value("${datasource.url}") String url, @Value("${datasource.username}") String username,
-            @Value("${datasource.password}") String password) {
+    public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName(driverClassName);
         dataSource.setUrl(url);
@@ -37,14 +44,14 @@ public class DataConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) throws IOException {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws IOException {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(true);
 
         Properties hibernateProperties = PropertiesLoaderUtils.loadAllProperties("hibernate.properties");
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setDataSource(dataSource);
+        factory.setDataSource(dataSource());
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("pzinsta.pizzeria.model");
         factory.setJpaProperties(hibernateProperties);

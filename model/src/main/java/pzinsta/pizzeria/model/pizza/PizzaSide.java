@@ -1,9 +1,8 @@
 package pzinsta.pizzeria.model.pizza;
 
-import static java.math.BigDecimal.ZERO;
-
-import java.util.ArrayList;
-import java.util.Collection;
+import org.hibernate.annotations.ColumnDefault;
+import org.javamoney.moneta.Money;
+import pzinsta.pizzeria.model.Constants;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
@@ -12,26 +11,24 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import org.hibernate.annotations.ColumnDefault;
-import org.javamoney.moneta.Money;
-
-import pzinsta.pizzeria.model.Constants;
+import static java.math.BigDecimal.ZERO;
 
 @Entity
-public class PizzaSide {
+public class PizzaSide implements Serializable {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
 	private Long id;
     
-    @NotNull
     @Size(max = 100)
     @ColumnDefault("'Custom'")
 	private String name;
     
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pizzaSide")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private Collection<PizzaItem> pizzaItems = new ArrayList<>();
 
 	public String getName() {

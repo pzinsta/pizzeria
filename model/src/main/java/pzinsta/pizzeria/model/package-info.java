@@ -8,7 +8,7 @@
      ),
      @org.hibernate.annotations.Parameter(
         name = "initial_value",
-        value = "1"
+        value = "1000"
      )
 })
 package pzinsta.pizzeria.model;

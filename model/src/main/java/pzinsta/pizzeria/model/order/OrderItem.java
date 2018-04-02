@@ -1,30 +1,31 @@
 package pzinsta.pizzeria.model.order;
 
+import pzinsta.pizzeria.model.Constants;
 import pzinsta.pizzeria.model.pizza.Pizza;
 
 import javax.money.MonetaryAmount;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
-import javax.persistence.Transient;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Entity
 public class OrderItem implements Serializable {
-    @Transient
-	private String id; //not to be persisted
+	@Id
+	@GeneratedValue(generator = Constants.ID_GENERATOR)
+	private Long id;
 
-    @Id
     @ManyToOne(optional = false)
     private Order order;
 
-    @Id
     @JoinColumn(unique = true)
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
 	private Pizza pizza;
 
     @NotNull
@@ -47,7 +48,7 @@ public class OrderItem implements Serializable {
 		this.quantity = quantity;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -63,7 +64,7 @@ public class OrderItem implements Serializable {
         this.order = order;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 }
