@@ -3,6 +3,7 @@ package pzinsta.pizzeria.web.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,18 +15,6 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 @EnableWebSecurity
 @ComponentScan("pzinsta.pizzeria.web.security")
 public class SecurityConfig {
-
-    // @Bean
-    // public UserDetailsService userDetailsService() throws Exception {
-    //     //TODO: jdbc
-    //     // ensure the passwords are encoded properly
-    //     User.UserBuilder users = User.builder();
-    //     InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-    //     manager.createUser(users.username("user").password("password").roles("USER").build());
-    //     manager.createUser(users.username("manager").password("password").roles("MANAGER").build());
-    //     manager.createUser(users.username("deliveryperson").password("password").roles("DELIVERYPERSON").build());
-    //     return manager;
-    // }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -71,8 +60,23 @@ public class SecurityConfig {
     //     }
     // }
 
+    @Order(1)
     @Configuration
     public static class CustomerWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http
+                    .antMatcher("/customer/**").authorizeRequests()
+                    .anyRequest().hasRole("REGISTERED_CUSTOMER")
+                    .and()
+                    .formLogin().loginPage("/login").permitAll()
+                    .and()
+                    .logout().permitAll();
+        }
+    }
+
+    @Configuration
+    public static class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {

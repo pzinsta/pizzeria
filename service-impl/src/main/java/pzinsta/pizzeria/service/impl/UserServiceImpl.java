@@ -29,6 +29,13 @@ public class UserServiceImpl implements UserService {
         return new Customer();
     }
 
+    @Override
+    @Transactional
+    public void updateCustomer(Customer customer) {
+        // TODO: 4/2/2018 how do we prevent users from updating other users' profiles?
+        customerDAO.saveOrUpdate(customer);
+    }
+
     public CustomerDAO getCustomerDAO() {
         return customerDAO;
     }

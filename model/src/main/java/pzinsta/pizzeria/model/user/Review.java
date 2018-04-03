@@ -31,6 +31,8 @@ public class Review {
     @ManyToOne
     @JoinColumn(name = "review_rating_id")
 	private ReviewRating rating;
+
+	// TODO: Image(s)
 	
 	public Long getId() {
 		return id;

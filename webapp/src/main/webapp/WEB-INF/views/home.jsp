@@ -74,12 +74,23 @@
                 </c:if>
             </div>
 
-            <sec:authentication property="name"/>
+            
+            <c:choose>
+                <c:when test="${not empty customer}">
+                    <spring:url value="/customer" var="customerProfileUrl"/>
+                    <a href="${customerProfileUrl}"><c:out value="${customer.firstName}" default="Profile"/></a>
+                    <spring:url var="logoutUrl" value="/logout"/>
+                    <form:form action="${logoutUrl}" method="post">
+                        <input type="submit" value="Log out"/>
+                    </form:form>
+                </c:when>
+                <c:otherwise>
+                    <spring:url value="/login" var="loginUrl"/>
+                    <a href="${loginUrl}">Login</a>
+                </c:otherwise>
+            </c:choose>
 
-            <c:url var="logoutUrl" value="/logout"/>
-            <form:form action="${logoutUrl}" method="post">
-                <input type="submit" value="Log out"/>
-            </form:form>
+
 
             <footer class="footer">
                 <p>Made by pzinsta</p>

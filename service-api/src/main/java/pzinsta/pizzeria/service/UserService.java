@@ -8,4 +8,6 @@ public interface UserService {
     Optional<Customer> getCustomerByUsername(String username);
 
     Customer createNewCustomer();
+
+    void updateCustomer(Customer customer);
 }
