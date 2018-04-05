@@ -9,8 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+import pzinsta.pizzeria.web.security.handler.RedirectAuthenticationFailureHandler;
 
 @EnableWebSecurity
 @ComponentScan("pzinsta.pizzeria.web.security")
@@ -83,9 +87,12 @@ public class SecurityConfig {
             http
                     .authorizeRequests().anyRequest().permitAll()
                     .and()
-                    .formLogin().loginPage("/login").permitAll().successHandler(authenticationSuccessHandler())
+                    .formLogin().loginPage("/login")
+                    .permitAll()
+                    .successHandler(authenticationSuccessHandler())
+                    .failureHandler(authenticationFailureHandler())
                     .and()
-                    .logout().invalidateHttpSession(false).permitAll();
+                    .logout().invalidateHttpSession(false).logoutSuccessHandler(logoutSuccessHandler()).permitAll();
         }
     }
 
@@ -94,5 +101,22 @@ public class SecurityConfig {
         SavedRequestAwareAuthenticationSuccessHandler savedRequestAwareAuthenticationSuccessHandler = new SavedRequestAwareAuthenticationSuccessHandler();
         savedRequestAwareAuthenticationSuccessHandler.setUseReferer(true);
         return  savedRequestAwareAuthenticationSuccessHandler;
+    }
+
+    @Bean
+    public static LogoutSuccessHandler logoutSuccessHandler() {
+        SimpleUrlLogoutSuccessHandler simpleUrlLogoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
+        simpleUrlLogoutSuccessHandler.setUseReferer(true);
+        simpleUrlLogoutSuccessHandler.setDefaultTargetUrl("/");
+        return simpleUrlLogoutSuccessHandler;
+    }
+
+    @Bean
+    public static AuthenticationFailureHandler authenticationFailureHandler() {
+        RedirectAuthenticationFailureHandler redirectAuthenticationFailureHandler = new RedirectAuthenticationFailureHandler();
+        redirectAuthenticationFailureHandler.setDefaultReturnUrl("/");
+        redirectAuthenticationFailureHandler.setReturnUrlParameterName("returnUrl");
+        redirectAuthenticationFailureHandler.setQueryParam("loginError");
+        return redirectAuthenticationFailureHandler;
     }
 }

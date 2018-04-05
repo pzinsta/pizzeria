@@ -11,6 +11,7 @@ import org.springframework.webflow.executor.FlowExecutor;
 import org.springframework.webflow.mvc.builder.MvcViewFactoryCreator;
 import org.springframework.webflow.mvc.servlet.FlowHandlerAdapter;
 import org.springframework.webflow.mvc.servlet.FlowHandlerMapping;
+import org.springframework.webflow.security.SecurityFlowExecutionListener;
 
 import java.util.Collections;
 
@@ -23,7 +24,7 @@ public class WebFlowConfig extends AbstractFlowConfiguration {
     @Bean
     public FlowExecutor flowExecutor() {
         return getFlowExecutorBuilder(flowDefinitionRegistry())
-          //  TODO    .addFlowExecutionListener(new SecurityFlowExecutionListener())
+                .addFlowExecutionListener(securityFlowExecutionListener())
                 .build();
     }
 
@@ -71,5 +72,10 @@ public class WebFlowConfig extends AbstractFlowConfiguration {
         flowHandlerAdapter.setFlowExecutor(flowExecutor());
         flowHandlerAdapter.setSaveOutputToFlashScopeOnRedirect(true);
         return flowHandlerAdapter;
+    }
+
+    @Bean
+    public SecurityFlowExecutionListener securityFlowExecutionListener() {
+        return new SecurityFlowExecutionListener();
     }
 }

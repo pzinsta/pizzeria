@@ -13,11 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.time.Instant;
 import java.util.Set;
 
 @Entity
-public class Account {
+public class Account implements Serializable {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private Long id;

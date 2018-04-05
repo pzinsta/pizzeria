@@ -85,8 +85,7 @@
                     </form:form>
                 </c:when>
                 <c:otherwise>
-                    <spring:url value="/login" var="loginUrl"/>
-                    <a href="${loginUrl}">Login</a>
+                    <c:import url="login.jsp"/>
                 </c:otherwise>
             </c:choose>
 

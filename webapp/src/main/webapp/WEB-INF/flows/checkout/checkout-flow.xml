@@ -38,8 +38,8 @@
     </view-state>
 
     <view-state id="suggestLoggingIn" view="checkout/suggestLoggingIn">
-        <transition on="continue" to="isCustomerLoggedIn"/>
         <transition on="orderAsGuest" to="enterGuestInformation"/>
+        <transition on="continue" to="isCustomerLoggedIn"/>
         <transition on="cancel" to="endState"/>
     </view-state>
 
