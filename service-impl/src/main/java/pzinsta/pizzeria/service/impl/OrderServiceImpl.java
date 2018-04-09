@@ -24,7 +24,6 @@ import pzinsta.pizzeria.model.pizza.Pizza;
 import pzinsta.pizzeria.model.pizza.PizzaItem;
 import pzinsta.pizzeria.model.pizza.PizzaSide;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
-import pzinsta.pizzeria.model.user.Customer;
 import pzinsta.pizzeria.service.OrderService;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 
@@ -130,14 +129,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void postOrder(Customer customer) {
-        Order order = new Order();
+    public void postOrder(Order order) {
         order.setStatus(OrderStatus.PAID);
-        order.setOrderItems(cart.getOrderItems());
-        order.getOrderItems().forEach(orderItem -> orderItem.setOrder(order));
-        customerDAO.saveOrUpdate(customer);
-        customer.getOrders().add(order);
-        order.setCustomer(customer);
         orderDAO.saveOrUpdate(order);
     }
 

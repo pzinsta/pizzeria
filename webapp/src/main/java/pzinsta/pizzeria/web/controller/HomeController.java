@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pzinsta.pizzeria.model.user.Customer;
-import pzinsta.pizzeria.service.UserService;
+import pzinsta.pizzeria.service.CustomerService;
 
 import java.security.Principal;
 import java.util.Optional;
@@ -15,11 +15,11 @@ import java.util.Optional;
 @RequestMapping("/")
 public class HomeController {
 
-    private UserService userService;
+    private CustomerService customerService;
 
     @Autowired
-    public HomeController(UserService userService) {
-        this.userService = userService;
+    public HomeController(CustomerService customerService) {
+        this.customerService = customerService;
     }
 
     @GetMapping
@@ -28,7 +28,7 @@ public class HomeController {
         if (principal == null) {
             return "home";
         }
-        Optional<Customer> customerOptional = userService.getCustomerByUsername(principal.getName());
+        Optional<Customer> customerOptional = customerService.getCustomerByUsername(principal.getName());
         customerOptional.ifPresent(customer -> model.addAttribute("customer", customer));
         return "home";
     }

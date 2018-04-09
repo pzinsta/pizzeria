@@ -1,19 +1,10 @@
 package pzinsta.pizzeria.model.user;
 
-import pzinsta.pizzeria.model.Constants;
+import javax.persistence.Embeddable;
+import java.io.Serializable;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-
-@Entity
-public class Address {
-
-    @Id
-    @GeneratedValue(generator = Constants.ID_GENERATOR)
-    private Long id;
+@Embeddable
+public class DeliveryAddress implements Serializable {
 
     private String city;
 
@@ -22,9 +13,6 @@ public class Address {
     private String houseNumber;
 
     private String apartmentNumber;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Customer customer;
 
     public String getCity() {
         return city;
@@ -58,19 +46,4 @@ public class Address {
         this.apartmentNumber = apartmentNumber;
     }
 
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

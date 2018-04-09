@@ -7,6 +7,6 @@ public interface GenericDAO <T, ID> {
     Optional<T> findById(ID id);
     List<T> findAll();
     Long getCount();
-    void saveOrUpdate(T entity);
+    T saveOrUpdate(T entity);
     void delete(T entity);
 }

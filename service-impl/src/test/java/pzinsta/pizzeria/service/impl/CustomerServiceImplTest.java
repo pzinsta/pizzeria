@@ -16,7 +16,7 @@ import pzinsta.pizzeria.model.user.Customer;
 
 import java.util.Optional;
 
-public class UserServiceImplTest {
+public class CustomerServiceImplTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -28,7 +28,7 @@ public class UserServiceImplTest {
     private CustomerDAO customerDAO;
 
     @InjectMocks
-    private UserServiceImpl userService;
+    private CustomerServiceImpl userService;
 
     @Test
     public void shouldGetCustomerByUsername() throws Exception {

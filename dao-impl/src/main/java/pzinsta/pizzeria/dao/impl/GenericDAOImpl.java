@@ -42,10 +42,10 @@ public abstract class GenericDAOImpl<T, ID> implements GenericDAO<T, ID>{
         criteriaQuery.select(criteriaBuilder.count(criteriaQuery.from(entityClass)));
         return entityManager.createQuery(criteriaQuery).getSingleResult();
     }
-    
+
     @Override
-    public void saveOrUpdate(T entity) {
-        entityManager.merge(entity);
+    public T saveOrUpdate(T entity) {
+        return entityManager.merge(entity);
     }
    
     @Override

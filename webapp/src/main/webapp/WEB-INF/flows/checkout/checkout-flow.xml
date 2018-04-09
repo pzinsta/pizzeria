@@ -5,7 +5,7 @@
                           http://www.springframework.org/schema/webflow/spring-webflow.xsd">
 
     <on-start>
-        <evaluate expression="userService.createNewCustomer()" result="flowScope.customer"/>
+        <evaluate expression="customerService.createNewCustomer()" result="flowScope.customer"/>
     </on-start>
 
     <view-state id="orderConfirmation" view="checkout/orderConfirmation">
@@ -23,17 +23,12 @@
         <transition on="continue" to="orderConfirmation"/>
     </view-state>
 
-    <!--TODO: new feature - order type-->
-    <!--<view-state id="selectOrderType" view="checkout/selectOrderType">-->
-    <!--<transition on="carryOut" to="" -->
-    <!--</view-state>-->
-
     <view-state id="customerInformationConfirmation" view="checkout/customerInformationConfirmation">
         <on-render>
-            <evaluate expression="userService.getCustomerByUsername(currentUser.name).get()"
+            <evaluate expression="customerService.getCustomerByUsername(currentUser.name).get()"
                       result="flowScope.customer"/>
         </on-render>
-        <transition on="continue" to="payment"/>
+        <transition on="continue" to="orderTypeSelection"/>
         <transition on="cancel" to="endState"/>
     </view-state>
 
@@ -44,9 +39,52 @@
     </view-state>
 
     <view-state id="enterGuestInformation" view="checkout/enterGuestInformation" model="customer">
-        <transition on="continue" to="payment"/>
+        <transition on="continue" to="orderTypeSelection"/>
         <transition on="cancel" to="endState"/>
     </view-state>
+
+    <view-state id="orderTypeSelection" view="checkout/orderTypeSelection">
+        <transition on="carryOut" to="assembleOrder">
+            <set name="flowScope.deliveryRequired" value="false"/>
+        </transition>
+        <transition on="delivery" to="canCustomerSelectSavedDeliveryAddressDecision">
+            <set name="flowScope.deliveryRequired" value="true"/>
+        </transition>
+    </view-state>
+
+    <decision-state id="canCustomerSelectSavedDeliveryAddressDecision">
+        <if test="currentUser != null" then="registeredCustomerDeliveryAddressSelection" else="enterGuestDeliveryAddress"/>
+    </decision-state>
+
+    <view-state id="registeredCustomerDeliveryAddressSelection" view="checkout/registeredCustomerDeliveryAddressSelection">
+        <on-render>
+            <evaluate expression="customerService.getCustomerByUsername(currentUser.name).get()"
+                      result="flowScope.customer"/>
+        </on-render>
+        <transition on="continue" to="customerSelectedDeliveryAddress"/>
+    </view-state>
+
+    <decision-state id="customerSelectedDeliveryAddress">
+        <if test="requestParameters.deliveryAddressIndex != null" then="setDeliveryAddress" else="registeredCustomerDeliveryAddressSelection"/>
+    </decision-state>
+
+    <action-state id="setDeliveryAddress">
+        <set name="flowScope.deliveryAddress" value="customer.deliveryAddresses[requestParameters.deliveryAddressIndex]"/>
+        <transition on-exception="java.lang.Exception" to="registeredCustomerDeliveryAddressSelection"/>
+        <transition to="assembleOrder"/>
+    </action-state>
+
+    <view-state id="enterGuestDeliveryAddress" view="checkout/enterGuestDeliveryAddress" model="deliveryAddress">
+        <on-entry>
+            <set name="flowScope.deliveryAddress" value="new pzinsta.pizzeria.model.user.DeliveryAddress()"/>
+        </on-entry>
+        <transition on="continue" to="assembleOrder"/>
+    </view-state>
+
+    <action-state id="assembleOrder">
+        <evaluate expression="assembleOrderAction"/>
+        <transition to="payment"/>
+    </action-state>
 
     <view-state id="payment" view="checkout/payment">
         <transition on="continue" to="postOrder"/>
@@ -54,18 +92,18 @@
     </view-state>
 
     <action-state id="postOrder">
-        <evaluate expression="orderService.postOrder(customer)"/>
+        <evaluate expression="orderService.postOrder(flowScope.order)"/>
+        <transition to="emptyCart"/>
+    </action-state>
+
+    <action-state id="emptyCart">
+        <evaluate expression="orderService.emptyCart()"/>
         <transition to="orderConfirmed"/>
     </action-state>
 
     <view-state id="orderConfirmed" view="checkout/orderConfirmed">
-        <transition on="finish" to="clearCart"/>
+        <transition on="finish" to="endState"/>
     </view-state>
-
-    <action-state id="clearCart">
-        <evaluate expression="orderService.emptyCart()"/>
-        <transition to="endState"/>
-    </action-state>
 
     <end-state id="endState" view="externalRedirect:/"/>
 </flow>

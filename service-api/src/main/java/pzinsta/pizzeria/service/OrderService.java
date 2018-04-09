@@ -1,12 +1,12 @@
 package pzinsta.pizzeria.service;
 
+import pzinsta.pizzeria.model.order.Order;
 import pzinsta.pizzeria.model.pizza.BakeStyle;
 import pzinsta.pizzeria.model.pizza.Crust;
 import pzinsta.pizzeria.model.pizza.CutStyle;
 import pzinsta.pizzeria.model.pizza.Ingredient;
 import pzinsta.pizzeria.model.pizza.IngredientType;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
-import pzinsta.pizzeria.model.user.Customer;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 
 import java.util.Collection;
@@ -39,6 +39,6 @@ public interface OrderService {
 
     Ingredient getIngredientById(Long ingredientId);
 
-    void postOrder(Customer customer);
+    void postOrder(Order order);
 
 }

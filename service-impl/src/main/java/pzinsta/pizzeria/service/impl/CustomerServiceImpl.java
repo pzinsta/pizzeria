@@ -7,12 +7,12 @@ import pzinsta.pizzeria.dao.AccountDAO;
 import pzinsta.pizzeria.dao.CustomerDAO;
 import pzinsta.pizzeria.model.user.Account;
 import pzinsta.pizzeria.model.user.Customer;
-import pzinsta.pizzeria.service.UserService;
+import pzinsta.pizzeria.service.CustomerService;
 
 import java.util.Optional;
 
-@Service("userService")
-public class UserServiceImpl implements UserService {
+@Service("customerService")
+public class CustomerServiceImpl implements CustomerService {
 
     private CustomerDAO customerDAO;
     private AccountDAO accountDAO;
@@ -53,4 +53,5 @@ public class UserServiceImpl implements UserService {
     public void setAccountDAO(AccountDAO accountDAO) {
         this.accountDAO = accountDAO;
     }
+
 }

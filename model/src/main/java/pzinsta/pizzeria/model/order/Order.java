@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.Length;
 import org.javamoney.moneta.Money;
 import pzinsta.pizzeria.model.Constants;
 import pzinsta.pizzeria.model.Manager;
+import pzinsta.pizzeria.model.delivery.Delivery;
 import pzinsta.pizzeria.model.user.Customer;
 
 import javax.money.MonetaryAmount;
@@ -19,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Instant;
@@ -35,7 +37,7 @@ public class Order implements Serializable {
     @GeneratedValue(generator = Constants.ID_GENERATOR)
 	private Long id;
     
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn (name = "customer_id")
 	private Customer customer;
 
@@ -51,6 +53,9 @@ public class Order implements Serializable {
     // TODO remove this and add order events like paid, ready for pickup/delivery etc. for order tracking
     @ManyToOne(fetch = FetchType.LAZY)
     private Manager manager;
+
+    @OneToOne(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+	private Delivery delivery;
 
     @Length(max = 1000)
     private String comment;
@@ -138,5 +143,13 @@ public class Order implements Serializable {
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+	public Delivery getDelivery() {
+		return delivery;
+	}
+
+	public void setDelivery(Delivery delivery) {
+		this.delivery = delivery;
 	}
 }

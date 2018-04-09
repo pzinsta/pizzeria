@@ -6,12 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "user_id")
-public class Deliveryperson extends User {
+public class Deliveryperson extends User implements Serializable {
 
     @OneToMany(mappedBy = "deliveryperson", fetch = FetchType.LAZY)
 	private Collection<Delivery> deliveries = new ArrayList<>();
