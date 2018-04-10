@@ -26,6 +26,7 @@ import pzinsta.pizzeria.model.pizza.PizzaSide;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
 import pzinsta.pizzeria.service.OrderService;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
+import pzinsta.pizzeria.service.impl.strategy.TrackNumberGenerationStrategy;
 
 import java.util.Collection;
 import java.util.List;
@@ -53,6 +54,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Value("${pizza.quantity.max}")
     private int maxQuantity;
+
+    private TrackNumberGenerationStrategy trackNumberGenerationStrategy;
 
     @Override
     @Transactional(readOnly = true)
@@ -131,7 +134,8 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void postOrder(Order order) {
         order.setStatus(OrderStatus.PAID);
-        orderDAO.saveOrUpdate(order);
+        order = orderDAO.saveOrUpdate(order);
+        order.setTrackNumber(trackNumberGenerationStrategy.generateTrackNumber(order));
     }
 
     private PizzaOrderDTO createPizzaOrderDTO(OrderItem orderItem) {
@@ -294,5 +298,14 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     public void setCustomerDAO(CustomerDAO customerDAO) {
         this.customerDAO = customerDAO;
+    }
+
+    public TrackNumberGenerationStrategy getTrackNumberGenerationStrategy() {
+        return trackNumberGenerationStrategy;
+    }
+
+    @Autowired
+    public void setTrackNumberGenerationStrategy(TrackNumberGenerationStrategy trackNumberGenerationStrategy) {
+        this.trackNumberGenerationStrategy = trackNumberGenerationStrategy;
     }
 }

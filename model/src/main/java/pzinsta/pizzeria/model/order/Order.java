@@ -11,6 +11,7 @@ import pzinsta.pizzeria.model.user.Customer;
 
 import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -59,6 +60,9 @@ public class Order implements Serializable {
 
     @Length(max = 1000)
     private String comment;
+
+    @Column(unique = true)
+    private String trackNumber;
 
 	public Long getId() {
 		return id;
@@ -151,5 +155,13 @@ public class Order implements Serializable {
 
 	public void setDelivery(Delivery delivery) {
 		this.delivery = delivery;
+	}
+
+	public String getTrackNumber() {
+		return trackNumber;
+	}
+
+	public void setTrackNumber(String trackNumber) {
+		this.trackNumber = trackNumber;
 	}
 }
