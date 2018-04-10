@@ -3,6 +3,7 @@ package pzinsta.pizzeria.model.user;
 import org.hibernate.annotations.CreationTimestamp;
 import pzinsta.pizzeria.model.Constants;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -41,7 +42,7 @@ public class Account implements Serializable {
     @CreationTimestamp
     private Instant createdOn;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = false, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private User user;
 
     @Enumerated(EnumType.STRING)

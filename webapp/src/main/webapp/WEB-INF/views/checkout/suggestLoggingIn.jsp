@@ -36,6 +36,13 @@ suggestloggingin
             </p>
             <button type="submit" class="btn">Log in</button>
         </form:form>
+
+        <spring:url value="/account/register" var="registrationUrl">
+            <spring:param name="returnUrl" value="${returnUrl}"/>
+        </spring:url>
+
+        <a href="${registrationUrl}">Register</a>
+
         <form:form method="post">
             <input type="submit" name="_eventId_orderAsGuest" value="Order as a guest"/>
             <a href="${flowExecutionUrl}&_eventId=cancel">Cancel</a>

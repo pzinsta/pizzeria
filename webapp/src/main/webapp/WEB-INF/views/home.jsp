@@ -89,7 +89,9 @@
                 </c:otherwise>
             </c:choose>
 
+            <spring:url value="/account/register" var="registrationUrl"/>
 
+            <a href="${registrationUrl}">Register</a>
 
             <footer class="footer">
                 <p>Made by pzinsta</p>
