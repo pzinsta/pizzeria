@@ -1,4 +1,4 @@
-package pzinsta.pizzeria.service;
+package pzinsta.pizzeria.service.exception;
 
 public class CustomerNotFoundException extends RuntimeException {
     public CustomerNotFoundException() {
