@@ -44,8 +44,26 @@
                     </div>
                 </c:forEach>
             </c:when>
+
             <c:otherwise>
                 You don't have any delivery addresses.
+            </c:otherwise>
+
+        </c:choose>
+
+        <c:choose>
+            <c:when test="${not empty customer.orders}">
+                <c:forEach items="${customer.orders}" var="order">
+                    <spring:url value="/order/track/{trackNumber}" var="orderTrackerUrl">
+                        <spring:param name="trackNumber" value="${order.trackNumber}"/>
+                    </spring:url>
+                    <a href="${orderTrackerUrl}">Track the order</a>
+                    ${order.id} ${order.trackNumber}
+
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                You don't have any orders.
             </c:otherwise>
         </c:choose>
 

@@ -93,6 +93,10 @@
 
             <a href="${registrationUrl}">Register</a>
 
+            <spring:url value="/order/track" var="orderTrackerUrl"/>
+
+            <a href="${orderTrackerUrl}">Track your order</a>
+
             <footer class="footer">
                 <p>Made by pzinsta</p>
             </footer>

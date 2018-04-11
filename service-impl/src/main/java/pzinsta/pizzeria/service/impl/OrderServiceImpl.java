@@ -26,6 +26,7 @@ import pzinsta.pizzeria.model.pizza.PizzaSide;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
 import pzinsta.pizzeria.service.OrderService;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
+import pzinsta.pizzeria.service.exception.OrderNotFoundException;
 import pzinsta.pizzeria.service.impl.strategy.TrackNumberGenerationStrategy;
 
 import java.util.Collection;
@@ -136,6 +137,11 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(OrderStatus.PAID);
         order = orderDAO.saveOrUpdate(order);
         order.setTrackNumber(trackNumberGenerationStrategy.generateTrackNumber(order));
+    }
+
+    @Override
+    public Order getOrderByTrackNumber(String trackNumber) {
+        return orderDAO.findByTrackNumber(trackNumber).orElseThrow(OrderNotFoundException::new);
     }
 
     private PizzaOrderDTO createPizzaOrderDTO(OrderItem orderItem) {

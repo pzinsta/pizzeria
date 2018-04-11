@@ -41,4 +41,5 @@ public interface OrderService {
 
     void postOrder(Order order);
 
+    Order getOrderByTrackNumber(String trackNumber);
 }
