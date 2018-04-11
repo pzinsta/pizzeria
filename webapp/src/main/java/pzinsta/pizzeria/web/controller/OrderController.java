@@ -31,7 +31,7 @@ import static pzinsta.pizzeria.web.util.Utils.createPizzaOrderDTO;
 import static pzinsta.pizzeria.web.util.Utils.generateIngredientGroups;
 
 @Controller
-@RequestMapping("/orderItem")
+@RequestMapping("/order/orderItem")
 public class OrderController {
 
     private static final int DOUBLE = 2;
@@ -43,7 +43,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/remove/{orderItemId}")
+    @GetMapping("/{orderItemId}/remove}")
     public String removeOrderItem(@PathVariable("orderItemId") int orderItemIndex, @RequestParam(value = "redirectTo", defaultValue = "/") String redirectTo) {
         orderService.removeOrderItem(orderItemIndex);
         return Joiner.on(EMPTY).join("redirect:", redirectTo);
@@ -55,7 +55,7 @@ public class OrderController {
         return Joiner.on(EMPTY).join("redirect:", redirectTo);
     }
 
-    @GetMapping("/edit/{orderItemId}")
+    @GetMapping("/{orderItemId}/edit")
     public String showEditOrderItemForm(@PathVariable("orderItemId") int orderItemIndex, Model model) {
 
         model.addAttribute("crusts", orderService.getCrusts());
@@ -68,7 +68,7 @@ public class OrderController {
         return "editOrderItem";
     }
 
-    @PostMapping("/edit/{orderItemId}")
+    @PostMapping("/{orderItemId}/edit")
     public String editOrderItem(@PathVariable("orderItemId") int orderItemIndex, @ModelAttribute @Valid PizzaBuilderForm pizzaBuilderForm, @RequestParam(value = "redirectTo", defaultValue = "/") String redirectTo) {
         orderService.replaceOrderItem(orderItemIndex, createPizzaOrderDTO(pizzaBuilderForm));
         return Joiner.on(EMPTY).join("redirect:", redirectTo);

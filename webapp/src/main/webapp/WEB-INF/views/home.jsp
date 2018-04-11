@@ -52,12 +52,12 @@
 
                     <c:set value="${requestScope['javax.servlet.forward.servlet_path']}" var="redirectToUrl"/>
 
-                    <spring:url value="/orderItem/remove/{orderItemId}" var="removeOrderItemUrl">
+                    <spring:url value="/order/orderItem/{orderItemId}/remove}" var="removeOrderItemUrl">
                         <spring:param name="orderItemId" value="${varStatus.index}"/>
                         <spring:param name="redirectTo" value="${redirectToUrl}"/>
                     </spring:url>
                     <a href="${removeOrderItemUrl}">Remove</a>
-                    <spring:url value="/orderItem/edit/{orderItemId}" var="editOrderItemUrl">
+                    <spring:url value="/order/orderItem/{orderItemId}/edit" var="editOrderItemUrl">
                         <spring:param name="orderItemId" value="${varStatus.index}"/>
                         <spring:param name="redirectTo" value="${redirectToUrl}"/>
                     </spring:url>
@@ -65,7 +65,7 @@
                 </c:forEach>
 
                 <c:if test="${not empty cart.orderItems}">
-                    <spring:url value="/orderItem/clear" var="clearUrl">
+                    <spring:url value="/order/orderItem/clear" var="clearUrl">
                         <spring:param name="redirectTo" value="${redirectToUrl}"/>
                     </spring:url>
                     <a href="${clearUrl}">Clear</a>
