@@ -42,6 +42,9 @@ public class Order implements Serializable {
     @JoinColumn (name = "customer_id")
 	private Customer customer;
 
+    @OneToOne(mappedBy = "order", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    private Review review;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -163,5 +166,13 @@ public class Order implements Serializable {
 
 	public void setTrackNumber(String trackNumber) {
 		this.trackNumber = trackNumber;
+	}
+
+	public Review getReview() {
+		return review;
+	}
+
+	public void setReview(Review review) {
+		this.review = review;
 	}
 }

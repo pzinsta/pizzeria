@@ -97,6 +97,14 @@
 
             <a href="${orderTrackerUrl}">Track your order</a>
 
+            <spring:url value="/review/order" var="orderReviewSearchUrl"/>
+
+            <a href="${orderReviewSearchUrl}">Write a review</a>
+
+            <spring:url value="/reviews" var="reviewsUrl"/>
+
+            <a href="${reviewsUrl}">Reviews</a>
+
             <footer class="footer">
                 <p>Made by pzinsta</p>
             </footer>

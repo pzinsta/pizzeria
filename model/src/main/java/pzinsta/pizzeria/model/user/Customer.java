@@ -23,9 +23,6 @@ public class Customer extends User implements Serializable {
     private Collection<Order> orders = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    private Collection<Review> reviews = new ArrayList<>();
-
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Collection<Delivery> deliveries = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
@@ -38,14 +35,6 @@ public class Customer extends User implements Serializable {
 
     public void setOrders(Collection<Order> orders) {
         this.orders = orders;
-    }
-
-    public Collection<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(Collection<Review> reviews) {
-        this.reviews = reviews;
     }
 
     public Collection<Delivery> getDeliveries() {
