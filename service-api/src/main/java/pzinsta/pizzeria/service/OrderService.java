@@ -40,7 +40,7 @@ public interface OrderService {
 
     Ingredient getIngredientById(Long ingredientId);
 
-    void postOrder(Order order);
+    Order postOrder(Order order);
 
     Order getOrderByTrackNumber(String trackNumber);
 

@@ -136,10 +136,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void postOrder(Order order) {
+    public Order postOrder(Order order) {
         order.setStatus(OrderStatus.PAID);
         order = orderDAO.saveOrUpdate(order);
         order.setTrackNumber(trackNumberGenerationStrategy.generateTrackNumber(order));
+        return order;
     }
 
     @Override
