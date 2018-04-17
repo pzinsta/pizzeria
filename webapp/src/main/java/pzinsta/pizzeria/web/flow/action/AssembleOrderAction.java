@@ -41,7 +41,6 @@ public class AssembleOrderAction extends AbstractAction {
 
         if (deliveryRequired) {
             Delivery delivery = new Delivery();
-            delivery.setCustomer(customer);
             delivery.setDeliveryAddress(deliveryAddress);
             delivery.setOrder(order);
             delivery.setStatus(DeliveryStatus.PENDING);

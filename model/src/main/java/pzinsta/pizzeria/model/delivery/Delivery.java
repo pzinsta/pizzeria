@@ -2,7 +2,6 @@ package pzinsta.pizzeria.model.delivery;
 
 import pzinsta.pizzeria.model.Constants;
 import pzinsta.pizzeria.model.order.Order;
-import pzinsta.pizzeria.model.user.Customer;
 import pzinsta.pizzeria.model.user.DeliveryAddress;
 
 import javax.persistence.Entity;
@@ -22,9 +21,6 @@ public class Delivery implements Serializable {
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Customer customer;
-
     private DeliveryAddress deliveryAddress;
 
     @Enumerated(EnumType.STRING)
@@ -37,14 +33,6 @@ public class Delivery implements Serializable {
     private Order order;
 
     // TODO: 4/8/2018 add delivery events like dispatch, successful delivery etc. with dates and stuff
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
 
     public DeliveryAddress getDeliveryAddress() {
         return deliveryAddress;
