@@ -2,7 +2,6 @@ package pzinsta.pizzeria.model.user;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import pzinsta.pizzeria.model.delivery.Delivery;
 import pzinsta.pizzeria.model.order.Order;
 
 import javax.persistence.ElementCollection;
@@ -22,9 +21,6 @@ public class Customer extends User implements Serializable {
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private Collection<Order> orders = new ArrayList<>();
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
-    private Collection<Delivery> deliveries = new ArrayList<>();
-
     @ElementCollection(fetch = FetchType.EAGER)
     @Fetch(FetchMode.SELECT)
     private List<DeliveryAddress> deliveryAddresses = new ArrayList<>();
@@ -35,14 +31,6 @@ public class Customer extends User implements Serializable {
 
     public void setOrders(Collection<Order> orders) {
         this.orders = orders;
-    }
-
-    public Collection<Delivery> getDeliveries() {
-        return deliveries;
-    }
-
-    public void setDeliveries(Collection<Delivery> deliveries) {
-        this.deliveries = deliveries;
     }
 
     public List<DeliveryAddress> getDeliveryAddresses() {
