@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pzinsta.pizzeria.service.OrderService;
 import pzinsta.pizzeria.service.exception.OrderNotFoundException;
 
@@ -41,9 +42,8 @@ public class OrderTrackingController {
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
-    public String handleOrderNotFoundException(Model model) {
-        // TODO: 4/11/2018
-        model.addAttribute("trackNumberNotFound", Boolean.TRUE);
-        return "orderTrackerSearchForm";
+    public String handleOrderNotFoundException(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("trackNumberNotFound", Boolean.TRUE);
+        return "redirect:/order/track";
     }
 }
