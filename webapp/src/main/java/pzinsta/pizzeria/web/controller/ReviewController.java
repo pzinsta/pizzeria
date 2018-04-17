@@ -1,5 +1,6 @@
 package pzinsta.pizzeria.web.controller;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,7 +40,7 @@ public class ReviewController {
 
     @PostMapping
     public String processOrderSearchForm(@RequestParam("trackNumber") String trackNumber, Model model) {
-        model.addAttribute("trackNumber", trackNumber);
+        model.addAttribute("trackNumber", StringUtils.trim(trackNumber));
         return "redirect:/review/order/{trackNumber}";
     }
 
