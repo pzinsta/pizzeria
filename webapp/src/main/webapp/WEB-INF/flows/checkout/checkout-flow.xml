@@ -87,9 +87,23 @@
     </action-state>
 
     <view-state id="payment" view="checkout/payment">
-        <transition on="continue" to="postOrder"/>
+        <on-render>
+            <set name="flowScope.clientToken" value="braintreeAction.generateClientToken()"/>
+        </on-render>
+        <transition on="continue" to="chargeCustomer">
+            <set name="flowScope.nonce" value="requestParameters.payment_method_nonce"/>
+        </transition>
         <transition on="cancel" to="endState"/>
     </view-state>
+
+    <action-state id="chargeCustomer">
+        <evaluate expression="braintreeAction.chargeCustomer(flowScope.nonce, flowScope.order)" result="flowScope.transactionSuccessful"/>
+        <transition to="isPaymentSuccessful"/>
+    </action-state>
+
+    <decision-state id="isPaymentSuccessful">
+        <if test="flowScope.transactionSuccessful" then="postOrder" else="payment"/>
+    </decision-state>
 
     <action-state id="postOrder">
         <evaluate expression="orderService.postOrder(flowScope.order)"/>

@@ -1,5 +1,8 @@
 package pzinsta.pizzeria.web.config;
 
+import com.braintreegateway.BraintreeGateway;
+import com.braintreegateway.Environment;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +22,7 @@ import static org.springframework.web.context.WebApplicationContext.SCOPE_SESSIO
 @ComponentScan("pzinsta.pizzeria.service")
 @PropertySource("classpath:application.properties")
 public class RootConfig {
-    
+
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         return new PropertySourcesPlaceholderConfigurer();
@@ -34,5 +37,13 @@ public class RootConfig {
     @Bean
     public TrackNumberGenerationStrategy trackNumberGenerationStrategy() {
         return new RandomTrackNumberGenerationStrategy();
+    }
+
+    @Bean
+    public BraintreeGateway braintreeGateway(@Value("${braintree.merchantId}") String merchantId,
+                                             @Value("${braintree.publicKey}") String publicKey,
+                                             @Value("${braintree.privateKey}") String privateKey) {
+
+        return new BraintreeGateway(Environment.SANDBOX, merchantId, publicKey, privateKey);
     }
 }

@@ -67,6 +67,9 @@ public class Order implements Serializable {
     @Column(unique = true)
     private String trackNumber;
 
+    @Column(unique = true)
+    private String paymentTransactionId;
+
 	public Long getId() {
 		return id;
 	}
@@ -175,4 +178,12 @@ public class Order implements Serializable {
 	public void setReview(Review review) {
 		this.review = review;
 	}
+
+    public String getPaymentTransactionId() {
+        return paymentTransactionId;
+    }
+
+    public void setPaymentTransactionId(String paymentTransactionId) {
+        this.paymentTransactionId = paymentTransactionId;
+    }
 }
