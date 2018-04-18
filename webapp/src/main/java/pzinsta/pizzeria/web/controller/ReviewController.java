@@ -45,7 +45,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{trackNumber}")
-    public String showOrderReviewSubmissionForm(@PathVariable("trackNumber") String trackNumber, Model model) {
+    public String showOrderReviewSubmissionForm(@PathVariable("trackNumber") String trackNumber, Model model, @RequestParam(name = "returnUrl", defaultValue = "/reviews") String returnUrl) {
         Order order = orderService.getOrderByTrackNumber(trackNumber);
         model.addAttribute("order", order);
         model.addAttribute("reviewForm", getReviewForm(order));
@@ -58,10 +58,10 @@ public class ReviewController {
     }
 
     @PostMapping("/{trackNumber}")
-    public String processOrderReviewSubmissionForm(@PathVariable("trackNumber") String trackNumber, @ModelAttribute("reviewForm") ReviewForm reviewForm) {
+    public String processOrderReviewSubmissionForm(@PathVariable("trackNumber") String trackNumber, @ModelAttribute("reviewForm") ReviewForm reviewForm, @RequestParam(name = "returnUrl", defaultValue = "/reviews") String returnUrl) {
         ReviewDTO reviewDTO = transformReviewFormToReviewDTO(reviewForm);
         orderService.addReviewToOrderByTrackNumber(trackNumber, reviewDTO);
-        return "redirect:/reviews";
+        return "redirect:" + returnUrl;
     }
 
     @ExceptionHandler(OrderNotFoundException.class)

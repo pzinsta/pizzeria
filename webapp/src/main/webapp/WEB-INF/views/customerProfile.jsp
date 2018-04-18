@@ -54,10 +54,18 @@
         <c:choose>
             <c:when test="${not empty customer.orders}">
                 <c:forEach items="${customer.orders}" var="order">
+
                     <spring:url value="/order/track/{trackNumber}" var="orderTrackerUrl">
                         <spring:param name="trackNumber" value="${order.trackNumber}"/>
                     </spring:url>
                     <a href="${orderTrackerUrl}">Track the order</a>
+
+                    <spring:url value="/review/order/{trackNumber}" var="reviewUrl">
+                        <spring:param name="trackNumber" value="${order.trackNumber}"/>
+                        <spring:param name="returnUrl" value="/customer"/>
+                    </spring:url>
+                    <a href="${reviewUrl}">Add/Edit a review</a>
+
                     ${order.id} ${order.trackNumber}
 
                 </c:forEach>
