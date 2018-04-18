@@ -83,8 +83,15 @@
 
     <action-state id="assembleOrder">
         <evaluate expression="assembleOrderAction"/>
-        <transition to="payment"/>
+        <transition to="enterComment"/>
     </action-state>
+
+    <view-state id="enterComment" model="order" view="checkout/enterComment">
+        <binder>
+            <binding property="comment"/>
+        </binder>
+        <transition on="continue" to="payment"/>
+    </view-state>
 
     <view-state id="payment" view="checkout/payment">
         <on-render>
