@@ -1,10 +1,11 @@
-package pzinsta.pizzeria.service.impl.strategy;
+package pzinsta.pizzeria.service.impl.strategy.impl;
 
 import org.apache.commons.rng.UniformRandomProvider;
 import org.apache.commons.rng.simple.RandomSource;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import pzinsta.pizzeria.model.order.Order;
+import pzinsta.pizzeria.service.impl.strategy.TrackNumberGenerationStrategy;
 
 public class RandomTrackNumberGenerationStrategy implements TrackNumberGenerationStrategy {
 
