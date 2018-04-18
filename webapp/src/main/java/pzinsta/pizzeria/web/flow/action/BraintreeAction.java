@@ -3,15 +3,29 @@ package pzinsta.pizzeria.web.flow.action;
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Result;
 import com.braintreegateway.Transaction;
+import com.braintreegateway.Transaction.Status;
 import com.braintreegateway.TransactionRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import pzinsta.pizzeria.model.order.Order;
 
+import javax.money.MonetaryAmount;
 import java.math.BigDecimal;
+import java.util.EnumSet;
+import java.util.Set;
 
 @Component
 public class BraintreeAction {
+
+    private final static Set<Status> TRANSACTION_SUCCESS_STATUSES = EnumSet.of(
+            Status.AUTHORIZED,
+            Status.AUTHORIZING,
+            Status.SETTLED,
+            Status.SETTLEMENT_CONFIRMED,
+            Status.SETTLEMENT_PENDING,
+            Status.SETTLING,
+            Status.SUBMITTED_FOR_SETTLEMENT
+    );
 
     private BraintreeGateway braintreeGateway;
 
@@ -24,8 +38,8 @@ public class BraintreeAction {
         return braintreeGateway.clientToken().generate();
     }
 
-    public boolean chargeCustomer(String nonce, Order order) {
-        BigDecimal amount = order.getCost().getNumber().numberValue(BigDecimal.class);
+    public String chargeCustomer(String nonce, MonetaryAmount orderCost, MonetaryAmount deliveryCost) {
+        BigDecimal amount = orderCost.add(deliveryCost).getNumber().numberValue(BigDecimal.class);
 
         TransactionRequest transactionRequest = new TransactionRequest().paymentMethodNonce(nonce)
                 .amount(amount).options().submitForSettlement(true).done();
@@ -33,11 +47,15 @@ public class BraintreeAction {
 
         Result<Transaction> transactionResult = braintreeGateway.transaction().sale(transactionRequest);
 
-        if (transactionResult.isSuccess()) {
-            order.setPaymentTransactionId(transactionResult.getTarget().getId());
-        }
-
-        return transactionResult.isSuccess();
+        return transactionResult.isSuccess() ? transactionResult.getTarget().getId() : StringUtils.EMPTY;
     }
 
+    public boolean isTransactionSuccessful(String transactionId) {
+        if (StringUtils.isEmpty(transactionId)) {
+            return false;
+        }
+
+        Transaction transaction = braintreeGateway.transaction().find(transactionId);
+        return TRANSACTION_SUCCESS_STATUSES.contains(transaction.getStatus());
+    }
 }

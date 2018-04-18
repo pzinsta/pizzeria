@@ -8,7 +8,8 @@
     </head>
     <body>
         payment
-        ${order.cost}
+        ${orderCost}
+        ${deliveryCost}
         <form:form method="post" id="paymentForm" autocomplete="false">
 
             <input type="hidden" id="nonce" name="payment_method_nonce" />

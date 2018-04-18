@@ -11,8 +11,14 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import pzinsta.pizzeria.model.order.Cart;
-import pzinsta.pizzeria.service.impl.strategy.RandomTrackNumberGenerationStrategy;
+import pzinsta.pizzeria.service.impl.strategy.DeliveryCostCalculationStrategy;
 import pzinsta.pizzeria.service.impl.strategy.TrackNumberGenerationStrategy;
+import pzinsta.pizzeria.service.impl.strategy.impl.FixedDeliveryCostCalculationStrategy;
+import pzinsta.pizzeria.service.impl.strategy.impl.RandomTrackNumberGenerationStrategy;
+
+import javax.money.Monetary;
+import javax.money.MonetaryAmount;
+import java.math.BigDecimal;
 
 import static org.springframework.context.annotation.ScopedProxyMode.TARGET_CLASS;
 import static org.springframework.web.context.WebApplicationContext.SCOPE_SESSION;
@@ -45,5 +51,13 @@ public class RootConfig {
                                              @Value("${braintree.privateKey}") String privateKey) {
 
         return new BraintreeGateway(Environment.SANDBOX, merchantId, publicKey, privateKey);
+    }
+
+    @Bean
+    public DeliveryCostCalculationStrategy deliveryCostCalculationStrategy(@Value("${delivery.cost}") BigDecimal deliveryCost) {
+        FixedDeliveryCostCalculationStrategy fixedDeliveryCostCalculationStrategy = new FixedDeliveryCostCalculationStrategy();
+        MonetaryAmount deliveryCostMonetaryAmount = Monetary.getDefaultAmountFactory().setCurrency("USD").setNumber(deliveryCost).create();
+        fixedDeliveryCostCalculationStrategy.setCost(deliveryCostMonetaryAmount);
+        return fixedDeliveryCostCalculationStrategy;
     }
 }
