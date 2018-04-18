@@ -28,10 +28,7 @@
 
             braintree.dropin.create({
                 authorization: client_token,
-                container: '#dropin-container',
-                paypal: {
-                    flow: 'vault'
-                }
+                container: '#dropin-container'
             }, function (createErr, instance) {
                 form.addEventListener('submit', function (event) {
                     event.preventDefault();
