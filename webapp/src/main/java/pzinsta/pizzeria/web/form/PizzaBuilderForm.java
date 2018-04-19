@@ -4,7 +4,6 @@ import pzinsta.pizzeria.model.pizza.Ingredient;
 import pzinsta.pizzeria.model.pizza.IngredientType;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 public class PizzaBuilderForm {
@@ -25,8 +24,64 @@ public class PizzaBuilderForm {
 
     private List<IngredientGroup> ingredientGroups;
 
-    @Positive
     private int quantity;
+
+    public static class IngredientGroup {
+        @NotNull
+        private IngredientType ingredientType;
+        private List<IngredientQuantity> ingredientQuantities;
+
+        public List<IngredientQuantity> getIngredientQuantities() {
+            return ingredientQuantities;
+        }
+
+        public void setIngredientQuantities(List<IngredientQuantity> ingredientQuantities) {
+            this.ingredientQuantities = ingredientQuantities;
+        }
+
+        public IngredientType getIngredientType() {
+            return ingredientType;
+        }
+
+        public void setIngredientType(IngredientType ingredientType) {
+            this.ingredientType = ingredientType;
+        }
+    }
+
+    public enum IngredientSide {
+        NONE, WHOLE, LEFT, RIGHT
+    }
+
+    public static class IngredientQuantity {
+        @NotNull
+        private Ingredient ingredient;
+        private IngredientSide ingredientSide = IngredientSide.NONE;
+        private boolean x2;
+
+        public IngredientSide getIngredientSide() {
+            return ingredientSide;
+        }
+
+        public void setIngredientSide(IngredientSide ingredientSide) {
+            this.ingredientSide = ingredientSide;
+        }
+
+        public boolean isX2() {
+            return x2;
+        }
+
+        public void setX2(boolean x2) {
+            this.x2 = x2;
+        }
+
+        public Ingredient getIngredient() {
+            return ingredient;
+        }
+
+        public void setIngredient(Ingredient ingredient) {
+            this.ingredient = ingredient;
+        }
+    }
 
     public Long getCrustId() {
         return crustId;
@@ -74,62 +129,5 @@ public class PizzaBuilderForm {
 
     public void setIngredientGroups(List<IngredientGroup> ingredientGroups) {
         this.ingredientGroups = ingredientGroups;
-    }
-
-    public enum IngredientSide {
-        NONE, WHOLE, LEFT, RIGHT
-    }
-
-    public static class IngredientGroup {
-        @NotNull
-        private IngredientType ingredientType;
-        private List<IngredientQuantity> ingredientQuantities;
-
-        public List<IngredientQuantity> getIngredientQuantities() {
-            return ingredientQuantities;
-        }
-
-        public void setIngredientQuantities(List<IngredientQuantity> ingredientQuantities) {
-            this.ingredientQuantities = ingredientQuantities;
-        }
-
-        public IngredientType getIngredientType() {
-            return ingredientType;
-        }
-
-        public void setIngredientType(IngredientType ingredientType) {
-            this.ingredientType = ingredientType;
-        }
-    }
-
-    public static class IngredientQuantity {
-        @NotNull
-        private Ingredient ingredient;
-        private IngredientSide ingredientSide = IngredientSide.NONE;
-        private boolean x2;
-
-        public IngredientSide getIngredientSide() {
-            return ingredientSide;
-        }
-
-        public void setIngredientSide(IngredientSide ingredientSide) {
-            this.ingredientSide = ingredientSide;
-        }
-
-        public boolean isX2() {
-            return x2;
-        }
-
-        public void setX2(boolean x2) {
-            this.x2 = x2;
-        }
-
-        public Ingredient getIngredient() {
-            return ingredient;
-        }
-
-        public void setIngredient(Ingredient ingredient) {
-            this.ingredient = ingredient;
-        }
     }
 }

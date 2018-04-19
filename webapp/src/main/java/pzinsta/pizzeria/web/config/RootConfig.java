@@ -3,6 +3,7 @@ package pzinsta.pizzeria.web.config;
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Environment;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import pzinsta.pizzeria.model.order.Cart;
 import pzinsta.pizzeria.service.impl.strategy.DeliveryCostCalculationStrategy;
 import pzinsta.pizzeria.service.impl.strategy.TrackNumberGenerationStrategy;
@@ -59,5 +61,13 @@ public class RootConfig {
         MonetaryAmount deliveryCostMonetaryAmount = Monetary.getDefaultAmountFactory().setCurrency("USD").setNumber(deliveryCost).create();
         fixedDeliveryCostCalculationStrategy.setCost(deliveryCostMonetaryAmount);
         return fixedDeliveryCostCalculationStrategy;
+    }
+
+    @Bean
+    public MessageSource messageSource() {
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        messageSource.setBasename("classpath:messages");
+        messageSource.setCacheSeconds(0);
+        return messageSource;
     }
 }

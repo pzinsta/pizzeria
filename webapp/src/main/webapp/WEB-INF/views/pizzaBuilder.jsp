@@ -9,6 +9,7 @@
     <body>
         <h1>Pizza Builder</h1>
         <form:form method="post" modelAttribute="pizzaBuilderForm">
+            <form:errors/>
             <%@ include file="fragments/orderItemFormFields.jspf" %>
             <input type="submit" value="Submit">
 

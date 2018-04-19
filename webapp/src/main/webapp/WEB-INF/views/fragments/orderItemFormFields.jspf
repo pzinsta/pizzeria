@@ -3,30 +3,35 @@
     <form:select path="crustId">
         <form:options items="${crusts}" itemLabel="name" itemValue="id"/>
     </form:select>
+    <form:errors path="crustId"/>
 </div>
 <div>
     <form:label path="pizzaSizeId">Size:</form:label>
     <form:select path="pizzaSizeId">
         <form:options items="${pizzaSizes}" itemLabel="name" itemValue="id"/>
     </form:select>
+    <form:errors path="pizzaSizeId"/>
 </div>
 <div>
     <form:label path="quantity">Quantity:</form:label>
     <form:select path="quantity">
         <form:options items="${quantities}"/>
     </form:select>
+    <form:errors path="quantity"/>
 </div>
 <div>
     <form:label path="bakeStyleId">Bake style:</form:label>
     <form:select path="bakeStyleId">
         <form:options items="${bakeStyles}" itemLabel="name" itemValue="id"/>
     </form:select>
+    <form:errors path="bakeStyleId"/>
 </div>
 <div>
     <form:label path="cutStyleId">Cut style:</form:label>
     <form:select path="cutStyleId">
         <form:options items="${cutStyles}" itemLabel="name" itemValue="id"/>
     </form:select>
+    <form:errors path="cutStyleId"/>
 </div>
 
 
