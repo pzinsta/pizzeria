@@ -1,11 +1,16 @@
 package pzinsta.pizzeria.model.pizza;
 
 import pzinsta.pizzeria.model.Constants;
+import pzinsta.pizzeria.model.MonetaryAmountAttributeConverter;
 
+import javax.money.MonetaryAmount;
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 
@@ -18,6 +23,14 @@ public class PizzaSize  implements Serializable {
     @NotNull
     @Size(max = 100)
 	private String name;
+
+    @Positive
+	@Column(name = "DIAMETER")
+    private int diameterInInches;
+
+	@NotNull
+	@Convert(converter = MonetaryAmountAttributeConverter.class)
+	private MonetaryAmount price;
 
 	public Long getId() {
 		return id;
@@ -33,5 +46,21 @@ public class PizzaSize  implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public MonetaryAmount getPrice() {
+		return price;
+	}
+
+	public void setPrice(MonetaryAmount price) {
+		this.price = price;
+	}
+
+	public int getDiameterInInches() {
+		return diameterInInches;
+	}
+
+	public void setDiameterInInches(int diameterInInches) {
+		this.diameterInInches = diameterInInches;
 	}
 }
