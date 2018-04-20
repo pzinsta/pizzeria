@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <c:url value="/login" var="loginUrl"/>
 <form action="${loginUrl}" method="post">
-    <c:if test="${param.error != null}">
+    <c:if test="${param.loginError != null}">
         <p>
             Invalid username and password.
         </p>
