@@ -21,7 +21,7 @@ suggestloggingin
             ${returnUrl}
             <input type="hidden" name="returnUrl" value="${returnUrl}">
 
-            <c:if test="${param.error != null}">
+            <c:if test="${param.loginError != null}">
                 <p>
                     Invalid username and password.
                 </p>
