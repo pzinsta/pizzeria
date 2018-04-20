@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,12 +20,15 @@ import pzinsta.pizzeria.service.dto.ReviewDTO;
 import pzinsta.pizzeria.service.exception.OrderNotFoundException;
 import pzinsta.pizzeria.web.form.ReviewForm;
 
+import javax.validation.Valid;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/review/order")
 public class ReviewController {
+
+    private final static int[] RATINGS = IntStream.rangeClosed(1, 10).toArray();
 
     private OrderService orderService;
 
@@ -33,14 +37,19 @@ public class ReviewController {
         this.orderService = orderService;
     }
 
+    @ModelAttribute("ratings")
+    public int[] ratings() {
+        return RATINGS;
+    }
+
     @GetMapping
     public String showOrderSearchForm() {
         return "orderReviewSearchForm";
     }
 
     @PostMapping
-    public String processOrderSearchForm(@RequestParam("trackNumber") String trackNumber, Model model) {
-        model.addAttribute("trackNumber", StringUtils.trim(trackNumber));
+    public String processOrderSearchForm(@RequestParam("trackNumber") String trackNumber, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("trackNumber", StringUtils.trim(trackNumber));
         return "redirect:/review/order/{trackNumber}";
     }
 
@@ -49,7 +58,6 @@ public class ReviewController {
         Order order = orderService.getOrderByTrackNumber(trackNumber);
         model.addAttribute("order", order);
         model.addAttribute("reviewForm", getReviewForm(order));
-        model.addAttribute("ratingOptions", IntStream.rangeClosed(1, 10).toArray()); // TODO: 4/14/2018 magic numbers
         return "orderReviewSubmissionForm";
     }
 
@@ -58,7 +66,10 @@ public class ReviewController {
     }
 
     @PostMapping("/{trackNumber}")
-    public String processOrderReviewSubmissionForm(@PathVariable("trackNumber") String trackNumber, @ModelAttribute("reviewForm") ReviewForm reviewForm, @RequestParam(name = "returnUrl", defaultValue = "/reviews") String returnUrl) {
+    public String processOrderReviewSubmissionForm(@PathVariable("trackNumber") String trackNumber, @ModelAttribute("reviewForm") @Valid ReviewForm reviewForm, BindingResult bindingResult, @RequestParam(name = "returnUrl", defaultValue = "/reviews") String returnUrl, RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()) {
+            return "orderReviewSubmissionForm";
+        }
         ReviewDTO reviewDTO = transformReviewFormToReviewDTO(reviewForm);
         orderService.addReviewToOrderByTrackNumber(trackNumber, reviewDTO);
         return "redirect:" + returnUrl;
