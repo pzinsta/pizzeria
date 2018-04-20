@@ -1,12 +1,8 @@
-package pzinsta.pizzeria.model.user;
+package pzinsta.pizzeria.web.form;
 
-import javax.persistence.Embeddable;
 import javax.validation.constraints.NotBlank;
-import java.io.Serializable;
 
-@Embeddable
-public class DeliveryAddress implements Serializable {
-
+public class DeliveryAddressForm {
     @NotBlank
     private String city;
 

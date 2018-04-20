@@ -7,15 +7,8 @@
         <title>Edit delivery address</title>
     </head>
     <body>
-        <form:form method="post" modelAttribute="deliveryAddress">
-            <form:label path="city">City:</form:label>
-            <form:input path="city"/>
-            <form:label path="street">Street:</form:label>
-            <form:input path="street"/>
-            <form:label path="houseNumber">House number:</form:label>
-            <form:input path="houseNumber"/>
-            <form:label path="apartmentNumber">Apartment number:</form:label>
-            <form:input path="apartmentNumber"/>
+        <form:form method="post" modelAttribute="deliveryAddressForm">
+            <%@ include file="fragments/deliveryAddressFormFields.jspf" %>
             <input type="submit" value="Save">
         </form:form>
     </body>

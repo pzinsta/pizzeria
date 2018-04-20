@@ -1,0 +1,15 @@
+<form:label path="city">City:</form:label>
+<form:select path="city" items="${cities}"/>
+<form:errors path="city"/>
+
+<form:label path="street">Street:</form:label>
+<form:input path="street"/>
+<form:errors path="street"/>
+
+<form:label path="houseNumber">House number:</form:label>
+<form:input path="houseNumber"/>
+<form:errors path="houseNumber"/>
+
+<form:label path="apartmentNumber">Apartment number:</form:label>
+<form:input path="apartmentNumber"/>
+<form:errors path="apartmentNumber"/>
