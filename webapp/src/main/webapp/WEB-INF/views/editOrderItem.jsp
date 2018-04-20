@@ -10,6 +10,7 @@
         <h1>Edit order item</h1>
 
         <form:form method="post" modelAttribute="pizzaBuilderForm">
+            <form:errors/>
             <%@ include file="fragments/orderItemFormFields.jspf" %>
 
             <input type="submit" value="Save">
