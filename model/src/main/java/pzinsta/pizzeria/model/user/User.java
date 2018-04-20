@@ -21,10 +21,10 @@ public class User implements Serializable {
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private Long id;
 
-    @Size(min = 2, max = 100)
+    @Size(max = 100)
     private String firstName;
 
-    @Size(min = 2, max = 100)
+    @Size(max = 100)
     private String lastName;
 
     @Email

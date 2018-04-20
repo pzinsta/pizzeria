@@ -1,12 +1,28 @@
 package pzinsta.pizzeria.web.form;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
 public class CustomerRegistrationForm {
+
+    @Length(min = 4, max = 20)
     private String username;
+
+    @Length(min = 6, max = 40)
     private String password;
+
+    @NotEmpty
     private String passwordAgain;
+
     private String firstName;
+
     private String lastName;
+
+    @Email
     private String email;
+
     private String phoneNumber;
 
     public String getUsername() {

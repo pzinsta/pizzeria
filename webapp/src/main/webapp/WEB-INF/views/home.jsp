@@ -78,7 +78,7 @@
             <c:choose>
                 <c:when test="${not empty customer}">
                     <spring:url value="/customer" var="customerProfileUrl"/>
-                    <a href="${customerProfileUrl}"><c:out value="${customer.firstName}" default="Profile"/></a>
+                    <a href="${customerProfileUrl}"><c:out value="${customer.account.username}" default="Profile"/></a>
                     <spring:url var="logoutUrl" value="/logout"/>
                     <form:form action="${logoutUrl}" method="post">
                         <input type="submit" value="Log out"/>
