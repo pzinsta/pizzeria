@@ -7,15 +7,19 @@ enterGuestInformation
 
     <form:label path="firstName">First name:</form:label>
     <form:input path="firstName"/>
+    <form:errors path="firstName"/>
 
     <form:label path="lastName">Last name:</form:label>
     <form:input path="lastName"/>
+    <form:errors path="lastName"/>
 
     <form:label path="email">Email:</form:label>
     <form:input path="email" type="email"/>
+    <form:errors path="email"/>
 
     <form:label path="phoneNumber">Phone number:</form:label>
     <form:input path="phoneNumber"/>
+    <form:errors path="phoneNumber"/>
 
     <input type="submit" name="_eventId_continue" value="Continue" />
     <a href="${flowExecutionUrl}&_eventId=cancel">Cancel</a>
