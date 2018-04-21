@@ -68,6 +68,14 @@
 
                     ${order.id} ${order.trackNumber}
 
+                    <c:forEach items="${order.orderItems}" var="orderItem">
+                        <spring:url value="/builder/template/{orderItemId}" var="buildFromOrderItemUrl">
+                            <spring:param name="orderItemId" value="${orderItem.id}"/>
+                        </spring:url>
+                        <a href="${buildFromOrderItemUrl}">Go to builder</a>
+                    </c:forEach>
+
+
                 </c:forEach>
             </c:when>
             <c:otherwise>

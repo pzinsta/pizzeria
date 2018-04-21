@@ -21,7 +21,7 @@ public class OrderItem implements Serializable {
 	@GeneratedValue(generator = Constants.ID_GENERATOR)
 	private Long id;
 
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Order order;
 
     @JoinColumn(unique = true)

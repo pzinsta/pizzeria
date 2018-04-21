@@ -10,6 +10,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,11 +20,14 @@ import pzinsta.pizzeria.model.pizza.Crust;
 import pzinsta.pizzeria.model.pizza.CutStyle;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
 import pzinsta.pizzeria.service.OrderService;
+import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 import pzinsta.pizzeria.web.form.PizzaBuilderForm;
+import pzinsta.pizzeria.web.util.Utils;
 import pzinsta.pizzeria.web.validator.PizzaBuilderFormValidator;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.Optional;
 
 import static pzinsta.pizzeria.web.util.Utils.createPizzaOrderDTO;
 import static pzinsta.pizzeria.web.util.Utils.generateIngredientGroups;
@@ -79,7 +83,7 @@ public class PizzaBuilderController {
         return "pizzaBuilder";
     }
 
-    @PostMapping
+    @PostMapping("/**")
     public String processPizzaBuilderForm(@Valid @ModelAttribute PizzaBuilderForm pizzaBuilderForm, BindingResult bindingResult, @RequestParam(value = "redirectTo", defaultValue = "/") String redirectTo, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "pizzaBuilder";
@@ -88,6 +92,19 @@ public class PizzaBuilderController {
         orderService.addOrderItemToCart(createPizzaOrderDTO(pizzaBuilderForm));
 
         return Joiner.on(StringUtils.EMPTY).join("redirect:", redirectTo);
+    }
+
+    @GetMapping("/template/{orderItemId}")
+    public String showPizzaBuilderFormForOrderItem(Model model, @PathVariable("orderItemId") Long orderItemId) {
+        Optional<PizzaOrderDTO> pizzaOrderDTOOptional = orderService.getPizzaOrderDTOByOrderItemId(orderItemId);
+
+        PizzaBuilderForm pizzaBuilderForm = pizzaOrderDTOOptional.map(pizzaOrderDTO ->
+                Utils.createPizzaBuilderForm(pizzaOrderDTO, orderService.getIngredients())
+        ).orElse(new PizzaBuilderForm());
+
+        model.addAttribute("pizzaBuilderForm", pizzaBuilderForm);
+
+        return "pizzaBuilder";
     }
 
     public OrderService getOrderService() {

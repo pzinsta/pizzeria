@@ -105,6 +105,15 @@
 
             <a href="${reviewsUrl}">Reviews</a>
 
+            <div>
+                <c:forEach items="${orderItemTemplates}" var="orderItemTemplate">
+                    <spring:url value="/builder/template/{orderItemId}" var="pizzaBuilderTemplateUrl">
+                        <spring:param name="orderItemId" value="${orderItemTemplate.orderItem.id}"/>
+                    </spring:url>
+                    <a href="${pizzaBuilderTemplateUrl}">${orderItemTemplate.orderItem.pizza.leftPizzaSide.name}</a>
+                </c:forEach>
+            </div>
+
             <footer class="footer">
                 <p>Made by pzinsta</p>
             </footer>

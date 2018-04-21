@@ -11,6 +11,7 @@ import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 import pzinsta.pizzeria.service.dto.ReviewDTO;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface OrderService {
 
@@ -45,4 +46,6 @@ public interface OrderService {
     Order getOrderByTrackNumber(String trackNumber);
 
     void addReviewToOrderByTrackNumber(String trackNumber, ReviewDTO reviewDTO);
+
+    Optional<PizzaOrderDTO> getPizzaOrderDTOByOrderItemId(Long orderItemId);
 }

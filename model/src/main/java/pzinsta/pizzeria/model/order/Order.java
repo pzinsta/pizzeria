@@ -2,6 +2,8 @@ package pzinsta.pizzeria.model.order;
 
 import com.google.common.collect.Range;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import org.javamoney.moneta.Money;
 import pzinsta.pizzeria.model.Constants;
@@ -45,7 +47,8 @@ public class Order implements Serializable {
     @OneToOne(mappedBy = "order", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Review review;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.ALL)
+	@Fetch(value = FetchMode.SUBSELECT)
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderItem> orderItems = new ArrayList<>();
 
     @CreationTimestamp

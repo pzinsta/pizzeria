@@ -10,6 +10,7 @@ import pzinsta.pizzeria.dao.CustomerDAO;
 import pzinsta.pizzeria.dao.CutStyleDAO;
 import pzinsta.pizzeria.dao.IngredientDAO;
 import pzinsta.pizzeria.dao.OrderDAO;
+import pzinsta.pizzeria.dao.OrderItemDAO;
 import pzinsta.pizzeria.dao.PizzaSizeDAO;
 import pzinsta.pizzeria.model.order.Cart;
 import pzinsta.pizzeria.model.order.Order;
@@ -50,6 +51,7 @@ public class OrderServiceImpl implements OrderService {
     private IngredientDAO ingredientDAO;
     private OrderDAO orderDAO;
     private CustomerDAO customerDAO;
+    private OrderItemDAO orderItemDAO;
 
     private Cart cart;
 
@@ -158,6 +160,12 @@ public class OrderServiceImpl implements OrderService {
         review.setMessage(reviewDTO.getMessage());
         review.setRating(reviewDTO.getRating());
         order.setReview(review);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<PizzaOrderDTO> getPizzaOrderDTOByOrderItemId(Long orderItemId) {
+        return orderItemDAO.findById(orderItemId).map(this::createPizzaOrderDTO);
     }
 
     private PizzaOrderDTO createPizzaOrderDTO(OrderItem orderItem) {
@@ -329,5 +337,14 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     public void setTrackNumberGenerationStrategy(TrackNumberGenerationStrategy trackNumberGenerationStrategy) {
         this.trackNumberGenerationStrategy = trackNumberGenerationStrategy;
+    }
+
+    public OrderItemDAO getOrderItemDAO() {
+        return orderItemDAO;
+    }
+
+    @Autowired
+    public void setOrderItemDAO(OrderItemDAO orderItemDAO) {
+        this.orderItemDAO = orderItemDAO;
     }
 }
