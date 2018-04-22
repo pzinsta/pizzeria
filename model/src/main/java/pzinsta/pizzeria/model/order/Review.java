@@ -1,12 +1,18 @@
 package pzinsta.pizzeria.model.order;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
 import pzinsta.pizzeria.model.Constants;
+import pzinsta.pizzeria.model.File;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -14,6 +20,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Entity
 public class Review implements Serializable {
@@ -38,7 +46,10 @@ public class Review implements Serializable {
     @Max(10)
 	private int rating;
 
-	// TODO: Image(s)
+    @OneToMany(fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
+	@JoinTable(name = "REVIEW_IMAGE")
+	private Collection<File> images = new ArrayList<>();
 	
 	public Long getId() {
 		return id;
@@ -86,5 +97,13 @@ public class Review implements Serializable {
 
 	public void setLastUpdatedOn(Instant lastUpdatedOn) {
 		this.lastUpdatedOn = lastUpdatedOn;
+	}
+
+	public Collection<File> getImages() {
+		return images;
+	}
+
+	public void setImages(Collection<File> images) {
+		this.images = images;
 	}
 }

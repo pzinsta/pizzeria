@@ -159,6 +159,7 @@ public class OrderServiceImpl implements OrderService {
         review.setOrder(order);
         review.setMessage(reviewDTO.getMessage());
         review.setRating(reviewDTO.getRating());
+        review.setImages(reviewDTO.getFiles());
         order.setReview(review);
     }
 
