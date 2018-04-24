@@ -4,6 +4,7 @@
 <html>
     <head>
         <title>Register</title>
+        <script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
     <body>
         <form:form method="post" modelAttribute="customerRegistrationForm">
@@ -35,7 +36,10 @@
             <form:input path="phoneNumber"/>
             <form:errors path="phoneNumber"/>
 
+            <div class="g-recaptcha" data-sitekey="6LdjTVUUAAAAALCtXQSDN-R618B816SeYSVagbzY"></div>
             <input type="submit">
         </form:form>
+
+
     </body>
 </html>

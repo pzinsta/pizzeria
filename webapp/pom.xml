@@ -81,6 +81,12 @@
             <artifactId>braintree-java</artifactId>
             <version>${braintree-java.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>de.triology.recaptchav2-java</groupId>
+            <artifactId>recaptchav2-java</artifactId>
+            <version>1.0.2</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pzinsta.pizzeria.service.CustomerRegistrationService;
 import pzinsta.pizzeria.service.dto.CustomerRegistrationDTO;
 import pzinsta.pizzeria.web.form.CustomerRegistrationForm;
+import pzinsta.pizzeria.web.service.GoogleReCaptchaService;
 import pzinsta.pizzeria.web.validator.CustomerRegistrationFormValidator;
 
 import javax.servlet.ServletException;
@@ -26,11 +27,13 @@ public class RegistrationController {
 
     private CustomerRegistrationService customerRegistrationService;
     private CustomerRegistrationFormValidator customerRegistrationFormValidator;
+    private GoogleReCaptchaService googleReCaptchaService;
 
     @Autowired
-    public RegistrationController(CustomerRegistrationService customerRegistrationService, CustomerRegistrationFormValidator customerRegistrationFormValidator) {
+    public RegistrationController(CustomerRegistrationService customerRegistrationService, CustomerRegistrationFormValidator customerRegistrationFormValidator, GoogleReCaptchaService googleReCaptchaService) {
         this.customerRegistrationService = customerRegistrationService;
         this.customerRegistrationFormValidator = customerRegistrationFormValidator;
+        this.googleReCaptchaService = googleReCaptchaService;
     }
 
     @InitBinder
@@ -45,8 +48,15 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public String processRegistrationForm(@Valid @ModelAttribute("customerRegistrationForm") CustomerRegistrationForm customerRegistrationForm, BindingResult bindingResult, HttpServletRequest httpServletRequest, @RequestParam(name = "returnUrl", defaultValue = "/") String returnUrl) throws ServletException {
+    public String processRegistrationForm(@Valid @ModelAttribute("customerRegistrationForm") CustomerRegistrationForm customerRegistrationForm,
+                                          BindingResult bindingResult, HttpServletRequest httpServletRequest,
+                                          @RequestParam(name = "returnUrl", defaultValue = "/") String returnUrl,
+                                          @RequestParam("g-recaptcha-response") String recaptchaResponse) throws ServletException {
         if (bindingResult.hasErrors()) {
+            return "register";
+        }
+
+        if (!googleReCaptchaService.isValid(recaptchaResponse)) {
             return "register";
         }
 
@@ -68,4 +78,11 @@ public class RegistrationController {
         return customerRegistrationDTO;
     }
 
+    public GoogleReCaptchaService getGoogleReCaptchaService() {
+        return googleReCaptchaService;
+    }
+
+    public void setGoogleReCaptchaService(GoogleReCaptchaService googleReCaptchaService) {
+        this.googleReCaptchaService = googleReCaptchaService;
+    }
 }
