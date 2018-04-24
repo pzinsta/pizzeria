@@ -14,8 +14,9 @@ import pzinsta.pizzeria.dao.OrderItemDAO;
 import pzinsta.pizzeria.dao.PizzaSizeDAO;
 import pzinsta.pizzeria.model.order.Cart;
 import pzinsta.pizzeria.model.order.Order;
+import pzinsta.pizzeria.model.order.OrderEvent;
+import pzinsta.pizzeria.model.order.OrderEventType;
 import pzinsta.pizzeria.model.order.OrderItem;
-import pzinsta.pizzeria.model.order.OrderStatus;
 import pzinsta.pizzeria.model.order.Review;
 import pzinsta.pizzeria.model.pizza.BakeStyle;
 import pzinsta.pizzeria.model.pizza.Crust;
@@ -32,6 +33,7 @@ import pzinsta.pizzeria.service.dto.ReviewDTO;
 import pzinsta.pizzeria.service.exception.OrderNotFoundException;
 import pzinsta.pizzeria.service.impl.strategy.TrackNumberGenerationStrategy;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -139,7 +141,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public Order postOrder(Order order) {
-        order.setStatus(OrderStatus.PAID);
+        OrderEvent orderEvent = new OrderEvent();
+        orderEvent.setOccurredOn(Instant.now());
+        orderEvent.setOrderEventType(OrderEventType.PURCHASED);
+        order.getOrderEvents().add(orderEvent);
         order = orderDAO.saveOrUpdate(order);
         order.setTrackNumber(trackNumberGenerationStrategy.generateTrackNumber(order));
         return order;

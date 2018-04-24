@@ -7,7 +7,6 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
 import org.javamoney.moneta.Money;
 import pzinsta.pizzeria.model.Constants;
-import pzinsta.pizzeria.model.Manager;
 import pzinsta.pizzeria.model.delivery.Delivery;
 import pzinsta.pizzeria.model.user.Customer;
 
@@ -15,8 +14,6 @@ import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -28,6 +25,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,13 +52,6 @@ public class Order implements Serializable {
     @CreationTimestamp
 	private Instant placedDate;
 
-    @Enumerated(EnumType.STRING)
-	private OrderStatus status;
-
-    // TODO remove this and add order events like paid, ready for pickup/delivery etc. for order tracking
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Manager manager;
-
     @OneToOne(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	private Delivery delivery;
 
@@ -72,6 +63,10 @@ public class Order implements Serializable {
 
     @Column(unique = true)
     private String paymentTransactionId;
+
+	@Fetch(value = FetchMode.SUBSELECT)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	private Collection<OrderEvent> orderEvents = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -95,14 +90,6 @@ public class Order implements Serializable {
 
 	public void setPlacedDate(Instant placedDate) {
 		this.placedDate = placedDate;
-	}
-
-	public OrderStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(OrderStatus state) {
-		this.status = state;
 	}
 
 	public MonetaryAmount getCost() {
@@ -137,14 +124,6 @@ public class Order implements Serializable {
     private boolean isIndexPresent(int orderItemIndex) {
         return Range.closedOpen(0, orderItems.size()).contains(orderItemIndex);
     }
-
-    public Manager getManager() {
-		return manager;
-	}
-
-	public void setManager(Manager manager) {
-		this.manager = manager;
-	}
 
 	public void removeAllOrderItems() {
 		orderItems.clear();
@@ -189,4 +168,12 @@ public class Order implements Serializable {
     public void setPaymentTransactionId(String paymentTransactionId) {
         this.paymentTransactionId = paymentTransactionId;
     }
+
+	public Collection<OrderEvent> getOrderEvents() {
+		return orderEvents;
+	}
+
+	public void setOrderEvents(Collection<OrderEvent> orderEvents) {
+		this.orderEvents = orderEvents;
+	}
 }

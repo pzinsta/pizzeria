@@ -10,9 +10,12 @@ import pzinsta.pizzeria.model.delivery.Delivery;
 import pzinsta.pizzeria.model.delivery.DeliveryStatus;
 import pzinsta.pizzeria.model.order.Cart;
 import pzinsta.pizzeria.model.order.Order;
-import pzinsta.pizzeria.model.order.OrderStatus;
+import pzinsta.pizzeria.model.order.OrderEvent;
+import pzinsta.pizzeria.model.order.OrderEventType;
 import pzinsta.pizzeria.model.user.Customer;
 import pzinsta.pizzeria.model.user.DeliveryAddress;
+
+import java.time.Instant;
 
 @Component
 public class AssembleOrderAction extends AbstractAction {
@@ -35,7 +38,10 @@ public class AssembleOrderAction extends AbstractAction {
         order.setCustomer(customer);
         customer.getOrders().add(order);
 
-        order.setStatus(OrderStatus.NOT_PAID);
+        OrderEvent orderEvent = new OrderEvent();
+        orderEvent.setOrderEventType(OrderEventType.CREATED);
+        orderEvent.setOccurredOn(Instant.now());
+        order.getOrderEvents().add(orderEvent);
 
         Boolean deliveryRequired = context.getFlowScope().getBoolean("deliveryRequired");
 

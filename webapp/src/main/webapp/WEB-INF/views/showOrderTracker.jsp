@@ -6,7 +6,10 @@
     </head>
     <body>
         ${order.trackNumber}
-        ${order.status}
+
+        <c:forEach items="${order.orderEvents}" var="orderEvent">
+            ${orderEvent.occurredOn} ${orderEvent.orderEventType}
+        </c:forEach>
 
         <c:if test="${not empty order.delivery}">
             Delivery
