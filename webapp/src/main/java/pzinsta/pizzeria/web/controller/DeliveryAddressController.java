@@ -74,7 +74,7 @@ public class DeliveryAddressController {
     }
 
     @GetMapping("/{deliveryAddressIndex}/remove")
-    public String removeDeliveryAddress(@PathVariable("deliveryAddressIndex") int deliveryAddressIndex, @RequestParam(name = "returnUrl", defaultValue = "/customer") String returnUrl, Principal principal) {
+    public String removeDeliveryAddress(@PathVariable("deliveryAddressIndex") int deliveryAddressIndex, @RequestParam(name = "returnUrl", defaultValue = "/customer") String returnUrl, Principal principal, RedirectAttributes redirectAttributes) {
         Customer customer = getCustomerFromPrincipal(principal);
         customer.getDeliveryAddresses().remove(deliveryAddressIndex); // TODO: 4/9/2018 handle indexoutofbounds case
         customerService.updateCustomer(customer);

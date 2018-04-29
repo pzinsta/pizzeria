@@ -7,24 +7,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pzinsta.pizzeria.model.order.OrderItemTemplate;
-import pzinsta.pizzeria.model.user.Customer;
 import pzinsta.pizzeria.service.CustomerService;
 import pzinsta.pizzeria.service.OrderItemTemplateService;
 
-import java.security.Principal;
 import java.util.Collection;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
 
-    private CustomerService customerService;
     private OrderItemTemplateService orderItemTemplateService;
 
     @Autowired
     public HomeController(CustomerService customerService, OrderItemTemplateService orderItemTemplateService) {
-        this.customerService = customerService;
         this.orderItemTemplateService = orderItemTemplateService;
     }
 
@@ -34,13 +29,7 @@ public class HomeController {
     }
 
     @GetMapping
-    public String home(Model model, Principal principal) {
-        // TODO: 4/2/2018
-        if (principal == null) {
-            return "home";
-        }
-        Optional<Customer> customerOptional = customerService.getCustomerByUsername(principal.getName());
-        customerOptional.ifPresent(customer -> model.addAttribute("customer", customer));
+    public String home(Model model) {
         return "home";
     }
 

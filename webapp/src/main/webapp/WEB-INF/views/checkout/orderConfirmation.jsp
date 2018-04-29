@@ -4,37 +4,33 @@
 <!DOCTYPE html>
 <html>
     <head>
-
+        <%@ include file="../fragments/head.jspf" %>
+        <title>Order confirmation</title>
     </head>
     <body>
+        <div class="container">
+            <%@ include file="../fragments/navbar.jspf" %>
+            <h1>Checkout</h1>
+            <div class="row">
+                <c:forEach items="${cart.orderItems}" var="orderItem">
+                    <div class="col-md-4">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <%@ include file="../fragments/orderItem.jspf" %>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </div>
+            <form:form method="post">
+                <input type="hidden" name="_flowExecutionKey" value="${flowExecutionKey}"/>
+                <a href="${flowExecutionUrl}&_eventId=cancel" class="btn btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</a>
+                <button type="submit" name="_eventId_continue" class="btn btn-primary">Continue <i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+            </form:form>
 
-        <div>
-            <c:forEach items="${cart.orderItems}" var="orderItem">
-                <div>${orderItem.pizza.size.name}</div>
-                <div>${orderItem.pizza.bakeStyle.name}</div>
-                <div>${orderItem.pizza.crust.name}</div>
-                <div>${orderItem.pizza.cutStyle.name}</div>
-                <div>
-                    <c:forEach items="${orderItem.pizza.leftPizzaSide.pizzaItems}" var="pizzaItem">
-                        <%@ include file="../fragments/pizzaItem.jspf" %>
-                    </c:forEach>
-                </div>
-                <div>
-                    <c:forEach items="${orderItem.pizza.rightPizzaSide.pizzaItems}" var="pizzaItem">
-                        <%@ include file="../fragments/pizzaItem.jspf" %>
-                    </c:forEach>
-                </div>
-                <div>${orderItem.pizza.cost} x ${orderItem.quantity} = ${orderItem.cost}</div>
-            </c:forEach>
         </div>
-        <form:form method="post">
-            <input type="hidden" name="_flowExecutionKey"
-                   value="${flowExecutionKey}"/>
-            <input type="submit" name="_eventId_edit" value="Edit"/>
-            <input type="submit" name="_eventId_continue" value="Continue"/>
-            <a href="${flowExecutionUrl}&_eventId=cancel">Cancel</a>
-        </form:form>
 
 
+        <%@ include file="../fragments/footer.jspf" %>
     </body>
 </html>

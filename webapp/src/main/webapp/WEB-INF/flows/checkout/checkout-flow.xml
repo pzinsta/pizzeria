@@ -10,8 +10,7 @@
 
     <view-state id="orderConfirmation" view="checkout/orderConfirmation">
         <transition on="continue" to="isCustomerLoggedIn"/>
-        <transition on="edit" to="editOrder"/>
-        <transition on="cancel" to="endState"/>
+        <transition on="cancel" to="endState" validate="false"/>
     </view-state>
 
     <decision-state id="isCustomerLoggedIn">
@@ -19,9 +18,6 @@
     </decision-state>
 
     <!--TODO: refactor to subflows? -->
-    <view-state id="editOrder" view="checkout/editOrder">
-        <transition on="continue" to="orderConfirmation"/>
-    </view-state>
 
     <view-state id="customerInformationConfirmation" view="checkout/customerInformationConfirmation">
         <on-render>
@@ -29,18 +25,18 @@
                       result="flowScope.customer"/>
         </on-render>
         <transition on="continue" to="orderTypeSelection"/>
-        <transition on="cancel" to="endState"/>
+        <transition on="cancel" to="endState" validate="false"/>
     </view-state>
 
     <view-state id="suggestLoggingIn" view="checkout/suggestLoggingIn">
         <transition on="orderAsGuest" to="enterGuestInformation"/>
         <transition on="continue" to="isCustomerLoggedIn"/>
-        <transition on="cancel" to="endState"/>
+        <transition on="cancel" to="endState" validate="false"/>
     </view-state>
 
     <view-state id="enterGuestInformation" view="checkout/enterGuestInformation" model="customer">
         <transition on="continue" to="orderTypeSelection"/>
-        <transition on="cancel" to="endState"/>
+        <transition on="cancel" to="endState" validate="false"/>
     </view-state>
 
     <view-state id="orderTypeSelection" view="checkout/orderTypeSelection">
@@ -70,7 +66,7 @@
 
     <action-state id="setDeliveryAddress">
         <set name="flowScope.deliveryAddress" value="customer.deliveryAddresses[requestParameters.deliveryAddressIndex]"/>
-        <transition on-exception="java.lang.Exception" to="registeredCustomerDeliveryAddressSelection"/>
+        <!--<transition on-exception="java.lang.Exception" to="registeredCustomerDeliveryAddressSelection"/>-->
         <transition to="assembleOrder"/>
     </action-state>
 
@@ -99,11 +95,12 @@
             <set name="flowScope.clientToken" value="braintreeAction.generateClientToken()"/>
             <set name="flowScope.orderCost" value="orderCostCalculationService.calculateCost(flowScope.order)"/>
             <set name="flowScope.deliveryCost" value="deliveryCostCalculationService.calculateCost(flowScope.order.delivery)"/>
+            <set name="flowScope.total" value="flowScope.deliveryCost.add(flowScope.orderCost)"/>
         </on-render>
         <transition on="continue" to="chargeCustomer">
             <set name="flowScope.nonce" value="requestParameters.payment_method_nonce"/>
         </transition>
-        <transition on="cancel" to="endState"/>
+        <transition on="cancel" to="endState" validate="false"/>
     </view-state>
 
     <action-state id="chargeCustomer">

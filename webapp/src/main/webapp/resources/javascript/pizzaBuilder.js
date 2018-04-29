@@ -17,16 +17,20 @@
 
     for (var i = 0; i < leftRightWholeRadioButtons.length; i++) {
         (function (i) {
-            leftRightWholeRadioButtons[i].onclick = function () {
-                activateX2(leftRightWholeRadioButtons[i].name);
+            leftRightWholeRadioButtons[i].onchange = function () {
+                if (this.checked) {
+                    activateX2(leftRightWholeRadioButtons[i].name);
+                }
             };
         })(i);
     }
 
     for (var i = 0; i < noneRadioButtons.length; i++) {
         (function (i) {
-            noneRadioButtons[i].onclick = function () {
-                disableX2(noneRadioButtons[i].name);
+            noneRadioButtons[i].onchange = function () {
+                if (this.checked) {
+                    disableX2(noneRadioButtons[i].name);
+                }
             };
         })(i);
     }

@@ -87,6 +87,12 @@
             <artifactId>recaptchav2-java</artifactId>
             <version>1.0.2</version>
         </dependency>
+
+        <dependency>
+            <groupId>net.sargue</groupId>
+            <artifactId>java-time-jsptags</artifactId>
+            <version>1.1.4</version>
+        </dependency>
     </dependencies>
 
     <build>

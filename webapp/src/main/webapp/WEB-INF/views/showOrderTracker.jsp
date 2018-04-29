@@ -1,19 +1,37 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
         <title>Order Tracker</title>
+        <%@ include file="fragments/head.jspf" %>
     </head>
     <body>
-        ${order.trackNumber}
+        <div class="container">
+            <%@ include file="fragments/navbar.jspf" %>
 
-        <c:forEach items="${order.orderEvents}" var="orderEvent">
-            ${orderEvent.occurredOn} ${orderEvent.orderEventType}
-        </c:forEach>
+            <h1 class="page-header">${order.trackNumber}</h1>
 
-        <c:if test="${not empty order.delivery}">
-            Delivery
-            ${order.delivery.status}
-        </c:if>
+            <ul class="list-group">
+                <c:forEach items="${order.orderEvents}" var="orderEvent">
+                    <li class="list-group-item">
+                        <h4 class="list-group-item-heading">
+                            <javatime:format value="${orderEvent.occurredOn}" style="MM" />
+                        </h4>
+                        <p class="list-group-item-text lead">
+                            <spring:message code="orderEventType.${orderEvent.orderEventType}"/>
+                        </p>
+                    </li>
+                </c:forEach>
+            </ul>
+
+            <c:if test="${not empty order.delivery}">
+                Delivery
+                ${order.delivery.status}
+            </c:if>
+
+
+        </div>
+        <%@ include file="fragments/footer.jspf" %>
     </body>
 </html>

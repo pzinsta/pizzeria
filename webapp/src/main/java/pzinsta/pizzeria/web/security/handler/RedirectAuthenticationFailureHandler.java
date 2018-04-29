@@ -1,6 +1,6 @@
 package pzinsta.pizzeria.web.security.handler;
 
-import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.security.core.AuthenticationException;
@@ -19,15 +19,14 @@ public class RedirectAuthenticationFailureHandler implements AuthenticationFailu
 
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     private String defaultReturnUrl = "/";
-    private String returnUrlParameterName = "returnUrl";
     private String queryParam = "loginError";
     private final static Logger LOGGER = LogManager.getLogger(RedirectAuthenticationFailureHandler.class);
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        String returnUrl = ObjectUtils.firstNonNull(request.getParameter(returnUrlParameterName), defaultReturnUrl);
-        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(returnUrl);
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUriString(request.getServletPath());
         uriComponentsBuilder.queryParam(queryParam);
+        uriComponentsBuilder.queryParam(StringUtils.defaultIfEmpty(request.getQueryString(), StringUtils.EMPTY));
         UriComponents uriComponents = uriComponentsBuilder.build();
         String returnUrlWithQueryParameter = uriComponents.toUriString();
         LOGGER.debug(returnUrlWithQueryParameter);
@@ -48,14 +47,6 @@ public class RedirectAuthenticationFailureHandler implements AuthenticationFailu
 
     public void setDefaultReturnUrl(String defaultReturnUrl) {
         this.defaultReturnUrl = defaultReturnUrl;
-    }
-
-    public String getReturnUrlParameterName() {
-        return returnUrlParameterName;
-    }
-
-    public void setReturnUrlParameterName(String returnUrlParameterName) {
-        this.returnUrlParameterName = returnUrlParameterName;
     }
 
     public String getQueryParam() {

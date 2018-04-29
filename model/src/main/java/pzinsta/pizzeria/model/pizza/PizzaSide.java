@@ -15,6 +15,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 import static java.math.BigDecimal.ZERO;
 
@@ -28,7 +29,7 @@ public class PizzaSide implements Serializable {
     @ColumnDefault("'Custom'")
 	private String name;
     
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Collection<PizzaItem> pizzaItems = new ArrayList<>();
 
 	public String getName() {
@@ -65,5 +66,17 @@ public class PizzaSide implements Serializable {
 	
 	public MonetaryAmount getCost() {
 		return pizzaItems.stream().map(PizzaItem::getCost).reduce(Money.of(ZERO, "USD"), MonetaryAmount::add);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof PizzaSide)) return false;
+		PizzaSide pizzaSide = (PizzaSide) o;
+		return Objects.equals(getPizzaItems(), pizzaSide.getPizzaItems());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getPizzaItems());
 	}
 }

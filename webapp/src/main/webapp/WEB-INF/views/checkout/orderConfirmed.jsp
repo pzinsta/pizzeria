@@ -1,5 +1,35 @@
-confirmed
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
+<%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <%@ include file="../fragments/head.jspf" %>
+        <title>Order confirmation</title>
+    </head>
+    <body>
+        <div class="container">
+            <%@ include file="../fragments/navbar.jspf" %>
 
-Use this code to track your order: ${order.trackNumber}
+            <h1 class="text-center">Thank you for your order</h1>
 
-<a href="${flowExecutionUrl}&_eventId=finish">Finish</a>
+            <p class="lead">Your order was placed successfully.</p>
+
+            <p class="lead">You can use the following tracking number to track your order:</p>
+
+            <div class="lead">
+                <spring:url value="/order/track/{trackNumber}" var="trackOrderUrl">
+                    <spring:param name="trackNumber" value="${order.trackNumber}"/>
+                </spring:url>
+                <a href="${trackOrderUrl}">${order.trackNumber}</a>
+            </div>
+
+            <div class="text-center">
+                <a href="${flowExecutionUrl}&_eventId=finish" class="btn btn-primary btn-lg"><i class="fa fa-flag-checkered" aria-hidden="true"></i> Finish</a>
+            </div>
+
+        </div>
+
+        <%@ include file="../fragments/footer.jspf" %>
+    </body>
+</html>

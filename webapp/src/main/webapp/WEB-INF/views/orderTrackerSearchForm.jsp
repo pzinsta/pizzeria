@@ -5,16 +5,31 @@
 <html>
     <head>
         <title>Track your order</title>
+        <%@ include file="fragments/head.jspf" %>
     </head>
     <body>
+        <div class="container">
+            <%@ include file="fragments/navbar.jspf" %>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 col-xs-12 col-sm-6 col-sm-offset-3">
 
-        <c:if test="${trackNumberNotFound}">
-            Track number was not found.
-        </c:if>
-        <spring:url value="/order/track" var="processOrderTrackerSearchUrl"/>
-        <form:form method="post" action="${processOrderTrackerSearchUrl}">
-            <input name="trackNumber"/>
-            <input type="submit">
-        </form:form>
+                    <spring:url value="/order/track" var="processOrderTrackerSearchUrl"/>
+
+                    <form:form method="post" action="${processOrderTrackerSearchUrl}" cssClass="">
+                        <c:if test="${trackNumberNotFound}">
+                            <div class="alert alert-danger alert-dismissible">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <span>Order with the given track number was not found.</span>
+                            </div>
+                        </c:if>
+                        <div class="form-group">
+                            <input name="trackNumber" id="trackNumber" class="form-control input-lg" placeholder="Track number"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+                    </form:form>
+                </div>
+            </div>
+        </div>
+        <%@ include file="fragments/footer.jspf" %>
     </body>
 </html>

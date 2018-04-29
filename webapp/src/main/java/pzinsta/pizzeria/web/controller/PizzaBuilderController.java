@@ -45,7 +45,7 @@ public class PizzaBuilderController {
         this.pizzaBuilderFormValidator = pizzaBuilderFormValidator;
     }
 
-    @InitBinder
+    @InitBinder("pizzaBuilderForm")
     public void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(pizzaBuilderFormValidator);
     }

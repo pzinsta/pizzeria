@@ -1,17 +1,23 @@
 package pzinsta.pizzeria.web.form;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.validation.constraints.NotBlank;
 
 public class DeliveryAddressForm {
     @NotBlank
+    @Length(max = 100)
     private String city;
 
     @NotBlank
+    @Length(max = 100)
     private String street;
 
     @NotBlank
+    @Length(max = 5)
     private String houseNumber;
 
+    @Length(max = 5)
     private String apartmentNumber;
 
     public String getCity() {

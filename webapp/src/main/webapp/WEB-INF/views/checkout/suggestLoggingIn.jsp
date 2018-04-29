@@ -1,54 +1,89 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html>
+    <head>
+        <%@ include file="../fragments/head.jspf" %>
+        <title>Sign in</title>
+    </head>
+    <body>
+        <div class="container">
+            <%@ include file="../fragments/navbar.jspf" %>
+            <h1 class="text-center">Sign in</h1>
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-8 col-sm-offset-2">
+                    <c:choose>
+                        <c:when test="${not empty currentUser}">
+                            <div class="alert alert-success">
+                                You logged in as ${currentUser.name}.
+                            </div>
+                            <form:form method="post">
+                                <button type="submit" name="_eventId_continue" class="btn btn-primary">Continue <i
+                                        class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                            </form:form>
+                        </c:when>
+                        <c:otherwise>
+                            <c:url value="/login" var="loginUrl"/>
 
-suggestloggingin
-<c:choose>
-    <c:when test="${not empty currentUser}">
-        ${currentUser.name} is logged in
+                            <form:form action="${loginUrl}" method="post" cssClass="form-horizontal">
+                                <spring:url value="${requestScope['javax.servlet.forward.servlet_path']}"
+                                            context="/"
+                                            var="returnUrl">
+                                    <spring:param name="execution" value="${requestScope.flowExecutionKey}"/>
+                                </spring:url>
+                                <input type="hidden" name="returnUrl" value="${returnUrl}">
 
-        <form:form method="post">
-            <input type="submit" name="_eventId_continue" value="Continue"/>
-        </form:form>
-    </c:when>
-    <c:otherwise>
-        <c:url value="/login" var="loginUrl"/>
-        <form:form action="${loginUrl}" method="post">
-            <spring:url value="${requestScope['javax.servlet.forward.servlet_path']}" context="/"
-                        var="returnUrl">
-                <spring:param name="execution" value="${requestScope.flowExecutionKey}"/>
-            </spring:url>
-            ${returnUrl}
-            <input type="hidden" name="returnUrl" value="${returnUrl}">
+                            </form:form>
+                            <spring:url value="/account/register" var="registrationUrl">
+                                <spring:param name="returnUrl" value="${returnUrl}"/>
+                            </spring:url>
 
-            <c:if test="${param.loginError != null}">
-                <p>
-                    Invalid username and password.
-                </p>
-            </c:if>
-            <p>
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username"/>
-            </p>
-            <p>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password"/>
-            </p>
-            <button type="submit" class="btn">Log in</button>
-        </form:form>
+                            <form:form method="post" cssClass="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-xs-6 col-sm-offset-4">
+                                        <c:set var="requestPath" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
+                                        <c:set var="params" value="${requestScope['javax.servlet.forward.query_string']}"/>
+                                        <c:set var="pageUrl" value="${ requestPath }${ not empty params?'?'+=params:'' }"/>
+                                        <spring:url value="/login" var="loginUrl">
+                                            <spring:param name="returnUrl" value="${pageUrl}"/>
+                                        </spring:url>
+                                        <a href="${loginUrl}" class="btn btn-primary"><i class="fa fa-sign-in" aria-hidden="true"></i> Log in</a>
+                                    </div>
+                                </div>
 
-        <spring:url value="/account/register" var="registrationUrl">
-            <spring:param name="returnUrl" value="${returnUrl}"/>
-        </spring:url>
+                                <div class="form-group">
+                                    <div class="col-xs-6 col-sm-offset-4">
+                                        <a href="${registrationUrl}" class="btn btn-default">
+                                            <i class="fa fa-user-plus" aria-hidden="true"></i> Register
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-sm-offset-4">
+                                        <button type="submit" name="_eventId_orderAsGuest" class="btn btn-default">
+                                            <i class="fa fa-user-secret" aria-hidden="true"></i> Order as a guest
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-xs-12 col-sm-offset-4">
+                                        <a href="${flowExecutionUrl}&_eventId=cancel" class="btn btn-danger">
+                                            <i class="fa fa-ban" aria-hidden="true"></i> Cancel
+                                        </a>
+                                    </div>
+                                </div>
+                            </form:form>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+            </div>
+        </div>
 
-        <a href="${registrationUrl}">Register</a>
 
-        <form:form method="post">
-            <input type="submit" name="_eventId_orderAsGuest" value="Order as a guest"/>
-            <a href="${flowExecutionUrl}&_eventId=cancel">Cancel</a>
-        </form:form>
-    </c:otherwise>
-</c:choose>
-
+        <%@ include file="../fragments/footer.jspf" %>
+    </body>
+</html>
 
 

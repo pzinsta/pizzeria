@@ -1,12 +1,13 @@
 package pzinsta.pizzeria.web.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -16,9 +17,13 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import pzinsta.pizzeria.web.security.handler.RedirectAuthenticationFailureHandler;
 
+@Configuration
 @EnableWebSecurity
 @ComponentScan("pzinsta.pizzeria.web.security")
-public class SecurityConfig {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -26,85 +31,38 @@ public class SecurityConfig {
         return NoOpPasswordEncoder.getInstance();
     }
 
-    // @Override
-    // protected void configure(HttpSecurity http) throws Exception {
-    //     http
-    //             .authorizeRequests()
-    //             .antMatchers("/resources/**").permitAll()
-    //             .antMatchers("/staff/manager/**").hasRole("MANAGER")
-    //             .antMatchers("/staff/deliveryperson/**").hasRole("DELIVERYPERSON")
-    //             //.anyRequest().authenticated()
-    //             .and()
-    //             .formLogin()
-    //             .loginPage("/login")
-    //             .permitAll()
-    //             .and()
-    //             .logout()
-    //             .permitAll();
-    // }
-
-    // @Autowired
-    // public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    //     auth
-    //             .inMemoryAuthentication()
-    //             .withUser("user").password("{noop}password").roles("USER");
-    // }
-
-    // @Configuration
-    // @Order(1)
-    // public static class ManagerWebSecurityConfigurationAdapter extends WebSecurityConfigurerAdapter {
-    //     protected void configure(HttpSecurity http) throws Exception {
-    //         http
-    //                 .antMatcher("/staff/manager/**")
-    //                 .authorizeRequests()
-    //                 .anyRequest().hasRole("MANAGER")
-    //                 .and()
-    //                 .formLogin().loginPage("/login").permitAll()
-    //                 .and().logout().permitAll();
-    //     }
-    // }
-
-    @Order(1)
-    @Configuration
-    public static class CustomerWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .antMatcher("/customer/**").authorizeRequests()
-                    .anyRequest().hasRole("REGISTERED_CUSTOMER")
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                    .antMatchers("/customer/**").hasRole("REGISTERED_CUSTOMER")
+                    .anyRequest().permitAll()
                     .and()
-                    .formLogin().loginPage("/login").permitAll()
-                    .and()
-                    .logout().permitAll();
-        }
-    }
-
-    @Configuration
-    public static class DefaultWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http
-                    .authorizeRequests().anyRequest().permitAll()
-                    .and()
-                    .formLogin().loginPage("/login")
+                .formLogin()
+                    .loginPage("/login")
                     .permitAll()
                     .successHandler(authenticationSuccessHandler())
-                    .failureHandler(authenticationFailureHandler())
+                     .failureHandler(authenticationFailureHandler())
                     .and()
-                    .logout().invalidateHttpSession(false).logoutSuccessHandler(logoutSuccessHandler()).permitAll();
-        }
+                .rememberMe()
+                    .userDetailsService(userDetailsService)
+                    .and()
+                .logout()
+                    .invalidateHttpSession(false)
+                    .logoutSuccessHandler(logoutSuccessHandler())
+                    .permitAll();
+
     }
 
     @Bean
-    public static AuthenticationSuccessHandler authenticationSuccessHandler() {
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
         SavedRequestAwareAuthenticationSuccessHandler savedRequestAwareAuthenticationSuccessHandler = new SavedRequestAwareAuthenticationSuccessHandler();
-        savedRequestAwareAuthenticationSuccessHandler.setUseReferer(true);
+        savedRequestAwareAuthenticationSuccessHandler.setTargetUrlParameter("returnUrl");
         return  savedRequestAwareAuthenticationSuccessHandler;
     }
 
     @Bean
-    public static LogoutSuccessHandler logoutSuccessHandler() {
+    public LogoutSuccessHandler logoutSuccessHandler() {
         SimpleUrlLogoutSuccessHandler simpleUrlLogoutSuccessHandler = new SimpleUrlLogoutSuccessHandler();
         simpleUrlLogoutSuccessHandler.setUseReferer(true);
         simpleUrlLogoutSuccessHandler.setDefaultTargetUrl("/");
@@ -112,10 +70,9 @@ public class SecurityConfig {
     }
 
     @Bean
-    public static AuthenticationFailureHandler authenticationFailureHandler() {
+    public AuthenticationFailureHandler authenticationFailureHandler() {
         RedirectAuthenticationFailureHandler redirectAuthenticationFailureHandler = new RedirectAuthenticationFailureHandler();
         redirectAuthenticationFailureHandler.setDefaultReturnUrl("/");
-        redirectAuthenticationFailureHandler.setReturnUrlParameterName("returnUrl");
         redirectAuthenticationFailureHandler.setQueryParam("loginError");
         return redirectAuthenticationFailureHandler;
     }

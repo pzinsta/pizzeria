@@ -5,18 +5,27 @@
 <html>
     <head>
         <title>Pizza Builder</title>
+        <%@ include file="fragments/head.jspf" %>
     </head>
     <body>
-        <h1>Pizza Builder</h1>
-        <form:form method="post" modelAttribute="pizzaBuilderForm">
-            <form:errors/>
-            <%@ include file="fragments/orderItemFormFields.jspf" %>
-            <input type="submit" value="Submit">
+        <div class="container">
+            <%@ include file="fragments/navbar.jspf" %>
 
-        </form:form>
+            <h1>Pizza Builder</h1>
+            <form:form method="post" modelAttribute="pizzaBuilderForm">
+                <form:errors element="div" cssClass="alert alert-danger"/>
+
+                <%@ include file="fragments/orderItemFormFields.jspf" %>
+                <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                    Add to cart
+                </button>
+
+            </form:form>
+
+        </div>
+        <%@ include file="fragments/footer.jspf" %>
 
         <spring:url value="/resources/javascript/pizzaBuilder.js" var="pizzaBuilderJsUrl"/>
-
         <script src="${pizzaBuilderJsUrl}"></script>
     </body>
 </html>

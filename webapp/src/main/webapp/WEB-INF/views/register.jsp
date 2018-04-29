@@ -5,41 +5,68 @@
     <head>
         <title>Register</title>
         <script src='https://www.google.com/recaptcha/api.js'></script>
+        <%@ include file="fragments/head.jspf" %>
     </head>
     <body>
-        <form:form method="post" modelAttribute="customerRegistrationForm">
-            <form:label path="username">Username:</form:label>
-            <form:input path="username"/>
-            <form:errors path="username"/>
+        <div class="container">
+            <%@ include file="fragments/navbar.jspf" %>
 
-            <form:label path="password">Password:</form:label>
-            <form:password path="password"/>
-            <form:errors path="password"/>
+            <div class="row">
+                <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12">
+                    <form:form method="post" modelAttribute="customerRegistrationForm">
+                        <div class="form-group required">
+                            <form:label path="username" cssClass="control-label">Username</form:label>
+                            <form:input path="username" cssClass="form-control"/>
+                            <form:errors path="username" cssClass="text-danger"/>
+                        </div>
 
-            <form:label path="passwordAgain">Repeat password:</form:label>
-            <form:password path="passwordAgain"/>
-            <form:errors path="passwordAgain"/>
+                        <div class="form-group required">
+                            <form:label path="password" cssClass="control-label">Password</form:label>
+                            <form:password path="password" cssClass="form-control"/>
+                            <form:errors path="password" cssClass="text-danger"/>
+                        </div>
 
-            <form:label path="firstName">First name:</form:label>
-            <form:input path="firstName"/>
-            <form:errors path="firstName"/>
+                        <div class="form-group required">
+                            <form:label path="passwordAgain" cssClass="control-label">Repeat password</form:label>
+                            <form:password path="passwordAgain" cssClass="form-control"/>
+                            <form:errors path="passwordAgain" cssClass="text-danger"/>
+                        </div>
 
-            <form:label path="lastName">Last name:</form:label>
-            <form:input path="lastName"/>
-            <form:errors path="lastName"/>
+                        <div class="form-group">
+                            <form:label path="firstName" cssClass="control-label">First name</form:label>
+                            <form:input path="firstName" cssClass="form-control"/>
+                            <form:errors path="firstName" cssClass="text-danger"/>
+                        </div>
 
-            <form:label path="email">Email:</form:label>
-            <form:input path="email" type="email"/>
-            <form:errors path="email"/>
+                        <div class="form-group">
+                            <form:label path="lastName" cssClass="control-label">Last name</form:label>
+                            <form:input path="lastName" cssClass="form-control"/>
+                            <form:errors path="lastName" cssClass="text-danger"/>
+                        </div>
 
-            <form:label path="phoneNumber">Phone number:</form:label>
-            <form:input path="phoneNumber"/>
-            <form:errors path="phoneNumber"/>
+                        <div class="form-group">
+                            <form:label path="email" cssClass="control-label">Email</form:label>
+                            <form:input path="email" type="email" cssClass="form-control"/>
+                            <form:errors path="email" cssClass="text-danger"/>
+                        </div>
 
-            <div class="g-recaptcha" data-sitekey="6LdjTVUUAAAAALCtXQSDN-R618B816SeYSVagbzY"></div>
-            <input type="submit">
-        </form:form>
+                        <div class="form-group">
+                            <form:label path="phoneNumber" cssClass="control-label">Phone number</form:label>
+                            <form:input path="phoneNumber" cssClass="form-control"/>
+                            <form:errors path="phoneNumber" cssClass="text-danger"/>
+                        </div>
+
+                        <div class="g-recaptcha form-group" data-sitekey="6LdjTVUUAAAAALCtXQSDN-R618B816SeYSVagbzY"></div>
+
+                        <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-user-plus" aria-hidden="true"></i> Sign up</button>
+                    </form:form>
+                </div>
+            </div>
 
 
+        </div>
+
+
+        <%@ include file="fragments/footer.jspf" %>
     </body>
 </html>

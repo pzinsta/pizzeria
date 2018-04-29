@@ -73,13 +73,13 @@ public class OrderController {
     }
 
     @GetMapping("/{orderItemId}/remove}")
-    public String removeOrderItem(@PathVariable("orderItemId") int orderItemIndex, @RequestParam(value = "redirectTo", defaultValue = "/") String redirectTo) {
+    public String removeOrderItem(@PathVariable("orderItemId") int orderItemIndex, @RequestParam(value = "redirectTo", defaultValue = "/") String redirectTo, RedirectAttributes redirectAttributes) {
         orderService.removeOrderItem(orderItemIndex);
         return Joiner.on(EMPTY).join("redirect:", redirectTo);
     }
 
     @GetMapping("/clear")
-    public String clear(@RequestParam(value = "redirectTo", defaultValue = "/") String redirectTo) {
+    public String clear(@RequestParam(value = "redirectTo", defaultValue = "/") String redirectTo, RedirectAttributes redirectAttributes) {
         orderService.emptyCart();
         return Joiner.on(EMPTY).join("redirect:", redirectTo);
     }

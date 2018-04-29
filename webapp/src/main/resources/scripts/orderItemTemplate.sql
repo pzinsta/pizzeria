@@ -34,4 +34,4 @@ INSERT INTO pizza (id, bakestyle_id, crust_id, cutstyle_id, size_id, left_pizzas
 VALUES (1, 1, 1, 1, 1, 1, 2);
 
 INSERT INTO orderitem (id, quantity, pizza_id) VALUES (1, 1, 1);
-INSERT INTO orderitemtemplate (id, orderitem_id) VALUES (1, 1);
+INSERT INTO orderitemtemplate (id, orderitem_id, imageFileName) VALUES (1, 1, 'the_veggie.jpg');

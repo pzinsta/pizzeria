@@ -4,22 +4,39 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <title>Payment</title>
+        <%@ include file="../fragments/head.jspf" %>
         <script src="https://js.braintreegateway.com/web/dropin/1.10.0/js/dropin.min.js"></script>
     </head>
     <body>
-        payment
-        ${orderCost}
-        ${deliveryCost}
-        <form:form method="post" id="paymentForm" autocomplete="false">
 
-            <input type="hidden" id="nonce" name="payment_method_nonce" />
-            <input type="hidden" name="_eventId" value="continue">
+        <div class="container">
+            <%@ include file="../fragments/navbar.jspf" %>
 
-            <div id="dropin-container"></div>
+            <h1 class="text-center">Payment</h1>
 
-            <button class="button" type="submit">Purchase</button>
-            <a href="${flowExecutionUrl}&_eventId=cancel">Cancel</a>
-        </form:form>
+            <dl class="dl-horizontal">
+                <dt>Order:</dt>
+                <dd>${orderCost}</dd>
+                <dt>Delivery:</dt>
+                <dd>${deliveryCost}</dd>
+                <dt>Total:</dt>
+                <dd>${total}</dd>
+            </dl>
+
+            <form:form method="post" id="paymentForm" autocomplete="false">
+
+                <input type="hidden" id="nonce" name="payment_method_nonce" />
+                <input type="hidden" name="_eventId" value="continue">
+
+                <div id="dropin-container"></div>
+
+                <button class="btn btn-primary" type="submit" id="purchaseButton" data-loading-text="Processing..."><i class="fa fa-money" aria-hidden="true"></i> Purchase</button>
+                <a href="${flowExecutionUrl}&_eventId=cancel" id="cancelButton" class="btn btn-danger"><i class="fa fa-ban" aria-hidden="true"></i> Cancel</a>
+            </form:form>
+        </div>
+
+        <%@ include file="../fragments/footer.jspf" %>
 
         <script>
 
@@ -32,9 +49,15 @@
             }, function (createErr, instance) {
                 form.addEventListener('submit', function (event) {
                     event.preventDefault();
+
+                    $('#purchaseButton').button('loading');
+                    $('#cancelButton').attr('disabled', true);
+
                     instance.requestPaymentMethod(function (err, payload) {
                         if (err) {
                             console.log('Error', err);
+                            $('#purchaseButton').button('reset');
+                            $('#cancelButton').attr('disabled', false);
                             return;
                         }
                         // Add the nonce to the form and submit
@@ -43,6 +66,8 @@
                     });
                 });
             });
+
         </script>
+
     </body>
 </html>
