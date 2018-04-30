@@ -24,7 +24,6 @@ public class Crust  implements Serializable {
     @Column(unique = true)
 	private String name;
 	
-    // TODO: needs mapping
     @NotNull
 	@Convert(converter = MonetaryAmountAttributeConverter.class)
 	private MonetaryAmount price;

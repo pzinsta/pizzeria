@@ -97,7 +97,6 @@ public class Pizza implements Serializable {
 	}
 	
 	public MonetaryAmount getCost() {
-	    //TODO include pizza's size into the calculation instead of 1
-		return crust.getPrice().add(leftPizzaSide.getCost()).add(rightPizzaSide.getCost()).multiply(1);
+		return crust.getPrice().add(leftPizzaSide.getCost()).add(rightPizzaSide.getCost());
 	}
 }

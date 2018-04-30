@@ -17,8 +17,6 @@
         <if test="currentUser != null" then="customerInformationConfirmation" else="suggestLoggingIn"/>
     </decision-state>
 
-    <!--TODO: refactor to subflows? -->
-
     <view-state id="customerInformationConfirmation" view="checkout/customerInformationConfirmation">
         <on-render>
             <evaluate expression="customerService.getCustomerByUsername(currentUser.name).get()"

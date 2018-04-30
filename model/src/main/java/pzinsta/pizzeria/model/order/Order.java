@@ -93,7 +93,6 @@ public class Order implements Serializable {
 	}
 
 	public MonetaryAmount getCost() {
-		// TODO
 		return orderItems.stream().map(OrderItem::getCost).reduce(Money.of(ZERO, "USD"), MonetaryAmount::add);
 	}
 

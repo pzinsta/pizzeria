@@ -17,7 +17,6 @@ import java.util.List;
 @Entity
 @PrimaryKeyJoinColumn(name = "user_id")
 public class Customer extends User implements Serializable {
-    // TODO: 4/6/2018 add cascades?
     @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER)
     private Collection<Order> orders = new ArrayList<>();
 

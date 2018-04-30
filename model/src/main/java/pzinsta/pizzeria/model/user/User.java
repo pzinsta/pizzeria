@@ -30,7 +30,6 @@ public class User implements Serializable {
     @Email
     private String email;
 
-    // TODO: add phone number validation
     private String phoneNumber;
 
     @OneToOne(mappedBy = "user")

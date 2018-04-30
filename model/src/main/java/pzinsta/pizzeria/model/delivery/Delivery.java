@@ -32,8 +32,6 @@ public class Delivery implements Serializable {
     @OneToOne(fetch = FetchType.LAZY)
     private Order order;
 
-    // TODO: 4/8/2018 add delivery events like dispatch, successful delivery etc. with dates and stuff
-
     public DeliveryAddress getDeliveryAddress() {
         return deliveryAddress;
     }
