@@ -19,21 +19,20 @@
 <div class="row">
     <c:choose>
         <c:when test="${orderItem.pizza.leftPizzaSide eq orderItem.pizza.rightPizzaSide}">
-            <div class="col-md-8 col-md-offset-2 col-xs-12">
+            <div class="col-xs-12">
                 <ul class="list-group">
                     <c:forEach
                             items="${orderItem.pizza.leftPizzaSide.pizzaItems}"
                             var="pizzaItem">
                         <li class="list-group-item">
-                            <span>${pizzaItem.ingredient.name}</span>
-                            <span class="badge">${pizzaItem.quantity}</span>
+                            <%@ include file="pizzaItem.jspf" %>
                         </li>
                     </c:forEach>
                 </ul>
             </div>
         </c:when>
         <c:otherwise>
-            <div class="col-sm-6 col-xs-12">
+            <div class="col-xs-12">
                 <h4>Left</h4>
                 <ul class="list-group">
                     <c:if test="${empty orderItem.pizza.leftPizzaSide.pizzaItems}">
@@ -43,13 +42,12 @@
                             items="${orderItem.pizza.leftPizzaSide.pizzaItems}"
                             var="pizzaItem">
                         <li class="list-group-item">
-                            <span>${pizzaItem.ingredient.name}</span>
-                            <span class="badge">${pizzaItem.quantity}</span>
+                            <%@ include file="pizzaItem.jspf" %>
                         </li>
                     </c:forEach>
                 </ul>
             </div>
-            <div class="col-sm-6 col-xs-12">
+            <div class="col-xs-12">
                 <h4>Right</h4>
                 <ul class="list-group">
                     <c:if test="${empty orderItem.pizza.rightPizzaSide.pizzaItems}">
@@ -59,8 +57,7 @@
                             items="${orderItem.pizza.rightPizzaSide.pizzaItems}"
                             var="pizzaItem">
                         <li class="list-group-item">
-                            <span>${pizzaItem.ingredient.name}</span>
-                            <span class="badge">${pizzaItem.quantity}</span>
+                            <%@ include file="pizzaItem.jspf" %>
                         </li>
                     </c:forEach>
                 </ul>

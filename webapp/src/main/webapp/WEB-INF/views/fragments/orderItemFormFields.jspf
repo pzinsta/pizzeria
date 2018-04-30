@@ -56,8 +56,23 @@
                 <form:hidden path="ingredientGroups[${ingredientGroupVarStatus.index}].ingredientType.name" />
                 <div class="row">
                     <c:forEach items="${ingredientGroup.ingredientQuantities}" var="ingredientQuantity" varStatus="ingredientQuantityVarStatus">
-                        <div class="col-md-4">
-                            <label>${ingredientQuantity.ingredient.name}</label>
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-3 col-lg-2">
+                                        <spring:url value="/resources/images/ingredients/{filename}" var="ingredientImageUrl">
+                                            <spring:param name="filename" value="${ingredientQuantity.ingredient.imageFileName}"/>
+                                        </spring:url>
+                                        <img src="${ingredientImageUrl}" alt="" class="img-responsive visible-lg-inline visible-md-inline visible-sm-inline visible-xs-inline">
+                                    </div>
+                                    <div class="col-xs-9">
+                                        <label class="control-label visible-lg-block visible-md-inline visible-sm-inline visible-xs-inline">
+                                                ${ingredientQuantity.ingredient.name}
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </div>
                             <c:set var="ingredientQuantityPath"
                                    value="ingredientGroups[${ingredientGroupVarStatus.index}].ingredientQuantities[${ingredientQuantityVarStatus.index}]"/>
                             <div class="form-group">

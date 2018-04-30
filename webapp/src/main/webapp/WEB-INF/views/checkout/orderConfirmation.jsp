@@ -10,7 +10,7 @@
     <body>
         <div class="container">
             <%@ include file="../fragments/navbar.jspf" %>
-            <h1>Checkout</h1>
+            <h1 class="text-center">Checkout</h1>
             <div class="row">
                 <c:forEach items="${cart.orderItems}" var="orderItem">
                     <div class="col-md-4">

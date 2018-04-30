@@ -13,7 +13,7 @@
             <%@ include file="../fragments/navbar.jspf" %>
             <h1 class="text-center">Sign in</h1>
             <div class="row">
-                <div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-8 col-sm-offset-2">
+                <div class="col-xs-12">
                     <c:choose>
                         <c:when test="${not empty currentUser}">
                             <div class="alert alert-success">
@@ -42,7 +42,7 @@
 
                             <form:form method="post" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <div class="col-xs-6 col-sm-offset-4">
+                                    <div class="col-xs-6">
                                         <c:set var="requestPath" value="${requestScope['javax.servlet.forward.servlet_path']}"/>
                                         <c:set var="params" value="${requestScope['javax.servlet.forward.query_string']}"/>
                                         <c:set var="pageUrl" value="${ requestPath }${ not empty params?'?'+=params:'' }"/>
@@ -54,21 +54,21 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <div class="col-xs-6 col-sm-offset-4">
+                                    <div class="col-xs-6">
                                         <a href="${registrationUrl}" class="btn btn-default">
                                             <i class="fa fa-user-plus" aria-hidden="true"></i> Register
                                         </a>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-xs-12 col-sm-offset-4">
+                                    <div class="col-xs-12">
                                         <button type="submit" name="_eventId_orderAsGuest" class="btn btn-default">
                                             <i class="fa fa-user-secret" aria-hidden="true"></i> Order as a guest
                                         </button>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-xs-12 col-sm-offset-4">
+                                    <div class="col-xs-12">
                                         <a href="${flowExecutionUrl}&_eventId=cancel" class="btn btn-danger">
                                             <i class="fa fa-ban" aria-hidden="true"></i> Cancel
                                         </a>
@@ -80,7 +80,6 @@
                 </div>
             </div>
         </div>
-
 
         <%@ include file="../fragments/footer.jspf" %>
     </body>

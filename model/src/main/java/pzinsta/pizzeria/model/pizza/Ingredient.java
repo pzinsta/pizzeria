@@ -33,7 +33,9 @@ public class Ingredient  implements Serializable {
 	@NotNull
 	@ManyToOne
 	private IngredientType ingredientType;
-	
+
+	private String imageFileName;
+
 	public long getId() {
 		return id;
 	}
@@ -78,5 +80,13 @@ public class Ingredient  implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
+	}
+
+	public String getImageFileName() {
+		return imageFileName;
+	}
+
+	public void setImageFileName(String imageFileName) {
+		this.imageFileName = imageFileName;
 	}
 }
