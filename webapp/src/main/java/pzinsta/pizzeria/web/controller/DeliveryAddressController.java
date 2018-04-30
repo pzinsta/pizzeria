@@ -1,6 +1,7 @@
 package pzinsta.pizzeria.web.controller;
 
 import com.google.common.base.Joiner;
+import com.google.common.collect.Range;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,8 +77,11 @@ public class DeliveryAddressController {
     @GetMapping("/{deliveryAddressIndex}/remove")
     public String removeDeliveryAddress(@PathVariable("deliveryAddressIndex") int deliveryAddressIndex, @RequestParam(name = "returnUrl", defaultValue = "/customer") String returnUrl, Principal principal, RedirectAttributes redirectAttributes) {
         Customer customer = getCustomerFromPrincipal(principal);
-        customer.getDeliveryAddresses().remove(deliveryAddressIndex); // TODO: 4/9/2018 handle indexoutofbounds case
-        customerService.updateCustomer(customer);
+        Range<Integer> indexRange = Range.closedOpen(0, customer.getDeliveryAddresses().size());
+        if (indexRange.contains(deliveryAddressIndex)) {
+            customer.getDeliveryAddresses().remove(deliveryAddressIndex);
+            customerService.updateCustomer(customer);
+        }
         return Joiner.on(StringUtils.EMPTY).join("redirect:", returnUrl);
     }
 
