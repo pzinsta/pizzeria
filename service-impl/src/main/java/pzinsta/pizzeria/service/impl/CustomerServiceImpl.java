@@ -32,7 +32,6 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     @Transactional
     public void updateCustomer(Customer customer) {
-        // TODO: 4/2/2018 how do we prevent users from updating other users' profiles?
         customerDAO.saveOrUpdate(customer);
     }
 
