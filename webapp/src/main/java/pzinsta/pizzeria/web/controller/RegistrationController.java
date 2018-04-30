@@ -1,6 +1,7 @@
 package pzinsta.pizzeria.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -28,13 +29,7 @@ public class RegistrationController {
     private CustomerRegistrationService customerRegistrationService;
     private CustomerRegistrationFormValidator customerRegistrationFormValidator;
     private GoogleReCaptchaService googleReCaptchaService;
-
-    @Autowired
-    public RegistrationController(CustomerRegistrationService customerRegistrationService, CustomerRegistrationFormValidator customerRegistrationFormValidator, GoogleReCaptchaService googleReCaptchaService) {
-        this.customerRegistrationService = customerRegistrationService;
-        this.customerRegistrationFormValidator = customerRegistrationFormValidator;
-        this.googleReCaptchaService = googleReCaptchaService;
-    }
+    private PasswordEncoder passwordEncoder;
 
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
@@ -70,7 +65,7 @@ public class RegistrationController {
     private CustomerRegistrationDTO convertRegistrationFormToRegistrationDTO(CustomerRegistrationForm customerRegistrationForm) {
         CustomerRegistrationDTO customerRegistrationDTO = new CustomerRegistrationDTO();
         customerRegistrationDTO.setUsername(customerRegistrationForm.getUsername());
-        customerRegistrationDTO.setPassword(customerRegistrationForm.getPassword());
+        customerRegistrationDTO.setPassword(passwordEncoder.encode(customerRegistrationForm.getPassword()));
         customerRegistrationDTO.setFirstName(customerRegistrationForm.getFirstName());
         customerRegistrationDTO.setLastName(customerRegistrationForm.getLastName());
         customerRegistrationDTO.setEmail(customerRegistrationForm.getEmail());
@@ -82,7 +77,27 @@ public class RegistrationController {
         return googleReCaptchaService;
     }
 
+    @Autowired
     public void setGoogleReCaptchaService(GoogleReCaptchaService googleReCaptchaService) {
         this.googleReCaptchaService = googleReCaptchaService;
+    }
+
+    public PasswordEncoder getPasswordEncoder() {
+        return passwordEncoder;
+    }
+
+    @Autowired
+    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setCustomerRegistrationService(CustomerRegistrationService customerRegistrationService) {
+        this.customerRegistrationService = customerRegistrationService;
+    }
+
+    @Autowired
+    public void setCustomerRegistrationFormValidator(CustomerRegistrationFormValidator customerRegistrationFormValidator) {
+        this.customerRegistrationFormValidator = customerRegistrationFormValidator;
     }
 }

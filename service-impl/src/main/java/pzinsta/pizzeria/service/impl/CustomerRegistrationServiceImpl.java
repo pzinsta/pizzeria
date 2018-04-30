@@ -45,7 +45,7 @@ public class CustomerRegistrationServiceImpl implements CustomerRegistrationServ
     private Account createAccountFromCustomerRegistrationDTO(CustomerRegistrationDTO customerRegistrationDTO) {
         Account account = new Account();
         account.setUsername(customerRegistrationDTO.getUsername());
-        account.setPassword(customerRegistrationDTO.getPassword()); // TODO: 4/10/2018 apply password encoder
+        account.setPassword(customerRegistrationDTO.getPassword());
         account.setEnabled(true);
         account.setAccountExpired(false);
         account.setAccountLocked(false);
