@@ -6,6 +6,8 @@
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <jstl.version>1.2</jstl.version>
         <braintree-java.version>2.79.0</braintree-java.version>
+        <recaptchav2-java.version>1.0.2</recaptchav2-java.version>
+        <java-time-jsptags.version>1.1.4</java-time-jsptags.version>
     </properties>
     <parent>
         <groupId>pzinsta</groupId>
@@ -85,13 +87,45 @@
         <dependency>
             <groupId>de.triology.recaptchav2-java</groupId>
             <artifactId>recaptchav2-java</artifactId>
-            <version>1.0.2</version>
+            <version>${recaptchav2-java.version}</version>
         </dependency>
 
         <dependency>
             <groupId>net.sargue</groupId>
             <artifactId>java-time-jsptags</artifactId>
-            <version>1.1.4</version>
+            <version>${java-time-jsptags.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-dbcp2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- log4j -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-web</artifactId>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
