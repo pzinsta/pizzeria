@@ -22,7 +22,7 @@
             <div class="row">
 
                 <div class="col-sm-6 col-sm-offset-3">
-                    <h1>${order.trackNumber}</h1>
+                    <h1>${order.trackingNumber}</h1>
                     <form:form method="post" modelAttribute="reviewForm" action="${actionUrl}" enctype="multipart/form-data">
 
                         <div class="form-group">

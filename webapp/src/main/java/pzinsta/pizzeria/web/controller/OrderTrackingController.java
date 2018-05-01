@@ -31,20 +31,20 @@ public class OrderTrackingController {
     }
 
     @PostMapping
-    public String processOrderTrackerSearch(@RequestParam("trackNumber") String trackNumber, Model model) {
-        model.addAttribute("trackNumber", StringUtils.trim(trackNumber));
-        return "redirect:/order/track/{trackNumber}";
+    public String processOrderTrackerSearch(@RequestParam("trackingNumber") String trackingNumber, Model model) {
+        model.addAttribute("trackingNumber", StringUtils.trim(trackingNumber));
+        return "redirect:/order/track/{trackingNumber}";
     }
 
-    @GetMapping("/{trackNumber}")
-    public String showOrderTracker(@PathVariable("trackNumber") String trackNumber, Model model) {
-        model.addAttribute("order", orderService.getOrderByTrackNumber(trackNumber));
+    @GetMapping("/{trackingNumber}")
+    public String showOrderTracker(@PathVariable("trackingNumber") String trackingNumber, Model model) {
+        model.addAttribute("order", orderService.getOrderByTrackingNumber(trackingNumber));
         return "showOrderTracker";
     }
 
     @ExceptionHandler(OrderNotFoundException.class)
     public String handleOrderNotFoundException(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("trackNumberNotFound", Boolean.TRUE);
+        redirectAttributes.addFlashAttribute("trackingNumberNotFound", Boolean.TRUE);
         return "redirect:/order/track";
     }
 }

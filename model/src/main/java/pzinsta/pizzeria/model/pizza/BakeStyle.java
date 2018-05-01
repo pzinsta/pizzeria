@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 public class BakeStyle implements Serializable {
@@ -35,5 +36,17 @@ public class BakeStyle implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof BakeStyle)) return false;
+		BakeStyle bakeStyle = (BakeStyle) o;
+		return Objects.equals(getName(), bakeStyle.getName());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getName());
 	}
 }

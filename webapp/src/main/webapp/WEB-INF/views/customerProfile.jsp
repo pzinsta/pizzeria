@@ -99,7 +99,7 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
-                                                    <span>${order.placedDate} ${order.trackNumber}</span>
+                                                    <span>${order.placedDate} ${order.trackingNumber}</span>
                                                 </div>
                                             </div>
                                             <div class="panel-body">
@@ -151,14 +151,14 @@
                                                 </div>
                                             </div>
                                             <div class="panel-footer">
-                                                <spring:url value="/order/track/{trackNumber}" var="orderTrackerUrl">
-                                                    <spring:param name="trackNumber" value="${order.trackNumber}"/>
+                                                <spring:url value="/order/track/{trackingNumber}" var="orderTrackerUrl">
+                                                    <spring:param name="trackingNumber" value="${order.trackingNumber}"/>
                                                 </spring:url>
                                                 <a href="${orderTrackerUrl}" class="btn btn-primary"><i
                                                         class="fa fa-search" aria-hidden="true"></i> Track the order</a>
 
-                                                <spring:url value="/review/order/{trackNumber}" var="reviewUrl">
-                                                    <spring:param name="trackNumber" value="${order.trackNumber}"/>
+                                                <spring:url value="/review/order/{trackingNumber}" var="reviewUrl">
+                                                    <spring:param name="trackingNumber" value="${order.trackingNumber}"/>
                                                     <spring:param name="returnUrl" value="/customer"/>
                                                 </spring:url>
                                                 <a href="${reviewUrl}" class="btn btn-primary"><i class="fa fa-pencil"

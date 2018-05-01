@@ -23,7 +23,7 @@
                             </div>
                         </c:if>
                         <div class="form-group">
-                            <input name="trackNumber" id="trackNumber" class="form-control input-lg" placeholder="Track number"/>
+                            <input name="trackingNumber" id="trackingNumber" class="form-control input-lg" placeholder="Track number"/>
                         </div>
                         <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
                     </form:form>

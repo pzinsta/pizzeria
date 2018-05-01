@@ -31,7 +31,7 @@ import pzinsta.pizzeria.service.OrderService;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 import pzinsta.pizzeria.service.dto.ReviewDTO;
 import pzinsta.pizzeria.service.exception.OrderNotFoundException;
-import pzinsta.pizzeria.service.impl.strategy.TrackNumberGenerationStrategy;
+import pzinsta.pizzeria.service.impl.strategy.TrackingNumberGenerationStrategy;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
     @Value("${pizza.quantity.max}")
     private int maxQuantity;
 
-    private TrackNumberGenerationStrategy trackNumberGenerationStrategy;
+    private TrackingNumberGenerationStrategy trackingNumberGenerationStrategy;
 
     @Override
     @Transactional(readOnly = true)
@@ -146,20 +146,20 @@ public class OrderServiceImpl implements OrderService {
         orderEvent.setOrderEventType(OrderEventType.PURCHASED);
         order.getOrderEvents().add(orderEvent);
         order = orderDAO.saveOrUpdate(order);
-        order.setTrackNumber(trackNumberGenerationStrategy.generateTrackNumber(order));
+        order.setTrackingNumber(trackingNumberGenerationStrategy.generatetrackingNumber(order));
         return order;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Order getOrderByTrackNumber(String trackNumber) {
-        return orderDAO.findByTrackNumber(trackNumber).orElseThrow(OrderNotFoundException::new);
+    public Order getOrderByTrackingNumber(String trackingNumber) {
+        return orderDAO.findByTrackingNumber(trackingNumber).orElseThrow(OrderNotFoundException::new);
     }
 
     @Override
     @Transactional
-    public void addReviewToOrderByTrackNumber(String trackNumber, ReviewDTO reviewDTO) {
-        Order order = orderDAO.findByTrackNumber(trackNumber).orElseThrow(OrderNotFoundException::new);
+    public void addReviewToOrderByTrackingNumber(String trackingNumber, ReviewDTO reviewDTO) {
+        Order order = orderDAO.findByTrackingNumber(trackingNumber).orElseThrow(OrderNotFoundException::new);
         Review review = Optional.ofNullable(order.getReview()).orElseGet(Review::new);
         review.setOrder(order);
         review.setMessage(reviewDTO.getMessage());
@@ -336,13 +336,13 @@ public class OrderServiceImpl implements OrderService {
         this.customerDAO = customerDAO;
     }
 
-    public TrackNumberGenerationStrategy getTrackNumberGenerationStrategy() {
-        return trackNumberGenerationStrategy;
+    public TrackingNumberGenerationStrategy getTrackingNumberGenerationStrategy() {
+        return trackingNumberGenerationStrategy;
     }
 
     @Autowired
-    public void setTrackNumberGenerationStrategy(TrackNumberGenerationStrategy trackNumberGenerationStrategy) {
-        this.trackNumberGenerationStrategy = trackNumberGenerationStrategy;
+    public void setTrackingNumberGenerationStrategy(TrackingNumberGenerationStrategy trackingNumberGenerationStrategy) {
+        this.trackingNumberGenerationStrategy = trackingNumberGenerationStrategy;
     }
 
     public OrderItemDAO getOrderItemDAO() {

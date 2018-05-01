@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 public class PizzaSize  implements Serializable {
@@ -62,5 +63,18 @@ public class PizzaSize  implements Serializable {
 
 	public void setDiameterInInches(int diameterInInches) {
 		this.diameterInInches = diameterInInches;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof PizzaSize)) return false;
+		PizzaSize pizzaSize = (PizzaSize) o;
+		return Objects.equals(getName(), pizzaSize.getName()) &&
+				Objects.equals(getPrice(), pizzaSize.getPrice());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getName(), getPrice());
 	}
 }

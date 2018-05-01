@@ -67,14 +67,14 @@ public class ReviewController {
     }
 
     @PostMapping
-    public String processOrderSearchForm(@RequestParam("trackNumber") String trackNumber, RedirectAttributes redirectAttributes) {
-        redirectAttributes.addAttribute("trackNumber", StringUtils.trim(trackNumber));
-        return "redirect:/review/order/{trackNumber}";
+    public String processOrderSearchForm(@RequestParam("trackingNumber") String trackingNumber, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("trackingNumber", StringUtils.trim(trackingNumber));
+        return "redirect:/review/order/{trackingNumber}";
     }
 
-    @GetMapping("/{trackNumber}")
-    public String showOrderReviewSubmissionForm(@PathVariable("trackNumber") String trackNumber, Model model, @RequestParam(name = "returnUrl", defaultValue = "/reviews") String returnUrl) {
-        Order order = orderService.getOrderByTrackNumber(trackNumber);
+    @GetMapping("/{trackingNumber}")
+    public String showOrderReviewSubmissionForm(@PathVariable("trackingNumber") String trackingNumber, Model model, @RequestParam(name = "returnUrl", defaultValue = "/reviews") String returnUrl) {
+        Order order = orderService.getOrderByTrackingNumber(trackingNumber);
         model.addAttribute("order", order);
         model.addAttribute("reviewForm", getReviewForm(order));
         return "orderReviewSubmissionForm";
@@ -84,13 +84,13 @@ public class ReviewController {
         return Optional.ofNullable(order.getReview()).map(ReviewController::transformReviewToReviewForm).orElseGet(ReviewForm::new);
     }
 
-    @PostMapping("/{trackNumber}")
-    public String processOrderReviewSubmissionForm(@PathVariable("trackNumber") String trackNumber, @ModelAttribute("reviewForm") @Valid ReviewForm reviewForm, BindingResult bindingResult, @RequestParam(name = "returnUrl", defaultValue = "/reviews") String returnUrl, RedirectAttributes redirectAttributes) {
+    @PostMapping("/{trackingNumber}")
+    public String processOrderReviewSubmissionForm(@PathVariable("trackingNumber") String trackingNumber, @ModelAttribute("reviewForm") @Valid ReviewForm reviewForm, BindingResult bindingResult, @RequestParam(name = "returnUrl", defaultValue = "/reviews") String returnUrl, RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
             return "orderReviewSubmissionForm";
         }
         ReviewDTO reviewDTO = transformReviewFormToReviewDTO(reviewForm);
-        orderService.addReviewToOrderByTrackNumber(trackNumber, reviewDTO);
+        orderService.addReviewToOrderByTrackingNumber(trackingNumber, reviewDTO);
         return "redirect:" + returnUrl;
     }
 

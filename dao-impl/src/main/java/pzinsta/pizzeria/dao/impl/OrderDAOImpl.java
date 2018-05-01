@@ -17,12 +17,12 @@ public class OrderDAOImpl extends GenericDAOImpl<Order, Long> implements OrderDA
     }
 
     @Override
-    public Optional<Order> findByTrackNumber(String trackNumber) {
+    public Optional<Order> findByTrackingNumber(String trackingNumber) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(entityClass);
         Root<Order> root = criteriaQuery.from(entityClass);
         criteriaQuery.select(root);
-        criteriaQuery.where(criteriaBuilder.equal(root.get("trackNumber"), trackNumber));
+        criteriaQuery.where(criteriaBuilder.equal(root.get("trackingNumber"), trackingNumber));
         TypedQuery<Order> typedQuery = entityManager.createQuery(criteriaQuery);
         return typedQuery.getResultList().stream().findFirst();
     }

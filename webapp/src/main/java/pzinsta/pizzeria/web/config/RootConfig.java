@@ -12,9 +12,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import pzinsta.pizzeria.model.order.Cart;
 import pzinsta.pizzeria.service.impl.strategy.DeliveryCostCalculationStrategy;
-import pzinsta.pizzeria.service.impl.strategy.TrackNumberGenerationStrategy;
+import pzinsta.pizzeria.service.impl.strategy.TrackingNumberGenerationStrategy;
 import pzinsta.pizzeria.service.impl.strategy.impl.FixedDeliveryCostCalculationStrategy;
-import pzinsta.pizzeria.service.impl.strategy.impl.RandomTrackNumberGenerationStrategy;
+import pzinsta.pizzeria.service.impl.strategy.impl.RandomTrackingNumberGenerationStrategy;
 
 import javax.money.Monetary;
 import javax.money.MonetaryAmount;
@@ -41,8 +41,8 @@ public class RootConfig {
     }
 
     @Bean
-    public TrackNumberGenerationStrategy trackNumberGenerationStrategy() {
-        return new RandomTrackNumberGenerationStrategy();
+    public TrackingNumberGenerationStrategy trackingNumberGenerationStrategy() {
+        return new RandomTrackingNumberGenerationStrategy();
     }
 
     @Bean

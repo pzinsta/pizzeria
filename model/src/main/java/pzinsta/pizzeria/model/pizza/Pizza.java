@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Check(constraints = "left_pizzaside_id <> right_pizzaside_id")
@@ -98,5 +99,22 @@ public class Pizza implements Serializable {
 	
 	public MonetaryAmount getCost() {
 		return crust.getPrice().add(leftPizzaSide.getCost()).add(rightPizzaSide.getCost());
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Pizza)) return false;
+		Pizza pizza = (Pizza) o;
+		return Objects.equals(getCrust(), pizza.getCrust()) &&
+				Objects.equals(getSize(), pizza.getSize()) &&
+				Objects.equals(getLeftPizzaSide(), pizza.getLeftPizzaSide()) &&
+				Objects.equals(getRightPizzaSide(), pizza.getRightPizzaSide()) &&
+				Objects.equals(getBakeStyle(), pizza.getBakeStyle()) &&
+				Objects.equals(getCutStyle(), pizza.getCutStyle());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getCrust(), getSize(), getLeftPizzaSide(), getRightPizzaSide(), getBakeStyle(), getCutStyle());
 	}
 }

@@ -5,5 +5,5 @@ import pzinsta.pizzeria.model.order.Order;
 import java.util.Optional;
 
 public interface OrderDAO extends GenericDAO<Order, Long> {
-    Optional<Order> findByTrackNumber(String trackNumber);
+    Optional<Order> findByTrackingNumber(String trackingNumber);
 }

@@ -5,9 +5,9 @@ import org.apache.commons.rng.simple.RandomSource;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.beans.factory.annotation.Value;
 import pzinsta.pizzeria.model.order.Order;
-import pzinsta.pizzeria.service.impl.strategy.TrackNumberGenerationStrategy;
+import pzinsta.pizzeria.service.impl.strategy.TrackingNumberGenerationStrategy;
 
-public class RandomTrackNumberGenerationStrategy implements TrackNumberGenerationStrategy {
+public class RandomTrackingNumberGenerationStrategy implements TrackingNumberGenerationStrategy {
 
     @Value("${trackingNumber.characters}")
     private String trackingNumberCharacters;
@@ -16,7 +16,7 @@ public class RandomTrackNumberGenerationStrategy implements TrackNumberGeneratio
     private int trackingNumberLength;
 
     @Override
-    public String generateTrackNumber(Order order) {
+    public String generatetrackingNumber(Order order) {
         UniformRandomProvider rng = RandomSource.create(RandomSource.SPLIT_MIX_64, order.getId());
         RandomStringGenerator randomStringGenerator = new RandomStringGenerator.Builder().usingRandom(rng::nextInt)
                 .selectFrom(trackingNumberCharacters.toCharArray()).build();

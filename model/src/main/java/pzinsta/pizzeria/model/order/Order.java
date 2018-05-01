@@ -59,7 +59,7 @@ public class Order implements Serializable {
     private String comment;
 
     @Column(unique = true)
-    private String trackNumber;
+    private String trackingNumber;
 
     @Column(unique = true)
     private String paymentTransactionId;
@@ -144,12 +144,12 @@ public class Order implements Serializable {
 		this.delivery = delivery;
 	}
 
-	public String getTrackNumber() {
-		return trackNumber;
+	public String getTrackingNumber() {
+		return trackingNumber;
 	}
 
-	public void setTrackNumber(String trackNumber) {
-		this.trackNumber = trackNumber;
+	public void setTrackingNumber(String trackingNumber) {
+		this.trackingNumber = trackingNumber;
 	}
 
 	public Review getReview() {

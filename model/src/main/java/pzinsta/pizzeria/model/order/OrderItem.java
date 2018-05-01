@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 public class OrderItem implements Serializable {
@@ -67,4 +68,17 @@ public class OrderItem implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof OrderItem)) return false;
+		OrderItem orderItem = (OrderItem) o;
+		return getQuantity() == orderItem.getQuantity() &&
+				Objects.equals(getPizza(), orderItem.getPizza());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(getOrder(), getPizza(), getQuantity());
+	}
 }

@@ -2,6 +2,7 @@ package pzinsta.pizzeria.service.impl;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import org.assertj.core.api.Condition;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -15,9 +16,15 @@ import pzinsta.pizzeria.dao.BakeStyleDAO;
 import pzinsta.pizzeria.dao.CrustDAO;
 import pzinsta.pizzeria.dao.CutStyleDAO;
 import pzinsta.pizzeria.dao.IngredientDAO;
+import pzinsta.pizzeria.dao.OrderDAO;
 import pzinsta.pizzeria.dao.PizzaSizeDAO;
+import pzinsta.pizzeria.model.File;
 import pzinsta.pizzeria.model.order.Cart;
+import pzinsta.pizzeria.model.order.Order;
+import pzinsta.pizzeria.model.order.OrderEvent;
+import pzinsta.pizzeria.model.order.OrderEventType;
 import pzinsta.pizzeria.model.order.OrderItem;
+import pzinsta.pizzeria.model.order.Review;
 import pzinsta.pizzeria.model.pizza.BakeStyle;
 import pzinsta.pizzeria.model.pizza.Crust;
 import pzinsta.pizzeria.model.pizza.CutStyle;
@@ -28,6 +35,8 @@ import pzinsta.pizzeria.model.pizza.PizzaItem;
 import pzinsta.pizzeria.model.pizza.PizzaSide;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
+import pzinsta.pizzeria.service.dto.ReviewDTO;
+import pzinsta.pizzeria.service.impl.strategy.TrackingNumberGenerationStrategy;
 
 import java.util.Collection;
 import java.util.List;
@@ -71,6 +80,12 @@ public class OrderServiceImplTest {
 
     @Mock
     private IngredientDAO ingredientDAO;
+
+    @Mock
+    private OrderDAO orderDAO;
+
+    @Mock
+    private TrackingNumberGenerationStrategy trackingNumberGenerationStrategy;
 
     @InjectMocks
     private OrderServiceImpl orderService;
@@ -238,6 +253,112 @@ public class OrderServiceImplTest {
 
         // then
         assertThat(result).isSameAs(ingredientType);
+    }
+
+    @Test
+    public void shouldReplaceOrderItem() throws Exception {
+        // given
+        OrderItem orderItem1 = new OrderItem();
+        OrderItem orderItem2 = new OrderItem();
+        cart.addOrderItem(orderItem1);
+        cart.addOrderItem(orderItem2);
+
+        when(bakeStyleDAO.findById(BAKE_STYLE_ID)).thenReturn(Optional.of(getBakeStyle()));
+        when(crustDAO.findById(CRUST_ID)).thenReturn(Optional.of(getCrust()));
+        when(pizzaSizeDAO.findById(PIZZA_SIZE_ID)).thenReturn(Optional.of(getPizzaSize()));
+        when(cutStyleDAO.findById(CUT_STYLE_ID)).thenReturn(Optional.of(getCutStyle()));
+        when(ingredientDAO.findById(anyLong())).thenAnswer(invocation -> {
+            Ingredient ingredient = new Ingredient();
+            ingredient.setId(invocation.getArgument(0));
+            return Optional.of(ingredient);
+        });
+
+        // when
+        orderService.replaceOrderItem(0, createPizzaOrderDTO());
+
+        // then
+        assertThat(cart.getOrderItems()).containsExactlyInAnyOrder(createExpectedOrderItem(), orderItem2);
+    }
+
+    @Test
+    public void shouldCreatePizzaOrderDTOByOrderItemIndex() throws Exception {
+        // given
+        cart.addOrderItem(createExpectedOrderItem());
+
+        // when
+        PizzaOrderDTO result = orderService.getPizzaOrderDTOByOrderItemId(0);
+
+        // then
+        PizzaOrderDTO expected = createPizzaOrderDTO();
+        assertThat(result).isEqualToComparingFieldByFieldRecursively(expected);
+    }
+
+    @Test
+    public void shouldPostOrder() throws Exception {
+        // given
+        Order order = new Order();
+        String trackingNumber = "42";
+        Long orderId = 42L;
+
+        when(trackingNumberGenerationStrategy.generatetrackingNumber(order)).thenReturn(trackingNumber);
+        when(orderDAO.saveOrUpdate(order)).thenAnswer(invocation -> {
+            order.setId(orderId);
+            return order;
+        });
+
+        // when
+        Order result = orderService.postOrder(order);
+
+        // then
+        assertThat(result.getId()).isEqualTo(orderId);
+        assertThat(result.getTrackingNumber()).isEqualTo(trackingNumber);
+        Condition<OrderEvent> purchaseEvent = new Condition<>(orderEvent -> orderEvent.getOrderEventType() == OrderEventType.PURCHASED, "purchase event");
+        assertThat(result.getOrderEvents()).first().is(purchaseEvent);
+    }
+
+    @Test
+    public void shouldGetOrderByTrackingNumber() throws Exception {
+        // given
+        String trackingNumber = "ABCDEF";
+        Order order = new Order();
+        when(orderDAO.findByTrackingNumber(trackingNumber)).thenReturn(Optional.of(order));
+
+        // when
+        Order result = orderService.getOrderByTrackingNumber(trackingNumber);
+
+        // then
+        assertThat(result).isSameAs(order);
+    }
+
+    @Test
+    public void shouldAddReviewToOrderByTrackingNumber() throws Exception {
+        // given
+        int rating = 9;
+        String message = "a review message";
+
+        ReviewDTO reviewDTO = new ReviewDTO();
+        reviewDTO.setMessage(message);
+        reviewDTO.setRating(rating);
+        File file = new File();
+        file.setName("image.jpg");
+        file.setContentType("image/jpeg");
+        reviewDTO.setFiles(ImmutableList.of(file));
+        String trackingNumber = "ABCDEF";
+
+        Order order = new Order();
+
+        when(orderDAO.findByTrackingNumber(trackingNumber)).thenReturn(Optional.of(order));
+
+        // when
+        orderService.addReviewToOrderByTrackingNumber(trackingNumber, reviewDTO);
+
+        // then
+        Review expected = new Review();
+        expected.setOrder(order);
+        expected.setRating(rating);
+        expected.setMessage(message);
+        expected.setImages(ImmutableList.of(file));
+        assertThat(order.getReview()).isEqualToComparingFieldByField(expected);
     }
 
     private void assertThatOrderItemsAreEqual(OrderItem capturedOrderItem, OrderItem expectedOrderItem) {

@@ -10,7 +10,7 @@
         <div class="container">
             <%@ include file="fragments/navbar.jspf" %>
 
-            <h1 class="page-header">${order.trackNumber}</h1>
+            <h1 class="page-header">${order.trackingNumber}</h1>
 
             <ul class="list-group">
                 <c:forEach items="${order.orderEvents}" var="orderEvent">

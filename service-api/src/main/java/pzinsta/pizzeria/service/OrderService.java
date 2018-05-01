@@ -43,9 +43,9 @@ public interface OrderService {
 
     Order postOrder(Order order);
 
-    Order getOrderByTrackNumber(String trackNumber);
+    Order getOrderByTrackingNumber(String trackingNumber);
 
-    void addReviewToOrderByTrackNumber(String trackNumber, ReviewDTO reviewDTO);
+    void addReviewToOrderByTrackingNumber(String trackingNumber, ReviewDTO reviewDTO);
 
     Optional<PizzaOrderDTO> getPizzaOrderDTOByOrderItemId(Long orderItemId);
 }

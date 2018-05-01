@@ -1,8 +1,8 @@
 package pzinsta.pizzeria.service.impl;
 
-import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -15,6 +15,9 @@ import pzinsta.pizzeria.model.user.Account;
 import pzinsta.pizzeria.model.user.Customer;
 
 import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
 
 public class CustomerServiceImplTest {
 
@@ -49,7 +52,7 @@ public class CustomerServiceImplTest {
         Optional<Customer> result = userService.getCustomerByUsername(username);
 
         // then
-        Assertions.assertThat(result).contains(customer);
+        assertThat(result).contains(customer);
     }
 
     @Test
@@ -61,6 +64,31 @@ public class CustomerServiceImplTest {
         Optional<Customer> result = userService.getCustomerByUsername("john");
 
         // then
-        Assertions.assertThat(result).isEmpty();
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void shouldCreateNewCustomer() throws Exception {
+        // given
+
+        // when
+        Customer result = userService.createNewCustomer();
+
+        // then
+        assertThat(result).isEqualToComparingFieldByFieldRecursively(new Customer());
+    }
+
+    @Test
+    public void shouldUpdateCustomer() throws Exception {
+        // given
+        Customer customer = new Customer();
+
+        // when
+        userService.updateCustomer(customer);
+
+        // then
+        ArgumentCaptor<Customer> customerArgumentCaptor = ArgumentCaptor.forClass(Customer.class);
+        verify(customerDAO).saveOrUpdate(customerArgumentCaptor.capture());
+        assertThat(customerArgumentCaptor.getValue()).isSameAs(customer);
     }
 }

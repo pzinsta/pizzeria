@@ -18,10 +18,10 @@
             <p class="lead">You can use the following tracking number to track your order:</p>
 
             <div class="lead">
-                <spring:url value="/order/track/{trackNumber}" var="trackOrderUrl">
-                    <spring:param name="trackNumber" value="${order.trackNumber}"/>
+                <spring:url value="/order/track/{trackingNumber}" var="trackOrderUrl">
+                    <spring:param name="trackingNumber" value="${order.trackingNumber}"/>
                 </spring:url>
-                <a href="${trackOrderUrl}">${order.trackNumber}</a>
+                <a href="${trackOrderUrl}">${order.trackingNumber}</a>
             </div>
 
             <div class="text-center">
