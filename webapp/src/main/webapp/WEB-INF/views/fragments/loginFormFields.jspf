@@ -1,4 +1,4 @@
-<c:if test="${param.error != null}">
+<c:if test="${param.loginError != null}">
     <div class="alert alert-danger text-center">
         Invalid username and/or password.
     </div>
