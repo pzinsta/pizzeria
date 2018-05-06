@@ -11,9 +11,9 @@
     <body>
         <div class="container">
             <%@ include file="../fragments/navbar.jspf" %>
+            <h1 class="text-center page-header">Customer information</h1>
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 col-xs-12 col-sm-6 col-sm-offset-3">
-                    <h1 class="text-center">Customer information</h1>
                     <form:form modelAttribute="customer" method="post">
 
                         <%@ include file="../fragments/customerDetailsFormFieds.jspf" %>

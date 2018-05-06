@@ -13,7 +13,7 @@
         <div class="container">
             <%@ include file="../fragments/navbar.jspf" %>
 
-            <h1 class="text-center">Payment</h1>
+            <h1 class="text-center page-header">Payment</h1>
 
             <dl class="dl-horizontal">
                 <dt>Order:</dt>
@@ -21,7 +21,7 @@
                 <dt>Delivery:</dt>
                 <dd>${deliveryCost}</dd>
                 <dt>Total:</dt>
-                <dd>${total}</dd>
+                <dd><strong>${total}</strong></dd>
             </dl>
 
             <form:form method="post" id="paymentForm" autocomplete="false">

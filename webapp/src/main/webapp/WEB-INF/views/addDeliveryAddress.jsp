@@ -11,7 +11,7 @@
         <div class="container">
             <%@ include file="fragments/navbar.jspf" %>
             <div class="row">
-                <div class="col-md-4 col-md-offset-4">
+                <div class="col-sm-4 col-sm-offset-4 col-xs-12">
                     <form:form method="post" modelAttribute="deliveryAddressForm">
                         <%@ include file="fragments/deliveryAddressFormFields.jspf" %>
                         <button type="submit" class="btn btn-success btn-lg"><i class="fa fa-plus" aria-hidden="true"></i> Add</button>

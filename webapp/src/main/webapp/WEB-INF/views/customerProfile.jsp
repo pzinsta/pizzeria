@@ -12,6 +12,8 @@
         <div class="container">
             <%@ include file="fragments/navbar.jspf" %>
 
+            <h1 class="page-header text-center">My Profile</h1>
+
             <div class="row">
 
                 <div class="col-md-4">

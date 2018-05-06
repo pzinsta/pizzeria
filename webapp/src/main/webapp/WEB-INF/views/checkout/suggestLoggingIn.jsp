@@ -11,7 +11,7 @@
     <body>
         <div class="container">
             <%@ include file="../fragments/navbar.jspf" %>
-            <h1 class="text-center">Sign in</h1>
+            <h1 class="text-center page-header">Sign in</h1>
             <div class="row">
                 <div class="col-xs-12">
                     <c:choose>

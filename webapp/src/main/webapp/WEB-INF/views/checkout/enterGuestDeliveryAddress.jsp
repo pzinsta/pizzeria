@@ -10,9 +10,9 @@
     <body>
         <div class="container">
             <%@ include file="../fragments/navbar.jspf" %>
+            <h1 class="text-center page-header">Delivery address</h1>
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 col-xs-12 col-sm-6 col-sm-offset-3">
-                    <h1 class="text-center">Delivery address</h1>
                     <form:form modelAttribute="deliveryAddress" method="post">
 
                         <%@ include file="../fragments/deliveryAddressFormFields.jspf" %>

@@ -13,7 +13,7 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <h1 class="text-center">Select a delivery address</h1>
+                    <h1 class="text-center page-header">Select a delivery address</h1>
                     <spring:url value="${requestScope['javax.servlet.forward.servlet_path']}" context="/"
                                 var="returnUrl">
                         <spring:param name="execution" value="${requestScope.flowExecutionKey}"/>

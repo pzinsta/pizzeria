@@ -11,7 +11,7 @@
         <div class="container">
             <%@ include file="fragments/navbar.jspf" %>
 
-            <h1>Pizza Builder</h1>
+            <h1 class="page-header">Pizza Builder</h1>
             <form:form method="post" modelAttribute="pizzaBuilderForm">
                 <form:errors element="div" cssClass="alert alert-danger"/>
 

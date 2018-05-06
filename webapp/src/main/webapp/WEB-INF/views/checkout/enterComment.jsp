@@ -9,10 +9,10 @@
     <body>
         <div class="container">
             <%@ include file="../fragments/navbar.jspf" %>
+            <h1 class="text-center page-header">Leave a comment</h1>
 
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-                    <h1 class="text-center">Leave a comment</h1>
                     <form:form modelAttribute="order">
                         <div class="form-group">
                             <form:label path="comment" cssClass="control-label">Comment</form:label>

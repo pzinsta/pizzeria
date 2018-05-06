@@ -10,10 +10,9 @@
     <body>
         <div class="container">
             <%@ include file="../fragments/navbar.jspf" %>
-
+            <h1 class="page-header text-center">Order type</h1>
             <div class="row">
                 <div class="col-xs-12 text-center">
-                    <h1>Order type</h1>
                     <form:form method="post">
                         <button type="submit" name="_eventId_carryOut" class="btn btn-default btn-lg"><i
                                 class="fa fa-blind" aria-hidden="true"></i> Carry out
