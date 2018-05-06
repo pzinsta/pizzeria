@@ -131,19 +131,10 @@
                                                                     <%@ include file="fragments/orderItem.jspf" %>
                                                                 </div>
                                                                 <div class="panel-footer">
-                                                                    <c:forEach items="${order.orderItems}"
-                                                                               var="orderItem">
-                                                                        <spring:url
-                                                                                value="/builder/template/{orderItemId}"
-                                                                                var="buildFromOrderItemUrl">
-                                                                            <spring:param name="orderItemId"
-                                                                                          value="${orderItem.id}"/>
-                                                                        </spring:url>
-                                                                        <a href="${buildFromOrderItemUrl}"
-                                                                           class="btn btn-primary">Go to builder <i
-                                                                                class="fa fa-chevron-right"
-                                                                                aria-hidden="true"></i></a>
-                                                                    </c:forEach>
+                                                                    <spring:url value="/builder/template/{orderItemId}" var="buildFromOrderItemUrl">
+                                                                        <spring:param name="orderItemId" value="${orderItem.id}"/>
+                                                                    </spring:url>
+                                                                    <a href="${buildFromOrderItemUrl}" class="btn btn-primary">Go to builder <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
                                                                 </div>
                                                             </div>
                                                         </div>
