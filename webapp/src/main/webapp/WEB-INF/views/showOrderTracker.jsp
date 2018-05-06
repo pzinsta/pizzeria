@@ -12,6 +12,7 @@
 
             <h1 class="page-header">${order.trackingNumber}</h1>
 
+            <h2>Order events</h2>
             <ul class="list-group">
                 <c:forEach items="${order.orderEvents}" var="orderEvent">
                     <li class="list-group-item">
@@ -26,8 +27,10 @@
             </ul>
 
             <c:if test="${not empty order.delivery}">
-                Delivery
-                ${order.delivery.status}
+                <h2>Delivery status</h2>
+                <div class="lead">
+                    <spring:message code="deliveryStatus.${order.delivery.status}"/>
+                </div>
             </c:if>
 
 
