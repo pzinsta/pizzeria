@@ -19,11 +19,11 @@
                         <c:if test="${trackingNumberNotFound}">
                             <div class="alert alert-danger alert-dismissible">
                                 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <span>Order with the given track number was not found.</span>
+                                <span>Order with the given tracking number was not found.</span>
                             </div>
                         </c:if>
                         <div class="form-group">
-                            <input name="trackingNumber" id="trackingNumber" class="form-control input-lg" placeholder="Track number"/>
+                            <input name="trackingNumber" id="trackingNumber" class="form-control input-lg" placeholder="Tracking number" autocomplete="on"/>
                         </div>
                         <button type="submit" class="btn btn-primary btn-lg"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
                     </form:form>
