@@ -1,0 +1,5 @@
+<ul>
+  <li *ngFor="let account of accounts">
+    <app-account [account]="account" (edit)="edit($event)"></app-account>
+  </li>
+</ul>

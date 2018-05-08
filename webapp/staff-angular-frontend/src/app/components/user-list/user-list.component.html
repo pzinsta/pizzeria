@@ -1,0 +1,5 @@
+<ul>
+  <li *ngFor="let user of users">
+    <app-user [user]="user" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-user>
+  </li>
+</ul>
