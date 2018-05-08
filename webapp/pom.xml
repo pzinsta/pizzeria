@@ -139,5 +139,78 @@
                 </plugin>
             </plugins>
         </pluginManagement>
+        <plugins>
+            <!-- Plugin to execute command  "npm install" and "npm run build" inside /staff-angular-frontend directory -->
+            <plugin>
+                <groupId>com.github.eirslett</groupId>
+                <artifactId>frontend-maven-plugin</artifactId>
+                <version>1.6</version>
+                <configuration>
+                    <workingDirectory>staff-angular-frontend</workingDirectory>
+                    <installDirectory>target</installDirectory>
+                </configuration>
+                <executions>
+                    <!-- It will install nodejs and npm -->
+                    <execution>
+                        <id>install node and npm</id>
+                        <goals>
+                            <goal>install-node-and-npm</goal>
+                        </goals>
+                        <configuration>
+                            <nodeVersion>v8.11.1</nodeVersion>
+                            <!-- optional: with node version greater than 4.0.0 will use npm provided by node distribution -->
+                            <!--<npmVersion>5.6.0</npmVersion>-->
+                        </configuration>
+                    </execution>
+
+                    <!-- It will execute command "npm install" inside "/staff-angular-frontend" directory -->
+                    <execution>
+                        <id>npm install</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>install</arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- It will execute command "npm build" inside "/staff-angular-frontend" directory to clean and create "/dist" directory-->
+                    <execution>
+                        <id>npm build</id>
+                        <goals>
+                            <goal>npm</goal>
+                        </goals>
+                        <configuration>
+                            <arguments>run build</arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Plugin to copy the content of /staff-angular-frontend/dist/ directory to output directory (i.e. /target/webapp-0.0.1-SNAPSHOT/) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>default-copy-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <overwrite>true</overwrite>
+                            <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/staff</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/staff-angular-frontend/dist</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
     </build>
 </project>
