@@ -1,5 +1,7 @@
+<h1 class="page-header">Users</h1>
 <ul>
   <li *ngFor="let user of users">
-    <app-user [user]="user" (edit)="onEdit($event)" (remove)="onRemove($event)"></app-user>
+    <app-user [user]="user"></app-user>
   </li>
 </ul>
+<a routerLink="/users/new">Add a user</a>

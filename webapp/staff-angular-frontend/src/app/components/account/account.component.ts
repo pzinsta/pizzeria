@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, Input, OnInit} from "@angular/core";
 import {Account} from "../../models/Account";
 
 @Component({
@@ -11,16 +11,9 @@ export class AccountComponent implements OnInit {
   @Input()
   account: Account;
 
-  @Output()
-  edit: EventEmitter<Account> = new EventEmitter();
-
   constructor() { }
 
   ngOnInit() {
-  }
-
-  onEdit() {
-    this.edit.emit(this.account);
   }
 
 }

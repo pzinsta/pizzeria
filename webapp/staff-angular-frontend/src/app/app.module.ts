@@ -14,6 +14,10 @@ import {AccountComponent} from "./components/account/account.component";
 import {AccountService} from "./services/account.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
+import {EditAccountComponent} from "./components/edit-account/edit-account.component";
+import {FormsModule} from "@angular/forms";
+import {ChangeAccountPasswordComponent} from "./components/change-account-password/change-account-password.component";
+import {AccountFormComponent} from "./components/account-form/account-form.component";
 
 
 @NgModule({
@@ -28,10 +32,14 @@ import {DashboardComponent} from "./components/dashboard/dashboard.component";
     AccountListComponent,
     AccountComponent,
     DashboardComponent,
+    EditAccountComponent,
+    ChangeAccountPasswordComponent,
+    AccountFormComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [
     UserService,

@@ -1,2 +1,7 @@
 {{account.id}} {{account.username}} {{account.enabled}} {{account.createdOn}}
-<button (click)="onEdit()">Edit</button>
+<ul>
+  <li *ngFor="let role of account.roles">
+    {{role}}
+  </li>
+</ul>
+<a routerLink="/accounts/{{account.id}}">Edit</a>

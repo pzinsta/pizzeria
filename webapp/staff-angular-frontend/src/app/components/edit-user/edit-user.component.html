@@ -1,7 +1,25 @@
-<form>
+<h1 class="page-header">Edit user</h1>
+<form (submit)="onSubmit()">
+  <div class="form-group">
+    <label for="id">ID</label>
+    <input type="text" class="form-control" id="id" [(ngModel)]="user.id" name="id" disabled>
+  </div>
   <div class="form-group">
     <label for="firstName">First name</label>
-    <input type="text" class="form-control" id="firstName">
+    <input type="text" class="form-control" id="firstName" [(ngModel)]="user.firstName" name="firstName">
   </div>
-  <button type="submit" class="btn btn-default">Save</button>
+  <div class="form-group">
+    <label for="lastName">Last name</label>
+    <input type="text" class="form-control" id="lastName" [(ngModel)]="user.lastName" name="lastName">
+  </div>
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input type="text" class="form-control" id="email" [(ngModel)]="user.email" name="email">
+  </div>
+  <div class="form-group">
+    <label for="phoneNumber">Phone number</label>
+    <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="user.phoneNumber" name="phoneNumber">
+  </div>
+  <button class="btn btn-default">Save</button>
 </form>
+<a *ngIf="user.account" routerLink="/accounts/{{user.account.id}}">Account</a>

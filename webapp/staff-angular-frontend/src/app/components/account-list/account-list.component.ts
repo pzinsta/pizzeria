@@ -17,9 +17,4 @@ export class AccountListComponent implements OnInit {
     this.accountService.getAccounts().subscribe(accounts => this.accounts = accounts);
   }
 
-  edit(account: Account) {
-    console.log("edit");
-    console.log(account);
-  }
-
 }

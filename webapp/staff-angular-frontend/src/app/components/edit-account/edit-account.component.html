@@ -1,0 +1,4 @@
+<h1 class="page-header">Edit account</h1>
+<app-account-form [account]="account" [submitButtonName]="'Save'" (submit)="onSubmit()"></app-account-form>
+<a *ngIf="account.user" routerLink="/users/{{account.user.id}}">User</a>
+<a routerLink="/accounts/{{account.id}}/changePassword">Change password</a>
