@@ -22,8 +22,7 @@ export class EditUserComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id: number = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
-    this.userService.getUserById(id).subscribe(user => this.user = user);
+    this.activatedRoute.data.subscribe((data: {user: User}) => {this.user = data.user});
   }
 
   onSubmit() {

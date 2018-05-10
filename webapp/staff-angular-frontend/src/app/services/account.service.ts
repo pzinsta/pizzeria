@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs";
 import {Account} from "../models/Account";
-import {of} from "rxjs/observable/of";
 import {Role} from "../models/Role";
 
 @Injectable()
@@ -14,17 +13,66 @@ export class AccountService {
       enabled: true,
       createdOn: new Date(),
       roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
+    },
+    {
+      id: 0,
+      username: "myUsername",
+      enabled: true,
+      createdOn: new Date(),
+      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
+    },
+    {
+      id: 0,
+      username: "myUsername",
+      enabled: true,
+      createdOn: new Date(),
+      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
+    },
+    {
+      id: 0,
+      username: "myUsername",
+      enabled: true,
+      createdOn: new Date(),
+      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
+    },
+    {
+      id: 0,
+      username: "myUsername",
+      enabled: true,
+      createdOn: new Date(),
+      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
+    },
+    {
+      id: 0,
+      username: "myUsername",
+      enabled: true,
+      createdOn: new Date(),
+      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
+    },
+    {
+      id: 0,
+      username: "myUsername",
+      enabled: true,
+      createdOn: new Date(),
+      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
+    },
+    {
+      id: 111,
+      username: "myUsername",
+      enabled: true,
+      createdOn: new Date(),
+      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
     }
   ];
 
   constructor() { }
 
   getAccounts(): Observable<Account[]> {
-    return of(this.accounts);
+    return Observable.of(this.accounts).delay(1000);
   }
 
   getAccountById(id: number): Observable<Account> {
-    return of(this.accounts[id]);
+    return Observable.of(this.accounts[id]).delay(1000);
   }
 
   updateAccount(account: Account): void {
@@ -36,5 +84,13 @@ export class AccountService {
     console.log("changed password");
     console.log(accountId);
     console.log(password);
+  }
+
+  getTotal(): Observable<number> {
+    return Observable.of(this.accounts.length).delay(1234);
+  }
+
+  getAccountsInRange(start: number, end: number): Observable<Account[]> {
+    return Observable.of(this.accounts.slice(start, end)).delay(1000);
   }
 }

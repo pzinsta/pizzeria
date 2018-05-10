@@ -1,7 +1,30 @@
 <h1 class="page-header">Users</h1>
-<ul>
-  <li *ngFor="let user of users">
-    <app-user [user]="user"></app-user>
-  </li>
-</ul>
-<a routerLink="/users/new">Add a user</a>
+
+<a routerLink="/users/new" class="btn btn-default">Add a user</a>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>First name</th>
+      <th>Last name</th>
+      <th>Email</th>
+      <th>Phone number</th>
+      <th>Account</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users | paginate: {itemsPerPage: usersPerPage, currentPage: p, totalItems: total}">
+      <td>{{user.id}}</td>
+      <td>{{user.firstName}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.phoneNumber}}</td>
+      <td><a *ngIf="user.account" routerLink="/accounts/{{user.account.id}}">Account</a></td>
+      <td><a routerLink="/users/{{user.id}}">Edit</a></td>
+    </tr>
+  </tbody>
+</table>
+<div class="text-center">
+  <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
+</div>
+

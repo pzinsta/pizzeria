@@ -20,8 +20,9 @@ export class EditAccountComponent implements OnInit {
   }
 
   ngOnInit() {
-    const id = parseInt(this.activatedRoute.snapshot.paramMap.get('id'));
-    this.accountService.getAccountById(id).subscribe(account => this.account = account);
+    this.activatedRoute.data.subscribe((data: {account: Account}) => {
+      this.account = data.account;
+    })
   }
 
   onSubmit() {

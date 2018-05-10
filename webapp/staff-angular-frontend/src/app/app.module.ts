@@ -5,12 +5,10 @@ import {AppComponent} from "./app.component";
 import {NavbarComponent} from "./components/navbar/navbar.component";
 import {FooterComponent} from "./components/footer/footer.component";
 import {UserListComponent} from "./components/user-list/user-list.component";
-import {UserComponent} from "./components/user/user.component";
 import {AddUserComponent} from "./components/add-user/add-user.component";
 import {EditUserComponent} from "./components/edit-user/edit-user.component";
 import {UserService} from "./services/user.service";
 import {AccountListComponent} from "./components/account-list/account-list.component";
-import {AccountComponent} from "./components/account/account.component";
 import {AccountService} from "./services/account.service";
 import {AppRoutingModule} from "./app-routing.module";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
@@ -18,7 +16,9 @@ import {EditAccountComponent} from "./components/edit-account/edit-account.compo
 import {FormsModule} from "@angular/forms";
 import {ChangeAccountPasswordComponent} from "./components/change-account-password/change-account-password.component";
 import {AccountFormComponent} from "./components/account-form/account-form.component";
-
+import {NgxPaginationModule} from "ngx-pagination";
+import {AccountResolver} from "./guards/account-resolver";
+import {UserResolver} from "./guards/user-resolver";
 
 @NgModule({
   declarations: [
@@ -26,11 +26,9 @@ import {AccountFormComponent} from "./components/account-form/account-form.compo
     NavbarComponent,
     FooterComponent,
     UserListComponent,
-    UserComponent,
     AddUserComponent,
     EditUserComponent,
     AccountListComponent,
-    AccountComponent,
     DashboardComponent,
     EditAccountComponent,
     ChangeAccountPasswordComponent,
@@ -39,11 +37,14 @@ import {AccountFormComponent} from "./components/account-form/account-form.compo
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgxPaginationModule
   ],
   providers: [
     UserService,
-    AccountService
+    AccountService,
+    AccountResolver,
+    UserResolver
   ],
   bootstrap: [AppComponent]
 })
