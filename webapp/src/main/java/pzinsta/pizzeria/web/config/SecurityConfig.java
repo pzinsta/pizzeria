@@ -41,13 +41,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginPage("/login")
                     .permitAll()
                     .successHandler(authenticationSuccessHandler())
-                     .failureHandler(authenticationFailureHandler())
+                    .failureHandler(authenticationFailureHandler())
                     .and()
                 .rememberMe()
                     .userDetailsService(userDetailsService)
                     .and()
                 .logout()
-                    .invalidateHttpSession(false)
                     .logoutSuccessHandler(logoutSuccessHandler())
                     .permitAll();
 
