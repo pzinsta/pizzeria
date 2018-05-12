@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import pzinsta.pizzeria.web.security.handler.RedirectAuthenticationFailureHandler;
 
 @Configuration
@@ -35,6 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                     .antMatchers("/customer/**").hasRole("REGISTERED_CUSTOMER")
+                    .antMatchers("/authentication/**").authenticated()
+                    .antMatchers("/users/**").hasRole("ADMIN")
+                    .antMatchers("/accounts/**").hasRole("ADMIN")
+                    .antMatchers("/orders/**").hasRole("MANAGER")
                     .anyRequest().permitAll()
                     .and()
                 .formLogin()
@@ -42,6 +47,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .permitAll()
                     .successHandler(authenticationSuccessHandler())
                     .failureHandler(authenticationFailureHandler())
+                    .and()
+                .httpBasic()
+                    .and()
+                .csrf()
+                    .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                     .and()
                 .rememberMe()
                     .userDetailsService(userDetailsService)

@@ -9,16 +9,20 @@ import {AddUserComponent} from "./components/add-user/add-user.component";
 import {ChangeAccountPasswordComponent} from "./components/change-account-password/change-account-password.component";
 import {AccountResolver} from "./guards/account-resolver";
 import {UserResolver} from "./guards/user-resolver";
+import {LoginComponent} from "./components/login/login.component";
+import {RoleGuard} from "./guards/role.guard";
+import {Role} from "./models/Role";
 
 const routes: Routes = [
   {path: '', redirectTo: '/dashboard', pathMatch: 'full'},
-  {path: "dashboard", component: DashboardComponent},
-  {path: 'users', component: UserListComponent},
-  {path: 'accounts', component: AccountListComponent},
-  {path: 'users/new', component: AddUserComponent},
-  {path: 'users/:id', component: EditUserComponent, resolve: {user: UserResolver}},
-  {path: 'accounts/:id', component: EditAccountComponent, resolve: {account: AccountResolver}},
-  {path: 'accounts/:id/changePassword', component: ChangeAccountPasswordComponent}
+  {path: "dashboard", component: DashboardComponent, canActivate: [RoleGuard], data: {roles: [Role.ADMIN]}},
+  {path: 'users', component: UserListComponent, canActivate: [RoleGuard], data: {roles: [Role.ADMIN]}},
+  {path: 'accounts', component: AccountListComponent, canActivate: [RoleGuard], data: {roles: [Role.ADMIN]}},
+  {path: 'users/new', component: AddUserComponent, canActivate: [RoleGuard], data: {roles: [Role.ADMIN]}},
+  {path: 'users/:id', component: EditUserComponent, resolve: {user: UserResolver}, canActivate: [RoleGuard], data: {roles: [Role.ADMIN]}},
+  {path: 'accounts/:id', component: EditAccountComponent, resolve: {account: AccountResolver}, canActivate: [RoleGuard], data: {roles: [Role.ADMIN]}},
+  {path: 'accounts/:id/changePassword', component: ChangeAccountPasswordComponent, canActivate: [RoleGuard], data: {roles: [Role.ADMIN]}},
+  {path: 'login', component: LoginComponent}
 ];
 
 @NgModule({
@@ -26,7 +30,7 @@ const routes: Routes = [
     RouterModule
   ],
   imports: [
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {useHash: true})
   ]
 })
 export class AppRoutingModule {

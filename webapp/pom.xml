@@ -8,6 +8,7 @@
         <braintree-java.version>2.79.0</braintree-java.version>
         <recaptchav2-java.version>1.0.2</recaptchav2-java.version>
         <java-time-jsptags.version>1.1.4</java-time-jsptags.version>
+        <jackson-databind.version>2.9.5</jackson-databind.version>
     </properties>
     <parent>
         <groupId>pzinsta</groupId>
@@ -126,6 +127,12 @@
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-web</artifactId>
             <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
         </dependency>
     </dependencies>
 

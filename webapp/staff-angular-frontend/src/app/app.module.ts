@@ -19,6 +19,11 @@ import {AccountFormComponent} from "./components/account-form/account-form.compo
 import {NgxPaginationModule} from "ngx-pagination";
 import {AccountResolver} from "./guards/account-resolver";
 import {UserResolver} from "./guards/user-resolver";
+import {LoginComponent} from "./components/login/login.component";
+import {AuthenticationService} from "./services/authentication.service";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {RoleGuard} from "./guards/role.guard";
+import {XhrInterceptor} from "./interceptors/xhr.interceptor";
 
 @NgModule({
   declarations: [
@@ -33,18 +38,23 @@ import {UserResolver} from "./guards/user-resolver";
     EditAccountComponent,
     ChangeAccountPasswordComponent,
     AccountFormComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    HttpClientModule
   ],
   providers: [
     UserService,
     AccountService,
+    AuthenticationService,
     AccountResolver,
-    UserResolver
+    UserResolver,
+    RoleGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
