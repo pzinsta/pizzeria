@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {Account} from "../../models/Account";
-import {Role} from "../../models/Role";
+import {Role} from "../../models/role";
 
 @Component({
   selector: 'app-account-form',

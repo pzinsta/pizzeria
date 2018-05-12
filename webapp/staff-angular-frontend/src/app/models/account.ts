@@ -1,5 +1,5 @@
-import {User} from "./User";
-import {Role} from "./Role";
+import {User} from "./user";
+import {Role} from "./role";
 
 export interface Account {
   id?: number;

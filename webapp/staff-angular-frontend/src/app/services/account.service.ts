@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Account} from "../models/Account";
-import {Role} from "../models/Role";
+import {Role} from "../models/role";
 
 @Injectable()
 export class AccountService {

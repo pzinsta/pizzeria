@@ -11,7 +11,7 @@ import {AccountResolver} from "./guards/account-resolver";
 import {UserResolver} from "./guards/user-resolver";
 import {LoginComponent} from "./components/login/login.component";
 import {RoleGuard} from "./guards/role.guard";
-import {Role} from "./models/Role";
+import {Role} from "./models/role";
 
 const routes: Routes = [
   {path: '', redirectTo: '/dashboard', pathMatch: 'full'},

@@ -3,7 +3,7 @@ import {User} from "../../models/User";
 import {UserService} from "../../services/user.service";
 import {Location} from "@angular/common";
 import {Account} from "../../models/Account";
-import {Role} from "../../models/Role";
+import {Role} from "../../models/role";
 
 @Component({
   selector: 'app-add-user',

@@ -5,9 +5,9 @@
       <a routerLink="" class="navbar-brand">Pizzeria <small>staff</small></a></div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-9">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Link</a></li>
-        <li><a href="#">Link</a></li>
+        <li routerLinkActive="active"><a routerLink="/dashboard">Dashboard</a></li>
+        <li routerLinkActive="active" *ngIf="!isAuthenticated()"><a routerLink="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Log in</a></li>
+        <li *ngIf="isAuthenticated()"><a (click)="logout()">Log out</a></li>
       </ul>
     </div>
   </div>
