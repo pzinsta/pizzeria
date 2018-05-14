@@ -24,6 +24,7 @@ import {AuthenticationService} from "./services/authentication.service";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {RoleGuard} from "./guards/role.guard";
 import {XhrInterceptor} from "./interceptors/xhr.interceptor";
+import {HttpXsrfInterceptor} from "./interceptors/http-xsrf.interceptor";
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import {XhrInterceptor} from "./interceptors/xhr.interceptor";
     AccountResolver,
     UserResolver,
     RoleGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: XhrInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: HttpXsrfInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })
