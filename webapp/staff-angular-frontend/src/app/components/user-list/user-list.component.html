@@ -20,8 +20,8 @@
       <td>{{user.lastName}}</td>
       <td>{{user.email}}</td>
       <td>{{user.phoneNumber}}</td>
-      <td><a *ngIf="user.accountId" routerLink="/accounts/{{user.accountId}}">Account</a></td>
-      <td><a routerLink="/users/{{user.id}}">Edit</a></td>
+      <td><a *ngIf="user.accountId" routerLink="/accounts/{{user.accountId}}" class="btn btn-default"><i class="fa fa-lock" aria-hidden="true"></i> Account</a></td>
+      <td><a routerLink="/users/{{user.id}}" class="btn btn-default"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</a></td>
     </tr>
   </tbody>
 </table>
