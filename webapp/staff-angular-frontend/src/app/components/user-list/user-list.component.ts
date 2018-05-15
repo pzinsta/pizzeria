@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/User";
-import {forkJoin} from "rxjs/observable/forkJoin";
 
 @Component({
   selector: 'app-user-list',
@@ -23,17 +22,16 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userService.getUsers().subscribe(users => this.users = users);
+    this.onPageChange(this.p);
   }
 
   onPageChange(page: number) {
     this.loading = true;
-    const start: number = (this.p - 1) * this.usersPerPage;
-    const end: number = start + this.usersPerPage;
-    forkJoin(this.userService.getTotal(), this.userService.getUsersInRange(start, end))
-      .subscribe(([total, users]) => {
-        this.total = total;
-        this.users = users;
+    const start: number = (page - 1) * this.usersPerPage;
+    this.userService.getPaginationRange(start, this.usersPerPage)
+      .subscribe(response => {
+        this.total = response['totalCount'];
+        this.users = response['users'];
         this.p = page;
         this.loading = false;
       });

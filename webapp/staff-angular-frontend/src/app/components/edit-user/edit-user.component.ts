@@ -26,8 +26,14 @@ export class EditUserComponent implements OnInit {
   }
 
   onSubmit() {
-    this.userService.updateUser(this.user);
-    this.location.back();
+    this.userService.updateUser(this.user).subscribe(
+      response => {
+        this.location.back();
+      },
+      error => {
+        console.error(error);
+      }
+    );
   }
 
 }

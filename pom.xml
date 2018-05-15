@@ -26,6 +26,7 @@
         <commons-text.version>1.3</commons-text.version>
         <commons-rng-simple.version>1.0</commons-rng-simple.version>
         <commons-io.version>2.6</commons-io.version>
+        <jackson-annotations.version>2.9.0</jackson-annotations.version>
     </properties>
 
     <!-- TODO: Dependency management -->
@@ -166,6 +167,11 @@
                 <version>${commons-io.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-annotations</artifactId>
+                <version>${jackson-annotations.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

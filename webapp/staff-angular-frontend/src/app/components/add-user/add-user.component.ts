@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {User} from "../../models/User";
 import {UserService} from "../../services/user.service";
-import {Location} from "@angular/common";
 import {Account} from "../../models/Account";
 import {Role} from "../../models/role";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-add-user',
@@ -31,18 +31,21 @@ export class AddUserComponent implements OnInit {
 
   showPassword: boolean = false;
 
-  constructor(private userService: UserService, private location: Location) { }
+  constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {
   }
 
   onSubmit() {
-    if (this.createAccount) {
-      this.user.account = this.account;
-      this.account.user = this.user;
-    }
-    this.userService.addUser(this.user);
-    this.location.back();
+    this.userService.addUser(this.user, this.createAccount ? this.account : undefined)
+      .subscribe(
+        response => {
+          this.router.navigate(["users"]);
+        },
+        error => {
+          console.error(error);
+        }
+      );
   }
 
   hasRole(role: Role) {

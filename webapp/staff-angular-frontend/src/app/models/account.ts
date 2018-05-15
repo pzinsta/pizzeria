@@ -1,4 +1,3 @@
-import {User} from "./user";
 import {Role} from "./role";
 
 export interface Account {
@@ -10,6 +9,6 @@ export interface Account {
   credentialsExpired?: boolean;
   accountLocked?: boolean;
   createdOn?: Date;
-  user?: User;
+  userId?: number;
   roles?: Role[]
 }

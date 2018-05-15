@@ -1,180 +1,37 @@
 import {Injectable} from "@angular/core";
 import {User} from "../models/User";
 import {Observable} from "rxjs";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {environment} from "../../environments/environment";
+import {Account} from "../models/account";
 
 @Injectable()
 export class UserService {
 
-  users: User[] = [
-    {
-      id: 0,
-      email: 'jack@gmail.com',
-      firstName: 'Jack',
-      lastName: 'Smith',
-      phoneNumber: '12345678'
-    },
-    {
-      id: 1,
-      email: 'john@gmail.com',
-      firstName: 'John',
-      lastName: 'Mellon',
-      phoneNumber: '878654321'
-    },
-    {
-      id: 0,
-      email: 'jack@gmail.com',
-      firstName: 'Jack',
-      lastName: 'Smith',
-      phoneNumber: '12345678'
-    },
-    {
-      id: 1,
-      email: 'john@gmail.com',
-      firstName: 'John',
-      lastName: 'Mellon',
-      phoneNumber: '878654321'
-    },
-    {
-      id: 0,
-      email: 'jack@gmail.com',
-      firstName: 'Jack',
-      lastName: 'Smith',
-      phoneNumber: '12345678'
-    },
-    {
-      id: 1,
-      email: 'john@gmail.com',
-      firstName: 'John',
-      lastName: 'Mellon',
-      phoneNumber: '878654321'
-    },
-    {
-      id: 0,
-      email: 'jack@gmail.com',
-      firstName: 'Jack',
-      lastName: 'Smith',
-      phoneNumber: '12345678'
-    },
-    {
-      id: 1,
-      email: 'john@gmail.com',
-      firstName: 'John',
-      lastName: 'Mellon',
-      phoneNumber: '878654321'
-    },
-    {
-      id: 0,
-      email: 'jack@gmail.com',
-      firstName: 'Jack',
-      lastName: 'Smith',
-      phoneNumber: '12345678'
-    },
-    {
-      id: 1,
-      email: 'john@gmail.com',
-      firstName: 'John',
-      lastName: 'Mellon',
-      phoneNumber: '878654321'
-    },
-    {
-      id: 0,
-      email: 'jack@gmail.com',
-      firstName: 'Jack',
-      lastName: 'Smith',
-      phoneNumber: '12345678'
-    },
-    {
-      id: 1,
-      email: 'john@gmail.com',
-      firstName: 'John',
-      lastName: 'Mellon',
-      phoneNumber: '878654321'
-    },
-    {
-      id: 0,
-      email: 'jack@gmail.com',
-      firstName: 'Jack',
-      lastName: 'Smith',
-      phoneNumber: '12345678'
-    },
-    {
-      id: 1,
-      email: 'john@gmail.com',
-      firstName: 'John',
-      lastName: 'Mellon',
-      phoneNumber: '878654321'
-    },
-    {
-      id: 0,
-      email: 'jack@gmail.com',
-      firstName: 'Jack',
-      lastName: 'Smith',
-      phoneNumber: '12345678'
-    },
-    {
-      id: 1,
-      email: 'john@gmail.com',
-      firstName: 'John',
-      lastName: 'Mellon',
-      phoneNumber: '878654321'
-    },
-    {
-      id: 0,
-      email: 'jack@gmail.com',
-      firstName: 'Jack',
-      lastName: 'Smith',
-      phoneNumber: '12345678'
-    },
-    {
-      id: 1,
-      email: 'john@gmail.com',
-      firstName: 'John',
-      lastName: 'Mellon',
-      phoneNumber: '878654321'
-    },
-    {
-      id: 0,
-      email: 'jack@gmail.com',
-      firstName: 'Jack',
-      lastName: 'Smith',
-      phoneNumber: '12345678'
-    },
-    {
-      id: 1111,
-      email: 'john@gmail.com',
-      firstName: 'John',
-      lastName: 'Mellon',
-      phoneNumber: '878654321'
-    }
-  ];
-
-  constructor() {
+  constructor(private httpClient: HttpClient) {
   }
 
-  // todo replace with rest call
   getUsers(): Observable<User[]> {
-    return Observable.of(this.users).delay(1000);
+    return this.httpClient.get<User[]>(environment.USERS_RESOURCE_URL);
   }
 
-  getUsersInRange(start: number, end: number): Observable<User[]> {
-    return Observable.of(this.users.slice(start, end)).delay(1000);
-  }
+  getPaginationRange(offset: number, limit: number): Observable<object> {
+    let params = new HttpParams()
+      .append("offset", offset.toString())
+      .append("limit", limit.toString());
 
-  getTotal(): Observable<number> {
-    return Observable.of(this.users.length).delay(1000);
+    return this.httpClient.get(environment.USERS_RESOURCE_URL, {params: params});
   }
 
   getUserById(id: number): Observable<User> {
-    return Observable.of(this.users[id]).delay(2000);
+    return this.httpClient.get(environment.USERS_RESOURCE_URL + "/" + id);
   }
 
-  updateUser(user: User): void {
-    console.log(user);
-    console.log("updated");
+  updateUser(user: User): Observable<User> {
+    return this.httpClient.put(environment.USERS_RESOURCE_URL, user);
   }
 
-  addUser(user: User): void {
-    console.log(user);
-    console.log("added");
+  addUser(user: User, account: Account): Observable<User> {
+    return this.httpClient.post(environment.USERS_RESOURCE_URL, {user, account});
   }
 }
