@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from "@angular/core";
 import {AccountService} from "../../services/account.service";
 import {Account} from "../../models/Account";
-import {forkJoin} from "rxjs/observable/forkJoin";
 
 @Component({
   selector: 'app-account-list',
@@ -22,17 +21,16 @@ export class AccountListComponent implements OnInit {
   constructor(private accountService: AccountService) { }
 
   ngOnInit() {
-    this.accountService.getAccounts().subscribe(accounts => this.accounts = accounts);
+    this.onPageChange(this.p);
   }
 
   onPageChange(page: number) {
     this.loading = true;
-    const start: number = (this.p - 1) * this.accountsPerPage;
-    const end: number = start + this.accountsPerPage;
-    forkJoin(this.accountService.getTotal(), this.accountService.getAccountsInRange(start, end))
-      .subscribe(([total, accounts]) => {
-        this.total = total;
-        this.accounts = accounts;
+    const start: number = (page - 1) * this.accountsPerPage;
+    this.accountService.getAccountsInRange(start, this.accountsPerPage)
+      .subscribe(response => {
+        this.total = response['totalCount'];
+        this.accounts = response['accounts'];
         this.p = page;
         this.loading = false;
       });

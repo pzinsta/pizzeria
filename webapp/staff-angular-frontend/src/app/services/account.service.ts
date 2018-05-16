@@ -1,96 +1,35 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {Account} from "../models/Account";
-import {Role} from "../models/role";
+import {HttpClient, HttpParams} from "@angular/common/http";
+import {environment} from "../../environments/environment";
 
 @Injectable()
 export class AccountService {
 
-  accounts: Account[] = [
-    {
-      id: 0,
-      username: "myUsername",
-      enabled: true,
-      createdOn: new Date(),
-      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
-    },
-    {
-      id: 0,
-      username: "myUsername",
-      enabled: true,
-      createdOn: new Date(),
-      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
-    },
-    {
-      id: 0,
-      username: "myUsername",
-      enabled: true,
-      createdOn: new Date(),
-      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
-    },
-    {
-      id: 0,
-      username: "myUsername",
-      enabled: true,
-      createdOn: new Date(),
-      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
-    },
-    {
-      id: 0,
-      username: "myUsername",
-      enabled: true,
-      createdOn: new Date(),
-      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
-    },
-    {
-      id: 0,
-      username: "myUsername",
-      enabled: true,
-      createdOn: new Date(),
-      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
-    },
-    {
-      id: 0,
-      username: "myUsername",
-      enabled: true,
-      createdOn: new Date(),
-      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
-    },
-    {
-      id: 111,
-      username: "myUsername",
-      enabled: true,
-      createdOn: new Date(),
-      roles: [Role.DELIVERYPERSON, Role.REGISTERED_CUSTOMER]
-    }
-  ];
-
-  constructor() { }
+  constructor(private httpClient: HttpClient) { }
 
   getAccounts(): Observable<Account[]> {
-    return Observable.of(this.accounts).delay(1000);
+    return this.httpClient.get<Account[]>(environment.ACCOUNTS_RESOURCE_URL);
   }
 
   getAccountById(id: number): Observable<Account> {
-    return Observable.of(this.accounts[id]).delay(1000);
+    return this.httpClient.get(environment.ACCOUNTS_RESOURCE_URL + "/" + id);
   }
 
-  updateAccount(account: Account): void {
-    console.log("account updated");
-    console.log(account);
+  updateAccount(account: Account): Observable<Account> {
+    return this.httpClient.put(environment.ACCOUNTS_RESOURCE_URL, account);
   }
 
-  changePassword(accountId: number, password: string): void {
-    console.log("changed password");
-    console.log(accountId);
-    console.log(password);
+  changePassword(accountId: number, password: string): Observable<any> {
+    return this.httpClient.patch(environment.ACCOUNTS_RESOURCE_URL + "/" + accountId + "/password", password);
   }
 
-  getTotal(): Observable<number> {
-    return Observable.of(this.accounts.length).delay(1234);
-  }
+  getAccountsInRange(offset: number, limit: number): Observable<object> {
+    let params = new HttpParams()
+      .append("offset", offset.toString())
+      .append("limit", limit.toString());
 
-  getAccountsInRange(start: number, end: number): Observable<Account[]> {
-    return Observable.of(this.accounts.slice(start, end)).delay(1000);
+    return this.httpClient.get(environment.ACCOUNTS_RESOURCE_URL, {params: params});
   }
 }

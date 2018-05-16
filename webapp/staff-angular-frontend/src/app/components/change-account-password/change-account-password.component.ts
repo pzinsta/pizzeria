@@ -24,8 +24,16 @@ export class ChangeAccountPasswordComponent implements OnInit {
   }
 
   onSubmit() {
-    this.accountService.changePassword(this.accountId, this.password);
-    this.location.back();
+    this.accountService.changePassword(this.accountId, this.password)
+      .subscribe(
+        response => {
+          this.location.back();
+        },
+        error => {
+          console.error(error);
+        }
+      );
+
   }
 
 }

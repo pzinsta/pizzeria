@@ -5,5 +5,6 @@
 
 export const environment = {
   production: false,
-  USERS_RESOURCE_URL: 'http://localhost:8081/pizzeria/users'
+  USERS_RESOURCE_URL: 'http://localhost:8081/pizzeria/users',
+  ACCOUNTS_RESOURCE_URL: 'http://localhost:8081/pizzeria/accounts'
 };

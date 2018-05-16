@@ -15,7 +15,6 @@ import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {EditAccountComponent} from "./components/edit-account/edit-account.component";
 import {FormsModule} from "@angular/forms";
 import {ChangeAccountPasswordComponent} from "./components/change-account-password/change-account-password.component";
-import {AccountFormComponent} from "./components/account-form/account-form.component";
 import {NgxPaginationModule} from "ngx-pagination";
 import {AccountResolver} from "./guards/account-resolver";
 import {UserResolver} from "./guards/user-resolver";
@@ -38,7 +37,6 @@ import {HttpXsrfInterceptor} from "./interceptors/http-xsrf.interceptor";
     DashboardComponent,
     EditAccountComponent,
     ChangeAccountPasswordComponent,
-    AccountFormComponent,
     LoginComponent,
   ],
   imports: [
