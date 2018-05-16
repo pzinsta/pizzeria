@@ -1,4 +1,4 @@
-<h1 class="page-header">Edit user</h1>
+<h1 class="page-header"><i class="fa fa-pencil" aria-hidden="true"></i> Edit user</h1>
 <form (submit)="onSubmit()">
   <div class="form-group">
     <label for="id">ID</label>
@@ -20,5 +20,5 @@
     <label for="phoneNumber">Phone number</label>
     <input type="text" class="form-control" id="phoneNumber" [(ngModel)]="user.phoneNumber" name="phoneNumber">
   </div>
-  <button class="btn btn-default">Save</button>
+  <button class="btn btn-default"><i class="fa fa-floppy-o" aria-hidden="true"></i> Save</button>
 </form>

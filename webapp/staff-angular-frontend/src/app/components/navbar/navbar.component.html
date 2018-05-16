@@ -7,7 +7,7 @@
       <ul class="nav navbar-nav">
         <li routerLinkActive="active"><a routerLink="/dashboard">Dashboard</a></li>
         <li routerLinkActive="active" *ngIf="!isAuthenticated()"><a routerLink="/login"><i class="fa fa-sign-in" aria-hidden="true"></i> Log in</a></li>
-        <li *ngIf="isAuthenticated()"><a (click)="logout()">Log out</a></li>
+        <li *ngIf="isAuthenticated()"><a (click)="logout()"><i class="fa fa-sign-out" aria-hidden="true"></i> Log out</a></li>
       </ul>
     </div>
   </div>
