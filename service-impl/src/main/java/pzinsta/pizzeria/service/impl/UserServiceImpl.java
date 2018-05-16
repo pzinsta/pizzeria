@@ -93,16 +93,15 @@ public class UserServiceImpl implements UserService {
         return userDTO;
     }
 
-    private static Account transformAccountDTOToAccount(AccountDTO accountDTO1) {
+    private static Account transformAccountDTOToAccount(AccountDTO accountDTO) {
         Account account = new Account();
-        account.setUsername(accountDTO1.getUsername());
-        account.setPassword(accountDTO1.getPassword());
-        account.setEnabled(accountDTO1.isEnabled());
-        account.setAccountExpired(accountDTO1.isAccountExpired());
-        account.setAccountLocked(accountDTO1.isAccountLocked());
-        account.setCredentialsExpired(accountDTO1.isCredentialsExpired());
+        account.setUsername(accountDTO.getUsername());
+        account.setEnabled(accountDTO.isEnabled());
+        account.setAccountExpired(accountDTO.isAccountExpired());
+        account.setAccountLocked(accountDTO.isAccountLocked());
+        account.setCredentialsExpired(accountDTO.isCredentialsExpired());
         account.setCreatedOn(Instant.now());
-        account.setRoles(accountDTO1.getRoles());
+        account.setRoles(accountDTO.getRoles());
         return account;
     }
 
