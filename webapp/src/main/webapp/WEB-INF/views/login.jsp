@@ -12,6 +12,7 @@
     <body>
         <div class="container">
             <%@ include file="fragments/navbar.jspf" %>
+            <h1 class="page-header text-center">Log in</h1>
             <div class="row">
                 <div class="col-md-6 col-md-offset-3 col-xs-12 col-sm-8 col-sm-offset-2">
                     <form method="post" class="form-horizontal" id="login-form">

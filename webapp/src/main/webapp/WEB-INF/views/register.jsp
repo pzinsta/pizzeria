@@ -10,7 +10,7 @@
     <body>
         <div class="container">
             <%@ include file="fragments/navbar.jspf" %>
-
+            <h1 class="page-header text-center">Register</h1>
             <div class="row">
                 <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-12">
                     <form:form method="post" modelAttribute="customerRegistrationForm">
