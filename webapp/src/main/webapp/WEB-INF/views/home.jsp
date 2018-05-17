@@ -15,13 +15,14 @@
 
             <div class="jumbotron">
                 <h1 class="text-center">Build a pizza with our pizza builder</h1>
+                <br>
                 <spring:url var="builderUrl" value="/builder"/>
                 <div class="text-center">
                     <a class="btn btn-lg btn-primary" href="${builderUrl}" role="button">Start building <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
                 </div>
             </div>
 
-            <div class="panel panel-info">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <span class="panel-title"><i class="fa fa-shopping-cart" aria-hidden="true"></i> My Cart</span>
                     <c:if test="${not empty cart.orderItems}">
@@ -98,7 +99,7 @@
                 </div>
             </div>
 
-            <div class="panel panel-primary">
+            <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title"><i class="fa fa-cutlery" aria-hidden="true"></i> Specialty Pizzas</h3>
                 </div>
