@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AccountService} from "../../services/account.service";
 import {Location} from "@angular/common";
-import {Account} from "../../models/Account";
+import {Account} from "../../models/account";
 import {Role} from "../../models/role";
 
 @Component({
