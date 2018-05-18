@@ -3,12 +3,10 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Role} from "../models/role";
 import {Observable} from "rxjs/Observable";
 import {catchError, map} from "rxjs/operators";
+import {environment} from "../../environments/environment";
 
 @Injectable()
 export class AuthenticationService {
-
-  authenticationUrl: string = "http://localhost:8081/pizzeria/authentication";
-  logoutUrl: string = "http://localhost:8081/pizzeria/logout";
 
   username: string = "";
   password: string = "";
@@ -18,7 +16,7 @@ export class AuthenticationService {
   authenticated: boolean = false;
 
   constructor(private httpClient: HttpClient) {
-    this.httpClient.get(this.authenticationUrl, {}).subscribe(
+    this.httpClient.get(environment.AUTHENTICATION_URL, {}).subscribe(
       response => this.authenticated = true,
       error => this.authenticated = false
     );
@@ -30,7 +28,7 @@ export class AuthenticationService {
     const headers = new HttpHeaders({
       authorization : 'Basic ' + btoa(username + ':' + password)
     });
-    return this.httpClient.get(this.authenticationUrl, {headers: headers})
+    return this.httpClient.get(environment.AUTHENTICATION_URL, {headers: headers})
       .pipe(
         map(response => true),
         catchError(error => Observable.of(false))
@@ -39,13 +37,13 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    this.httpClient.post(this.logoutUrl, {}).subscribe(
+    this.httpClient.post(environment.LOGOUT_URL, {}).subscribe(
       response => this.authenticated = false
     );
   }
 
   hasRole(role: Role): Observable<boolean> {
-    return this.httpClient.get(this.authenticationUrl, {}).pipe(
+    return this.httpClient.get(environment.AUTHENTICATION_URL, {}).pipe(
       map(response => response['roles'].indexOf(this.rolePrefix + role) > -1)
     );
   }

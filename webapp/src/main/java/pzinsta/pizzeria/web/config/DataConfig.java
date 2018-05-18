@@ -1,12 +1,14 @@
 package pzinsta.pizzeria.web.config;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -15,13 +17,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-import java.io.IOException;
-import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
 @ComponentScan("pzinsta.pizzeria.dao")
 @PropertySource("classpath:datasource.properties")
+@PropertySource("classpath:hibernate.properties")
 public class DataConfig {
 
     @Value("${datasource.driverClassName}")
@@ -32,6 +33,9 @@ public class DataConfig {
     private String username;
     @Value("${datasource.password}")
     private String password;
+
+    @Autowired
+    private Environment environment;
 
     @Bean
     public DataSource dataSource() {
@@ -44,17 +48,21 @@ public class DataConfig {
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws IOException {
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(true);
-
-        Properties hibernateProperties = PropertiesLoaderUtils.loadAllProperties("hibernate.properties");
 
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setDataSource(dataSource());
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPackagesToScan("pzinsta.pizzeria.model");
-        factory.setJpaProperties(hibernateProperties);
+        factory.setJpaPropertyMap(
+                ImmutableMap.of(
+                        "hibernate.dialect", environment.getProperty("hibernate.dialect"),
+                        "hibernate.hbm2ddl.auto", environment.getProperty("hibernate.hbm2ddl.auto"),
+                        "hibernate.hbm2ddl.import_files_sql_extractor", environment.getProperty("hibernate.hbm2ddl.import_files_sql_extractor"),
+                        "hibernate.hbm2ddl.import_files", environment.getProperty("hibernate.hbm2ddl.import_files")
+                ));
         return factory;
     }
 
