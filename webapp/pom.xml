@@ -9,6 +9,7 @@
         <recaptchav2-java.version>1.0.2</recaptchav2-java.version>
         <java-time-jsptags.version>1.1.4</java-time-jsptags.version>
         <jackson-databind.version>2.9.5</jackson-databind.version>
+        <maven-dependency-plugin.version>3.0.1</maven-dependency-plugin.version>
     </properties>
     <parent>
         <groupId>pzinsta</groupId>
@@ -221,6 +222,19 @@
                                 </resource>
                             </resources>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${maven-dependency-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>package</phase>
+                        <goals><goal>copy-dependencies</goal></goals>
                     </execution>
                 </executions>
             </plugin>
