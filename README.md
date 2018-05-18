@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/pzinsta/pizzeria-v2.svg?branch=master)](https://travis-ci.org/pzinsta/pizzeria-v2)
+[![Build Status](https://travis-ci.org/pzinsta/pizzeria.svg?branch=master)](https://travis-ci.org/pzinsta/pizzeria)
 # Pizzeria
 
 One Paragraph of project description goes here
