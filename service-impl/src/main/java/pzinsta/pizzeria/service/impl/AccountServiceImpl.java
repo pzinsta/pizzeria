@@ -75,6 +75,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public long getTotalCount() {
         return accountDAO.getCount();
     }
