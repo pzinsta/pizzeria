@@ -17,7 +17,7 @@ import java.util.Set;
 @Component
 public class BraintreeAction {
 
-    private final static Set<Status> TRANSACTION_SUCCESS_STATUSES = EnumSet.of(
+    private static final Set<Status> TRANSACTION_SUCCESS_STATUSES = EnumSet.of(
             Status.AUTHORIZED,
             Status.AUTHORIZING,
             Status.SETTLED,

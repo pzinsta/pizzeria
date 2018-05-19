@@ -37,7 +37,7 @@ import java.util.stream.IntStream;
 @RequestMapping("/review/order")
 public class ReviewController {
 
-    private final static int[] RATINGS = IntStream.rangeClosed(1, 10).toArray();
+    private static final int[] RATINGS = IntStream.rangeClosed(1, 10).toArray();
 
     private OrderService orderService;
     private FileStorageService fileStorageService;

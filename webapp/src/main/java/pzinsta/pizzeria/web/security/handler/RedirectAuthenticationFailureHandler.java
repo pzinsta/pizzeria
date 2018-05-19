@@ -20,7 +20,7 @@ public class RedirectAuthenticationFailureHandler implements AuthenticationFailu
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     private String defaultReturnUrl = "/";
     private String queryParam = "loginError";
-    private final static Logger LOGGER = LogManager.getLogger(RedirectAuthenticationFailureHandler.class);
+    private static final Logger LOGGER = LogManager.getLogger(RedirectAuthenticationFailureHandler.class);
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {

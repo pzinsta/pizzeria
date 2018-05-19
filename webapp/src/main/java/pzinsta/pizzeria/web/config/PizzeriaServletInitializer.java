@@ -7,10 +7,10 @@ import javax.servlet.ServletRegistration;
 
 public class PizzeriaServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    private final static String MULTIPART_LOCATION = System.getenv("java.io.tmpdir");
-    private final static long MAX_FILE_SIZE = 10 * 1024 * 1024;
-    private final static long MAX_REQUEST_SIZE = 10 * 1024 * 1024;
-    private final static int FILE_SIZE_THRESHOLD = 0;
+    private static final String MULTIPART_LOCATION = System.getenv("java.io.tmpdir");
+    private static final long MAX_FILE_SIZE = 10 * 1024 * 1024;
+    private static final long MAX_REQUEST_SIZE = 10 * 1024 * 1024;
+    private static final int FILE_SIZE_THRESHOLD = 0;
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
