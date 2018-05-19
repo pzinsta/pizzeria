@@ -1,4 +1,10 @@
 [![Build Status](https://travis-ci.org/pzinsta/pizzeria.svg?branch=master)](https://travis-ci.org/pzinsta/pizzeria)
+[![Sonar Cloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=alert_status)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
+[![Sonar Cloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
+[![Sonar Cloud Security Rating](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=security_rating)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
+[![Sonar Cloud Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=ncloc)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
+[![Sonar Cloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=coverage)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
+
 # Pizzeria
 
 One Paragraph of project description goes here
