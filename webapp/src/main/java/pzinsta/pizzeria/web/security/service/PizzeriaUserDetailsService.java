@@ -24,7 +24,7 @@ public class PizzeriaUserDetailsService implements UserDetailsService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         Optional<Account> accountOptional = accountService.getAccountByUsername(username);
         Account account = accountOptional.orElseThrow(() -> new UsernameNotFoundException("Username not found."));
         return User.builder()
