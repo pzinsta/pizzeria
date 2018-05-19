@@ -25,13 +25,13 @@
         })(i);
     }
 
-    for (var i = 0; i < noneRadioButtons.length; i++) {
+    for (var j = 0; j < noneRadioButtons.length; j++) {
         (function (i) {
             noneRadioButtons[i].onchange = function () {
                 if (this.checked) {
                     disableX2(noneRadioButtons[i].name);
                 }
             };
-        })(i);
+        })(j);
     }
 })();
