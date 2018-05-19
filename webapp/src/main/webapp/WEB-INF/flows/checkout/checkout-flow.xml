@@ -102,12 +102,12 @@
     </view-state>
 
     <action-state id="chargeCustomer">
-        <evaluate expression="braintreeAction.chargeCustomer(flowScope.nonce, flowScope.orderCost, flowScope.deliveryCost)" result="flowScope.transactionId"/>
+        <evaluate expression="braintreeAction.chargeCustomer(flowScope.nonce, flowScope.orderCost, flowScope.deliveryCost)" result="flowScope.order.paymentTransactionId"/>
         <transition to="isPaymentSuccessful"/>
     </action-state>
 
     <decision-state id="isPaymentSuccessful">
-        <if test="braintreeAction.isTransactionSuccessful(flowScope.transactionId)" then="postOrder" else="payment"/>
+        <if test="braintreeAction.isTransactionSuccessful(flowScope.order.paymentTransactionId)" then="postOrder" else="payment"/>
     </decision-state>
 
     <action-state id="postOrder">
