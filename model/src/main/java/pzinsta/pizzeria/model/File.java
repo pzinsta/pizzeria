@@ -5,9 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Entity
-public class File {
+public class File implements Serializable {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
     private Long id;
