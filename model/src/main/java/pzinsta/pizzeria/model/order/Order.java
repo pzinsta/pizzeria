@@ -1,7 +1,6 @@
 package pzinsta.pizzeria.model.order;
 
 import com.google.common.collect.Range;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
@@ -23,7 +22,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -48,9 +46,6 @@ public class Order implements Serializable {
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
 	private List<OrderItem> orderItems = new ArrayList<>();
-
-    @CreationTimestamp
-	private Instant placedDate;
 
     @OneToOne(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
 	private Delivery delivery;
@@ -82,14 +77,6 @@ public class Order implements Serializable {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-	}
-
-	public Instant getPlacedDate() {
-		return placedDate;
-	}
-
-	public void setPlacedDate(Instant placedDate) {
-		this.placedDate = placedDate;
 	}
 
 	public MonetaryAmount getCost() {
