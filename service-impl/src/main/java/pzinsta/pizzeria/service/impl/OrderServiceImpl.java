@@ -234,12 +234,12 @@ public class OrderServiceImpl implements OrderService {
 
     private PizzaSide createPizzaSide(Map<Long, Integer> ingredientIdByQuantity) {
         PizzaSide pizzaSide = new PizzaSide();
-        List<PizzaItem> pizzaItems = ingredientIdByQuantity.entrySet().stream().map(longIntegerEntry -> createPizzaItem(pizzaSide, longIntegerEntry)).collect(toList());
+        List<PizzaItem> pizzaItems = ingredientIdByQuantity.entrySet().stream().map(this::createPizzaItem).collect(toList());
         pizzaSide.setPizzaItems(pizzaItems);
         return pizzaSide;
     }
 
-    private PizzaItem createPizzaItem(PizzaSide leftPizzaSide, Map.Entry<Long, Integer> longIntegerEntry) {
+    private PizzaItem createPizzaItem(Map.Entry<Long, Integer> longIntegerEntry) {
         Ingredient ingredient = ingredientDAO.findById(longIntegerEntry.getKey()).orElseThrow(RuntimeException::new);
         PizzaItem pizzaItem = new PizzaItem();
         pizzaItem.setQuantity(longIntegerEntry.getValue());
