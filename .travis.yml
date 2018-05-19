@@ -3,9 +3,7 @@ sudo: false
 install: true
 addons:
   sonarcloud:
-    organization: "your_organization_key"
-    token:
-      secure: "your_token_encrypted_with_travis_encrypt_tool"
+    organization: "pzinsta-github"
 jdk:
   - oraclejdk8
 script:
