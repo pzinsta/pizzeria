@@ -3,7 +3,6 @@ package pzinsta.pizzeria.model.pizza;
 import org.hibernate.annotations.Check;
 import pzinsta.pizzeria.model.Constants;
 
-import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -97,10 +96,6 @@ public class Pizza implements Serializable {
 		this.size = size;
 	}
 	
-	public MonetaryAmount getCost() {
-		return crust.getPrice().add(leftPizzaSide.getCost()).add(rightPizzaSide.getCost());
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof Pizza)) return false;

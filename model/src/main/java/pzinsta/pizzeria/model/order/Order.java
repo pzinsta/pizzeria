@@ -4,12 +4,10 @@ import com.google.common.collect.Range;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.Length;
-import org.javamoney.moneta.Money;
 import pzinsta.pizzeria.model.Constants;
 import pzinsta.pizzeria.model.delivery.Delivery;
 import pzinsta.pizzeria.model.user.Customer;
 
-import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-
-import static java.math.BigDecimal.ZERO;
 
 @Entity
 @Table(name = "orders")
@@ -77,10 +73,6 @@ public class Order implements Serializable {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-	}
-
-	public MonetaryAmount getCost() {
-		return orderItems.stream().map(OrderItem::getCost).reduce(Money.of(ZERO, "USD"), MonetaryAmount::add);
 	}
 
 	public List<OrderItem> getOrderItems() {

@@ -1,10 +1,8 @@
 package pzinsta.pizzeria.model.pizza;
 
 import org.hibernate.annotations.ColumnDefault;
-import org.javamoney.moneta.Money;
 import pzinsta.pizzeria.model.Constants;
 
-import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,8 +14,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
-
-import static java.math.BigDecimal.ZERO;
 
 @Entity
 public class PizzaSide implements Serializable {
@@ -56,10 +52,6 @@ public class PizzaSide implements Serializable {
 		this.pizzaItems = items;
 	}
 	
-	public MonetaryAmount getCost() {
-		return pizzaItems.stream().map(PizzaItem::getCost).reduce(Money.of(ZERO, "USD"), MonetaryAmount::add);
-	}
-
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof PizzaSide)) return false;

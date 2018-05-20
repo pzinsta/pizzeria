@@ -33,6 +33,10 @@ public class PizzaSize  implements Serializable {
 	@Convert(converter = MonetaryAmountAttributeConverter.class)
 	private MonetaryAmount price;
 
+    @Positive
+    @Column(nullable = false)
+	private double ingredientCostFactor;
+
 	public Long getId() {
 		return id;
 	}
@@ -76,5 +80,13 @@ public class PizzaSize  implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(getName(), getPrice());
+	}
+
+	public double getIngredientCostFactor() {
+		return ingredientCostFactor;
+	}
+
+	public void setIngredientCostFactor(double ingredientCostFactor) {
+		this.ingredientCostFactor = ingredientCostFactor;
 	}
 }

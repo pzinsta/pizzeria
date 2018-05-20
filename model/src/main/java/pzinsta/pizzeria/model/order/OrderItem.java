@@ -3,7 +3,6 @@ package pzinsta.pizzeria.model.order;
 import pzinsta.pizzeria.model.Constants;
 import pzinsta.pizzeria.model.pizza.Pizza;
 
-import javax.money.MonetaryAmount;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -51,10 +50,6 @@ public class OrderItem implements Serializable {
 
 	public Long getId() {
 		return id;
-	}
-
-	public MonetaryAmount getCost() {
-		return pizza.getCost().multiply(quantity);
 	}
 
     public Order getOrder() {
