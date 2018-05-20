@@ -101,7 +101,7 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <div class="panel-title">
-                                                    <span>${order.placedDate} ${order.trackingNumber}</span>
+                                                    <span>${order.trackingNumber}</span>
                                                 </div>
                                             </div>
                                             <div class="panel-body">
