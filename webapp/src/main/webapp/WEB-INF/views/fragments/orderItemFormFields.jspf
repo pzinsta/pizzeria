@@ -18,7 +18,9 @@
     <div class="form-group col-md-2">
         <form:label path="pizzaSizeId">Size:</form:label>
         <form:select path="pizzaSizeId" cssClass="form-control">
-            <form:options items="${pizzaSizes}" itemLabel="name" itemValue="id"/>
+            <c:forEach var="pizzaSize" items="${pizzaSizes}">
+                <form:option value="${pizzaSize.id}" label='${pizzaSize.name} ${pizzaSize.diameterInInches}"'/>
+            </c:forEach>
         </form:select>
         <form:errors path="pizzaSizeId"/>
     </div>
