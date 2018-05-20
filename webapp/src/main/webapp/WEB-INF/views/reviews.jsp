@@ -8,6 +8,13 @@
         <%@ include file="fragments/head.jspf" %>
         <spring:url value="/resources/css/starRating.css" var="starRatingUrl"/>
         <link rel="stylesheet" href="${starRatingUrl}">
+        <spring:url value="/resources/javascript/responsive-paginate.js" var="responsivePaginateUrl"/>
+        <script src="${responsivePaginateUrl}"></script>
+        <script>
+            $(document).ready(function () {
+                $(".pagination").rPage();
+            });
+        </script>
     </head>
     <body>
         <div class="container">
@@ -75,6 +82,38 @@
                             </div>
                         </div>
                     </c:forEach>
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination">
+                            <c:if test="${currentPageNumber > 1}">
+                                <li>
+                                    <spring:url value="/reviews/{previousPageNumber}" var="previousPageUrl">
+                                        <spring:param name="previousPageNumber" value="${currentPageNumber - 1}"/>
+                                    </spring:url>
+                                    <a href="${previousPageUrl}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                            </c:if>
+                            <c:forEach begin="1" end="${totalPagesCount}" varStatus="varStatus">
+                                <spring:url value="/reviews/{pageNumber}" var="pageUrl">
+                                    <spring:param name="pageNumber" value="${varStatus.current}"/>
+                                </spring:url>
+                                <li class="${varStatus.current == currentPageNumber ? 'active' : ''}">
+                                    <a href="${pageUrl}">${varStatus.current}</a>
+                                </li>
+                            </c:forEach>
+                            <c:if test="${currentPageNumber < totalPagesCount}">
+                                <li>
+                                    <spring:url value="/reviews/{nextPageNumber}" var="nextPageUrl">
+                                        <spring:param name="nextPageNumber" value="${currentPageNumber + 1}"/>
+                                    </spring:url>
+                                    <a href="${nextPageUrl}" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </nav>
                 </c:when>
                 <c:otherwise>
                     There are no reviews to display.
@@ -83,6 +122,7 @@
 
         </div>
         <%@ include file="fragments/footer.jspf" %>
+
 
     </body>
 </html>

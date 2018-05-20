@@ -24,4 +24,16 @@ public class ReviewServiceImpl implements ReviewService {
     public List<Review> getReviews() {
         return reviewDAO.findAll();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Review> getReviews(int offset, int limit) {
+        return reviewDAO.findWithinRange(offset, limit);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public long getTotalCount() {
+        return reviewDAO.getCount();
+    }
 }

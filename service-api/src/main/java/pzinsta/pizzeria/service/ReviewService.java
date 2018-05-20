@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface ReviewService {
     List<Review> getReviews();
+
+    List<Review> getReviews(int offset, int limit);
+
+    long getTotalCount();
 }
