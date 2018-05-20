@@ -56,14 +56,6 @@ public class PizzaSide implements Serializable {
 		this.pizzaItems = items;
 	}
 	
-	public boolean containsIngredient(Long ingredientId) {
-		return pizzaItems.stream().map(pizzaItem -> pizzaItem.getIngredient().getId()).anyMatch(i -> i == ingredientId);
-	}
-
-	public boolean containsDoubledIngredient(Long ingredientId) {
-		return pizzaItems.stream().anyMatch(pizzaItem -> pizzaItem.getIngredient().getId() == ingredientId && pizzaItem.getQuantity() == 2);
-	}
-	
 	public MonetaryAmount getCost() {
 		return pizzaItems.stream().map(PizzaItem::getCost).reduce(Money.of(ZERO, "USD"), MonetaryAmount::add);
 	}
