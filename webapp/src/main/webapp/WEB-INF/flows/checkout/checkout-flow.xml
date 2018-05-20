@@ -8,6 +8,10 @@
         <evaluate expression="customerService.createNewCustomer()" result="flowScope.customer"/>
     </on-start>
 
+    <decision-state id="isCartEmpty">
+        <if test="cart.orderItems.isEmpty()" then="endState" else="orderConfirmation"/>
+    </decision-state>
+
     <view-state id="orderConfirmation" view="checkout/orderConfirmation">
         <transition on="continue" to="isCustomerLoggedIn"/>
         <transition on="cancel" to="endState" validate="false"/>
