@@ -5,90 +5,141 @@
 [![Sonar Cloud Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=ncloc)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
 [![Sonar Cloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=coverage)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
 
-# Pizzeria
+# Pizzeria ([Demo](#))
 
-One Paragraph of project description goes here
+A pizza ordering web application. 
+
+![Home page](documentation/home.png)
+
+The app features a pizza builder that lets the user to build a custom pizza from a number of 
+ingredients, select a crust, size, bake and cut styles and desired quantity.
+
+![Pizza Builder](documentation/builder.png)
+
+The user can also opt for one of the specialty pizzas, and either order one of those predefined templates or customize it however they like.
+
+## Design
+
+### High level package diagram
+
+[![Package diagram](documentation/package_diagram.svg)](documentation/package.svg)
+
+### Domain model class diagram
+
+[![Domain model class diagram](documentation/domain_model_class_diagram.svg)](documentation/domain_model_class_diagram.svg)
+
+### Database schema
+
+[![Database schema](documentation/database_schema.svg)](documentation/database_schema.svg)
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+#### 1. [Maven](https://maven.apache.org/download.cgi)
+#### 2. [Node.js and npm](https://nodejs.org/en/)
+#### 3. [Braintree API keys](https://sandbox.braintreegateway.com/)
+1. Go to the [sandbox version](https://sandbox.braintreegateway.com/) of Braintree. 
+2. Sign up / log in.
+3. Go to Settings - API Keys and get the following:
+   1. Merchant ID
+   2. Public key
+   3. Private key (you'll have to click 'View' to see it)
+#### 4. [Google reCAPTCHA keys](https://www.google.com/recaptcha/admin)
+
+1. Go to Google reCAPTCHA and register a new site. 
+
+![recaptcha site registration](documentation/recaptcha1.PNG)
+
+2. Get the public (site) and private (secret) keys.
+
+![recaptcha keys](documentation/recaptcha2.PNG)
+
+The keys above are not valid, so don't try to use them.
+
+### Running the app
+
+#### 1. Clone the repository
 
 ```
-Give examples
+git clone https://github.com/pzinsta/pizzeria.git
 ```
 
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
+#### 2. Build the .war file
 
 ```
-Give the example
+mvn clean package
 ```
 
-And repeat
+#### 3. Launch the app
+
+The application won't start unless all the following properties are provided.
+
+| Property              | Description |
+| --------------------- |-------------|
+| braintree.merchantId  | Braintree merchant ID |
+| braintree.publicKey   | Braintree public key |
+| braintree.privateKey  | Braintree private key |
+| recaptcha.public.key  | Google reCAPTCHA public (site) key |
+| recaptcha.private.key | Google reCAPTCHA private (secret) key |
+
+We have two options here. 
+
+##### Option 1. Set the properties as environment variables.
+
+If you've set the properties as environment variables, you can run the following command to start the app:
 
 ```
-until finished
+java -jar webapp/target/dependency/webapp-runner.jar --port 8081 --path pizzeria webapp/target/*.war
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+##### Option 2. Pass the properties as JVM arguments
 
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+In this case the command is going to be a bit more complicated.
 
 ```
-Give an example
+java -Dbraintree.merchantId=<your Braintree merchant ID> -Dbraintree.publicKey=<your Braintree public key> -Dbraintree.privateKey=<your Braintree private key> -Drecaptcha.private.key=<your reCAPTCHA private key> -Drecaptcha.public.key=<your reCAPTCHA public key> -jar webapp/target/dependency/webapp-runner.jar --port 8081 --path pizzeria webapp/target/*.war
 ```
 
-### And coding style tests
+You can modify the port and the context path. Also, there are other [options](https://github.com/jsimone/webapp-runner#options) available.
 
-Explain what these tests test and why
+#### 4. Verify
 
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+Go to [http://localhost:8081/pizzeria/](http://localhost:8081/pizzeria/) to check that the app is up and running.
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* [Maven](https://maven.apache.org/)
+* [Spring MVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html)
+* [Spring Web Flow](https://projects.spring.io/spring-webflow/)
+* [Spring Security](https://projects.spring.io/spring-security/)
+* [Hibernate ORM](http://hibernate.org/orm/)
+* [Hibernate Validator](http://hibernate.org/validator/)
+* [JUnit 4](https://junit.org/junit4/)
+* [Mockito](http://site.mockito.org/)
+* [AssertJ](http://joel-costigliola.github.io/assertj/)
+* [Apache Commons (lang, io, collections, dbcp, text, rng)](https://commons.apache.org/)
+* [Google Guava](https://github.com/google/guava)
+* [Moneta](http://javamoney.github.io/ri.html)
+* [H2](http://www.h2database.com/)
+* [PostgreSQL](https://www.postgresql.org/)
+* [Bootstrap 3](http://getbootstrap.com/docs/3.3/) 
+* [Angular](https://angular.io/) 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
 
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+* [jsimone/webapp-runner](https://github.com/jsimone/webapp-runner) - Webapp runner is designed to allow you to launch an exploded or compressed war that is on your filesystem into a tomcat container with a simple java -jar command.
+* [schemacrawler/SchemaCrawler](https://github.com/schemacrawler/SchemaCrawler) - Free database schema discovery and comprehension tool
+* [triologygmbh/reCAPTCHA-V2-java](https://github.com/triologygmbh/reCAPTCHA-V2-java) - Java Bindings for reCAPTCHA V2
+* [sargue/java-time-jsptags](https://github.com/sargue/java-time-jsptags) - JSP tag support for Java 8 java.time (JSR-310)
+* [eirslett/frontend-maven-plugin](https://github.com/eirslett/frontend-maven-plugin) - A Maven plugin that downloads/installs Node and NPM locally, runs NPM install, Grunt, Gulp and/or Karma.
+* [auxiliary/rpage](https://github.com/auxiliary/rpage) - Highly responsive pagination for Bootstrap
+* [michaelbromley/ngx-pagination](https://github.com/michaelbromley/ngx-pagination) - Pagination for Angular
+* [NickeManarin/ScreenToGif](https://github.com/NickeManarin/ScreenToGif) - ScreenToGif allows you to record a selected area of your screen, edit and save it as a gif or video.
+* [Full Page Screen Capture](https://chrome.google.com/webstore/detail/full-page-screen-capture/fdpohaocaechififmbbbbbknoalclacl) - Captures a screenshot of your current page
