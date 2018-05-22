@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pzinsta.pizzeria.model.order.OrderItemTemplate;
-import pzinsta.pizzeria.service.CustomerService;
 import pzinsta.pizzeria.service.OrderItemTemplateService;
 
 import java.util.Collection;
@@ -19,7 +18,7 @@ public class HomeController {
     private OrderItemTemplateService orderItemTemplateService;
 
     @Autowired
-    public HomeController(CustomerService customerService, OrderItemTemplateService orderItemTemplateService) {
+    public HomeController(OrderItemTemplateService orderItemTemplateService) {
         this.orderItemTemplateService = orderItemTemplateService;
     }
 
