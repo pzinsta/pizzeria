@@ -22,15 +22,15 @@ The user can also opt for one of the specialty pizzas, and either order one of t
 
 ### High level package diagram
 
-[![Package diagram](documentation/package_diagram.svg)](documentation/package_diagram.svg)
+![Package diagram](documentation/package_diagram.svg)
 
 ### Domain model class diagram
 
-[![Domain model class diagram](documentation/domain_model_class_diagram.svg)](documentation/domain_model_class_diagram.svg)
+![Domain model class diagram](documentation/domain_model_class_diagram.svg)
 
 ### Database schema
 
-[![Database schema](documentation/database_schema.svg)](documentation/database_schema.svg)
+![Database schema](documentation/database_schema.svg)
 
 ## Getting Started
 
@@ -40,22 +40,22 @@ These instructions will get you a copy of the project up and running on your loc
 
 #### 1. [Maven](https://maven.apache.org/download.cgi)
 #### 2. [Node.js and npm](https://nodejs.org/en/)
-#### 3. [Braintree API keys](https://sandbox.braintreegateway.com/)
+#### 3. [Braintree](https://sandbox.braintreegateway.com/) API keys
 1. Go to the [sandbox version](https://sandbox.braintreegateway.com/) of Braintree. 
 2. Sign up / log in.
 3. Go to Settings - API Keys and get the following:
    1. Merchant ID
    2. Public key
    3. Private key (you'll have to click 'View' to see it)
-#### 4. [Google reCAPTCHA keys](https://www.google.com/recaptcha/admin)
+#### 4. [Google reCAPTCHA](https://www.google.com/recaptcha/admin) keys
 
 1. Go to Google reCAPTCHA and register a new site. 
 
-![recaptcha site registration](documentation/recaptcha1.PNG)
+![recaptcha site registration](documentation/recaptcha_register_site.PNG)
 
 2. Get the public (site) and private (secret) keys.
 
-![recaptcha keys](documentation/recaptcha2.PNG)
+![recaptcha keys](documentation/recaptcha_keys.PNG)
 
 The keys above are not valid, so don't try to use them.
 
