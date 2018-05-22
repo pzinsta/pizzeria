@@ -1,6 +1,7 @@
 package pzinsta.pizzeria.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,9 @@ public class RegistrationController {
     private GoogleReCaptchaService googleReCaptchaService;
     private PasswordEncoder passwordEncoder;
 
+    @Value("${recaptcha.public.key}")
+    private String recaptchaPublicKey;
+
     @InitBinder
     public void initBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(customerRegistrationFormValidator);
@@ -38,6 +42,7 @@ public class RegistrationController {
 
     @GetMapping
     public String showRegistrationForm(Model model) {
+        model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
         model.addAttribute("customerRegistrationForm", new CustomerRegistrationForm());
         return "register";
     }

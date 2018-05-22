@@ -56,7 +56,7 @@
                             <form:errors path="phoneNumber" cssClass="text-danger"/>
                         </div>
 
-                        <div class="g-recaptcha form-group" data-sitekey="6LdjTVUUAAAAALCtXQSDN-R618B816SeYSVagbzY"></div>
+                        <div class="g-recaptcha form-group" data-sitekey="${recaptchaPublicKey}"></div>
 
                         <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-user-plus" aria-hidden="true"></i> Sign up</button>
                     </form:form>
