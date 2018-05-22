@@ -22,7 +22,7 @@ The user can also opt for one of the specialty pizzas, and either order one of t
 
 ### High level package diagram
 
-[![Package diagram](documentation/package_diagram.svg)](documentation/package.svg)
+[![Package diagram](documentation/package_diagram.svg)](documentation/package_diagram.svg)
 
 ### Domain model class diagram
 
