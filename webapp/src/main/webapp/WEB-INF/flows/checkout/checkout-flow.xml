@@ -78,6 +78,7 @@
             <evaluate expression="environment.getProperty('delivery.cities')" result="viewScope.cities" result-type="java.util.List"/>
         </on-entry>
         <transition on="continue" to="assembleOrder"/>
+        <transition on="cancel" to="endState" validate="false"/>
     </view-state>
 
     <action-state id="assembleOrder">
