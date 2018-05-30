@@ -53,15 +53,15 @@ The user can also opt for one of the specialty pizzas, and either order one of t
 
 ### High level package diagram
 
-![Package diagram](documentation/package_diagram.svg?raw=true)
+![Package diagram](documentation/package_diagram.svg)
 
 ### Domain model class diagram
 
-![Domain model class diagram](documentation/domain_model_class_diagram.svg?raw=true)
+![Domain model class diagram](documentation/domain_model_class_diagram.svg)
 
 ### Database schema
 
-![Database schema](documentation/database_schema.svg?raw=true)
+![Database schema](documentation/database_schema.svg)
 
 ## Getting Started
 
