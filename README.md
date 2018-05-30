@@ -18,6 +18,34 @@ ingredients, select a crust, size, bake and cut styles and desired quantity.
 
 The user can also opt for one of the specialty pizzas, and either order one of those predefined templates or customize it however they like.
 
+### Pizza Builder on iPad
+
+![Pizza Builder on Ipad](documentation/gifs/builder_ipad.gif)
+
+### Pizza Builder on iPhone
+
+![Pizza Builder on Iphone](documentation/gifs/builder_mobile.gif)
+
+### Pizza template
+
+![Pizza Builder for a template](documentation/gifs/builder_template_mobile.gif)
+
+### Checkout
+
+![Checkout](documentation/gifs/checkout_as_guest_mobile.gif)
+
+### Registration
+
+![Registration](documentation/gifs/registration_mobile.gif)
+
+### Login
+
+![Login](documentation/gifs/login_mobile.gif)
+
+### Write a review
+
+![Write a review](documentation/gifs/write_review_mobile.gif)
+
 ## Design
 
 ### High level package diagram
@@ -126,6 +154,7 @@ Go to [http://localhost:8081/pizzeria/](http://localhost:8081/pizzeria/) to chec
 * [H2](http://www.h2database.com/)
 * [PostgreSQL](https://www.postgresql.org/)
 * [Bootstrap 3](http://getbootstrap.com/docs/3.3/) 
+* [Font Awesome](https://fontawesome.com/v4.7.0/) 
 * [Angular](https://angular.io/) 
 
 ## License
