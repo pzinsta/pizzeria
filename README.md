@@ -9,56 +9,59 @@
 
 A pizza ordering web application. 
 
-![Home page](documentation/home.png)
+![Home page](documentation/home.png?raw=true)
 
 The app features a pizza builder that lets the user to build a custom pizza from a number of 
 ingredients, select a crust, size, bake and cut styles and desired quantity.
 
-![Pizza Builder](documentation/builder.png)
+![Pizza Builder](documentation/builder.png?raw=true)
 
 The user can also opt for one of the specialty pizzas, and either order one of those predefined templates or customize it however they like.
 
 ### Pizza Builder on iPad
 
-![Pizza Builder on Ipad](documentation/gifs/builder_ipad.gif)
+<details>
+   <summary>Show</summary>
+   <img src="documentation/gifs/builder_ipad.gif?raw=true" width="500">
+</details>
 
 ### Pizza Builder on iPhone
 
-![Pizza Builder on Iphone](documentation/gifs/builder_mobile.gif)
+![Pizza Builder on Iphone](documentation/gifs/builder_mobile.gif?raw=true)
 
 ### Pizza template
 
-![Pizza Builder for a template](documentation/gifs/builder_template_mobile.gif)
+![Pizza Builder for a template](documentation/gifs/builder_template_mobile.gif?raw=true)
 
 ### Checkout
 
-![Checkout](documentation/gifs/checkout_as_guest_mobile.gif)
+![Checkout](documentation/gifs/checkout_as_guest_mobile.gif?raw=true)
 
 ### Registration
 
-![Registration](documentation/gifs/registration_mobile.gif)
+![Registration](documentation/gifs/registration_mobile.gif?raw=true)
 
 ### Login
 
-![Login](documentation/gifs/login_mobile.gif)
+![Login](documentation/gifs/login_mobile.gif?raw=true)
 
 ### Write a review
 
-![Write a review](documentation/gifs/write_review_mobile.gif)
+![Write a review](documentation/gifs/write_review_mobile.gif?raw=true)
 
 ## Design
 
 ### High level package diagram
 
-![Package diagram](documentation/package_diagram.svg)
+![Package diagram](documentation/package_diagram.svg?raw=true)
 
 ### Domain model class diagram
 
-![Domain model class diagram](documentation/domain_model_class_diagram.svg)
+![Domain model class diagram](documentation/domain_model_class_diagram.svg?raw=true)
 
 ### Database schema
 
-![Database schema](documentation/database_schema.svg)
+![Database schema](documentation/database_schema.svg?raw=true)
 
 ## Getting Started
 
@@ -79,11 +82,11 @@ These instructions will get you a copy of the project up and running on your loc
 
 1. Go to Google reCAPTCHA and register a new site. 
 
-![recaptcha site registration](documentation/recaptcha_register_site.PNG)
+![recaptcha site registration](documentation/recaptcha_register_site.PNG?raw=true)
 
 2. Get the public (site) and private (secret) keys.
 
-![recaptcha keys](documentation/recaptcha_keys.PNG)
+![recaptcha keys](documentation/recaptcha_keys.PNG?raw=true)
 
 The keys above are not valid, so don't try to use them.
 
