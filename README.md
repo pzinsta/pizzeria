@@ -26,7 +26,7 @@ The user can also opt for one of the specialty pizzas, and either order one of t
 
 ![Pizza Builder on iPhone](documentation/gifs/builder_mobile.gif?raw=true)
 
-### Pizza template
+### Pizza Template
 
 ![Pizza Builder for a template](documentation/gifs/builder_template_mobile.gif?raw=true)
 
@@ -42,21 +42,21 @@ The user can also opt for one of the specialty pizzas, and either order one of t
 
 ![Login](documentation/gifs/login_mobile.gif?raw=true)
 
-### Write a review
+### Write a Review
 
 ![Write a review](documentation/gifs/write_review_mobile.gif?raw=true)
 
 ## Design
 
-### High level package diagram
+### High-level Package Diagram
 
 ![Package diagram](https://rawgit.com/pzinsta/pizzeria/master/documentation/package_diagram.svg)
 
-### Domain model class diagram
+### Domain Model Class Diagram
 
 ![Domain model class diagram](https://rawgit.com/pzinsta/pizzeria/master/documentation/domain_model_class_diagram.svg)
 
-### Database schema
+### Database Schema
 
 ![Database schema](https://rawgit.com/pzinsta/pizzeria/master/documentation/database_schema.svg)
 
