@@ -20,14 +20,11 @@ The user can also opt for one of the specialty pizzas, and either order one of t
 
 ### Pizza Builder on iPad
 
-<details>
-   <summary>Show</summary>
-   <img src="documentation/gifs/builder_ipad.gif?raw=true" width="500">
-</details>
+![Pizza Builder on iPad](documentation/gifs/builder_ipad.gif?raw=true)
 
 ### Pizza Builder on iPhone
 
-![Pizza Builder on Iphone](documentation/gifs/builder_mobile.gif?raw=true)
+![Pizza Builder on iPhone](documentation/gifs/builder_mobile.gif?raw=true)
 
 ### Pizza template
 
@@ -53,15 +50,15 @@ The user can also opt for one of the specialty pizzas, and either order one of t
 
 ### High level package diagram
 
-![Package diagram](documentation/package_diagram.svg)
+![Package diagram](https://rawgit.com/pzinsta/pizzeria/master/documentation/package_diagram.svg)
 
 ### Domain model class diagram
 
-![Domain model class diagram](documentation/domain_model_class_diagram.svg)
+![Domain model class diagram](https://rawgit.com/pzinsta/pizzeria/master/documentation/domain_model_class_diagram.svg)
 
 ### Database schema
 
-![Database schema](documentation/database_schema.svg)
+![Database schema](https://rawgit.com/pzinsta/pizzeria/master/documentation/database_schema.svg)
 
 ## Getting Started
 
