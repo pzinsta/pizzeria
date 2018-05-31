@@ -24,9 +24,21 @@
                 <dd><strong>${total}</strong></dd>
             </dl>
 
+            <div class="alert alert-danger">
+                <strong>Please do not use a real card number, expiration date and CVV!</strong>
+            </div>
+
+            <div class="alert alert-info">
+                <p>Here's a valid test VISA card.</p>
+                <p>Card Number: <strong>4111 1111 1111 1111</strong></p>
+                <p>Expiration Date: <strong>11/22</strong></p>
+                <p>CVV: <strong>111</strong></p>
+                <p><a href="https://developers.braintreepayments.com/guides/credit-cards/testing-go-live/java">More test credit cards.</a></p>
+            </div>
+
             <form:form method="post" id="paymentForm" autocomplete="false">
 
-                <input type="hidden" id="nonce" name="payment_method_nonce" />
+                <input type="hidden" id="nonce" name="payment_method_nonce"/>
                 <input type="hidden" name="_eventId" value="continue">
 
                 <div id="dropin-container"></div>
