@@ -1,11 +1,6 @@
 [![Build Status](https://travis-ci.org/pzinsta/pizzeria.svg?branch=master)](https://travis-ci.org/pzinsta/pizzeria)
-[![Sonar Cloud Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=alert_status)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
-[![Sonar Cloud Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
-[![Sonar Cloud Security Rating](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=security_rating)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
-[![Sonar Cloud Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=ncloc)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
-[![Sonar Cloud Coverage](https://sonarcloud.io/api/project_badges/measure?project=pzinsta%3Apizzeria&metric=coverage)](https://sonarcloud.io/dashboard?id=pzinsta%3Apizzeria)
 
-# Pizzeria ([Demo](#))
+# Pizzeria ([Demo](https://pizzeria-pzinsta.herokuapp.com/))
 
 A pizza ordering web application. 
 
@@ -34,6 +29,10 @@ The user can also opt for one of the specialty pizzas, and either order one of t
 
 ![Checkout](documentation/gifs/checkout_as_guest_mobile.gif?raw=true)
 
+### Write a Review
+
+![Write a review](documentation/gifs/write_review_mobile.gif?raw=true)
+
 ### Registration
 
 ![Registration](documentation/gifs/registration_mobile.gif?raw=true)
@@ -41,10 +40,6 @@ The user can also opt for one of the specialty pizzas, and either order one of t
 ### Login
 
 ![Login](documentation/gifs/login_mobile.gif?raw=true)
-
-### Write a Review
-
-![Write a review](documentation/gifs/write_review_mobile.gif?raw=true)
 
 ## Design
 
