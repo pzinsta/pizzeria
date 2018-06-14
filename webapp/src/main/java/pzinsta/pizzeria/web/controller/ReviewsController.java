@@ -32,7 +32,7 @@ public class ReviewsController {
     public String showReviewsForPage(@PathVariable("pageNumber") int pageNumber, Model model) {
         int offset = (pageNumber - 1) * reviewsPerPage;
         model.addAttribute("currentPageNumber", pageNumber);
-        model.addAttribute("totalPagesCount", reviewService.getTotalCount());
+        model.addAttribute("totalPagesCount", Math.ceil(reviewService.getTotalCount() / reviewsPerPage));
         model.addAttribute("reviews", reviewService.getReviews(offset, reviewsPerPage));
         return "reviews";
     }
