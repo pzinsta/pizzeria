@@ -13,6 +13,7 @@ import pzinsta.pizzeria.service.FileStorageService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
 
 import static org.springframework.http.MediaType.APPLICATION_OCTET_STREAM_VALUE;
 
@@ -31,7 +32,9 @@ public class FileStorageController {
     public void getFile(@PathVariable("name") String name, HttpServletResponse httpServletResponse) throws IOException {
         String contentType = fileStorageService.getContentTypeByName(name).orElse(APPLICATION_OCTET_STREAM_VALUE);
         httpServletResponse.setContentType(contentType);
-        IOUtils.copy(fileStorageService.getFileAsInputStream(name), httpServletResponse.getOutputStream());
+        InputStream fileAsInputStream = fileStorageService.getFileAsInputStream(name);
+        IOUtils.copy(fileAsInputStream, httpServletResponse.getOutputStream());
+        fileAsInputStream.close();
     }
 
     @ExceptionHandler
