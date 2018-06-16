@@ -6,7 +6,7 @@ A pizza ordering web application.
 
 ![Home page](documentation/home.png?raw=true)
 
-The app features a pizza builder that lets the user to build a custom pizza from a number of 
+The app features a pizza builder that lets the user build a custom pizza from a number of 
 ingredients, select a crust, size, bake and cut styles and desired quantity.
 
 ![Pizza Builder](documentation/builder.png?raw=true)
