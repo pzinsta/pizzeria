@@ -18,13 +18,11 @@ import pzinsta.pizzeria.dao.CutStyleDAO;
 import pzinsta.pizzeria.dao.IngredientDAO;
 import pzinsta.pizzeria.dao.OrderDAO;
 import pzinsta.pizzeria.dao.PizzaSizeDAO;
-import pzinsta.pizzeria.model.File;
 import pzinsta.pizzeria.model.order.Cart;
 import pzinsta.pizzeria.model.order.Order;
 import pzinsta.pizzeria.model.order.OrderEvent;
 import pzinsta.pizzeria.model.order.OrderEventType;
 import pzinsta.pizzeria.model.order.OrderItem;
-import pzinsta.pizzeria.model.order.Review;
 import pzinsta.pizzeria.model.pizza.BakeStyle;
 import pzinsta.pizzeria.model.pizza.Crust;
 import pzinsta.pizzeria.model.pizza.CutStyle;
@@ -35,7 +33,6 @@ import pzinsta.pizzeria.model.pizza.PizzaItem;
 import pzinsta.pizzeria.model.pizza.PizzaSide;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
-import pzinsta.pizzeria.service.dto.ReviewDTO;
 import pzinsta.pizzeria.service.impl.strategy.TrackingNumberGenerationStrategy;
 
 import java.util.Collection;
@@ -330,36 +327,36 @@ public class OrderServiceImplTest {
         assertThat(result).isSameAs(order);
     }
 
-    @Test
-    public void shouldAddReviewToOrderByTrackingNumber() throws Exception {
-        // given
-        int rating = 9;
-        String message = "a review message";
-
-        ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setMessage(message);
-        reviewDTO.setRating(rating);
-        File file = new File();
-        file.setName("image.jpg");
-        file.setContentType("image/jpeg");
-        reviewDTO.setFiles(ImmutableList.of(file));
-        String trackingNumber = "ABCDEF";
-
-        Order order = new Order();
-
-        when(orderDAO.findByTrackingNumber(trackingNumber)).thenReturn(Optional.of(order));
-
-        // when
-        orderService.addReviewToOrderByTrackingNumber(trackingNumber, reviewDTO);
-
-        // then
-        Review expected = new Review();
-        expected.setOrder(order);
-        expected.setRating(rating);
-        expected.setMessage(message);
-        expected.setImages(ImmutableList.of(file));
-        assertThat(order.getReview()).isEqualToComparingFieldByField(expected);
-    }
+    // @Test
+    // public void shouldAddReviewToOrderByTrackingNumber() throws Exception {
+    //     // given
+    //     int rating = 9;
+    //     String message = "a review message";
+    //
+    //     ReviewDTO reviewDTO = new ReviewDTO();
+    //     reviewDTO.setMessage(message);
+    //     reviewDTO.setRating(rating);
+    //     File file = new File();
+    //     file.setName("image.jpg");
+    //     file.setContentType("image/jpeg");
+    //     reviewDTO.setFiles(ImmutableList.of(file));
+    //     String trackingNumber = "ABCDEF";
+    //
+    //     Order order = new Order();
+    //
+    //     when(orderDAO.findByTrackingNumber(trackingNumber)).thenReturn(Optional.of(order));
+    //
+    //     // when
+    //     orderService.addReviewToOrderByTrackingNumber(trackingNumber, reviewDTO);
+    //
+    //     // then
+    //     Review expected = new Review();
+    //     expected.setOrder(order);
+    //     expected.setRating(rating);
+    //     expected.setMessage(message);
+    //     expected.setImages(ImmutableList.of(file));
+    //     assertThat(order.getReview()).isEqualToComparingFieldByField(expected);
+    // }
 
     private void assertThatOrderItemsAreEqual(OrderItem capturedOrderItem, OrderItem expectedOrderItem) {
         assertThat(capturedOrderItem.getOrder()).isEqualToComparingFieldByFieldRecursively(expectedOrderItem.getOrder());

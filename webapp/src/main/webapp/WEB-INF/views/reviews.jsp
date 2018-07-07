@@ -56,11 +56,8 @@
                                 <div class="row">
                                     <c:forEach items="${review.images}" var="image">
                                         <div class="col-xs-4 col-sm-2">
-                                            <spring:url value="/file/{name}" var="imageUrl">
-                                                <spring:param name="name" value="${image.name}"/>
-                                            </spring:url>
                                             <a href="#" class="thumbnail" data-toggle="modal" data-target="#${image.name}">
-                                                <img src="${imageUrl}"/>
+                                                <img src="${image.url}"/>
                                             </a>
                                         </div>
                                         <div class="modal fade" id="${image.name}" tabindex="-1">
@@ -71,7 +68,7 @@
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="text-center">
-                                                            <img src="${imageUrl}" class="img-thumbnail"/>
+                                                            <img src="${image.url}" class="img-thumbnail"/>
                                                         </div>
                                                     </div>
                                                 </div>

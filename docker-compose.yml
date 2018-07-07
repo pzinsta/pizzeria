@@ -1,0 +1,15 @@
+version: "3"
+services:
+  webapp:
+    build: ./webapp
+    image: pizzeria
+    env_file:
+      - .env
+    ports:
+      - "80:8080"
+  file-service:
+    build: ./file-service
+    image: file-service
+    env_file: .env
+    ports:
+      - "8080:8080"

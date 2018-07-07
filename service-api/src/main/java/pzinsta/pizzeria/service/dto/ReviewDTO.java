@@ -1,13 +1,11 @@
 package pzinsta.pizzeria.service.dto;
 
-import pzinsta.pizzeria.model.File;
-
 import java.util.Collection;
 
 public class ReviewDTO {
     private String message;
     private int rating;
-    private Collection<File> files;
+    private Collection<Long> fileIds;
 
     public String getMessage() {
         return message;
@@ -25,11 +23,11 @@ public class ReviewDTO {
         this.rating = rating;
     }
 
-    public Collection<File> getFiles() {
-        return files;
+    public Collection<Long> getFiles() {
+        return fileIds;
     }
 
-    public void setFiles(Collection<File> files) {
-        this.files = files;
+    public void setFiles(Collection<Long> fileIds) {
+        this.fileIds = fileIds;
     }
 }

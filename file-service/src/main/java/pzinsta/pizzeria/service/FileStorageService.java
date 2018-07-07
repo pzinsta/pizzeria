@@ -8,10 +8,6 @@ import java.util.Optional;
 
 public interface FileStorageService {
     File saveFile(InputStream inputStream, String contentType) throws IOException;
-
     File saveFile(InputStream inputStream, String name, String contentType) throws IOException;
-
-    InputStream getFileAsInputStream(String name) throws IOException;
-
-    Optional<String> getContentTypeByName(String name);
+    Optional<File> getFileById(Long id);
 }

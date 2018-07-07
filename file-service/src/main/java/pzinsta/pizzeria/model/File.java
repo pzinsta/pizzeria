@@ -20,6 +20,8 @@ public class File implements Serializable {
     @NotNull
     private String contentType;
 
+    private String url;
+
     public String getName() {
         return name;
     }
@@ -42,5 +44,13 @@ public class File implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

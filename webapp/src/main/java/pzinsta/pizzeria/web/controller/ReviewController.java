@@ -1,5 +1,6 @@
 package pzinsta.pizzeria.web.controller;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pzinsta.pizzeria.model.File;
 import pzinsta.pizzeria.model.order.Order;
 import pzinsta.pizzeria.model.order.Review;
-import pzinsta.pizzeria.service.FileStorageService;
 import pzinsta.pizzeria.service.OrderService;
 import pzinsta.pizzeria.service.dto.ReviewDTO;
 import pzinsta.pizzeria.service.exception.OrderNotFoundException;
+import pzinsta.pizzeria.web.client.FileStorageServiceClient;
+import pzinsta.pizzeria.web.client.dto.File;
 import pzinsta.pizzeria.web.form.ReviewForm;
 import pzinsta.pizzeria.web.validator.ReviewFormValidator;
 
@@ -40,13 +41,13 @@ public class ReviewController {
     private static final int[] RATINGS = IntStream.rangeClosed(1, 10).toArray();
 
     private OrderService orderService;
-    private FileStorageService fileStorageService;
+    private FileStorageServiceClient fileStorageServiceClient;
     private ReviewFormValidator reviewFormValidator;
 
     @Autowired
-    public ReviewController(OrderService orderService, FileStorageService fileStorageService, ReviewFormValidator reviewFormValidator) {
+    public ReviewController(OrderService orderService, FileStorageServiceClient fileStorageServiceClient, ReviewFormValidator reviewFormValidator) {
         this.orderService = orderService;
-        this.fileStorageService = fileStorageService;
+        this.fileStorageServiceClient = fileStorageServiceClient;
         this.reviewFormValidator = reviewFormValidator;
     }
 
@@ -108,14 +109,14 @@ public class ReviewController {
         return reviewDTO;
     }
 
-    private List<File> processImages(ReviewForm reviewForm) {
+    private List<Long> processImages(ReviewForm reviewForm) {
         return reviewForm.getImages().stream().map(this::saveImage).filter(Optional::isPresent)
-                    .map(Optional::get).collect(Collectors.toList());
+                    .map(Optional::get).map(File::getId).collect(Collectors.toList());
     }
 
     private Optional<File> saveImage(MultipartFile multipartFile) {
         try {
-            return Optional.ofNullable(fileStorageService.saveFile(multipartFile.getInputStream(), multipartFile.getContentType()));
+            return Optional.ofNullable(fileStorageServiceClient.saveFile(IOUtils.toByteArray(multipartFile.getInputStream()), multipartFile.getContentType()));
         } catch (IOException e) {
             return Optional.empty();
         }
@@ -126,14 +127,6 @@ public class ReviewController {
         reviewForm.setMessage(review.getMessage());
         reviewForm.setRating(review.getRating());
         return reviewForm;
-    }
-
-    public FileStorageService getFileStorageService() {
-        return fileStorageService;
-    }
-
-    public void setFileStorageService(FileStorageService fileStorageService) {
-        this.fileStorageService = fileStorageService;
     }
 
     public ReviewFormValidator getReviewFormValidator() {
