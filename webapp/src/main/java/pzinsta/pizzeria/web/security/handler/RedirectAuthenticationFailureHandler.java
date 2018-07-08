@@ -1,8 +1,8 @@
 package pzinsta.pizzeria.web.security.handler;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
@@ -20,7 +20,7 @@ public class RedirectAuthenticationFailureHandler implements AuthenticationFailu
     private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     private String defaultReturnUrl = "/";
     private String queryParam = "loginError";
-    private static final Logger LOGGER = LogManager.getLogger(RedirectAuthenticationFailureHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RedirectAuthenticationFailureHandler.class);
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {

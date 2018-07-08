@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -24,7 +23,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 
 @Configuration
-@EnableWebMvc
 @ComponentScan("pzinsta.pizzeria.web")
 public class WebConfig implements WebMvcConfigurer {
 
