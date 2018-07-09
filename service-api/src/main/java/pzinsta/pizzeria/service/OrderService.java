@@ -8,7 +8,6 @@ import pzinsta.pizzeria.model.pizza.Ingredient;
 import pzinsta.pizzeria.model.pizza.IngredientType;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
-import pzinsta.pizzeria.service.dto.ReviewDTO;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -45,7 +44,7 @@ public interface OrderService {
 
     Order getOrderByTrackingNumber(String trackingNumber);
 
-    void addReviewToOrderByTrackingNumber(String trackingNumber, ReviewDTO reviewDTO);
+    void addReviewToOrderByTrackingNumber(String trackingNumber, Long reviewId);
 
     Optional<PizzaOrderDTO> getPizzaOrderDTOByOrderItemId(Long orderItemId);
 }

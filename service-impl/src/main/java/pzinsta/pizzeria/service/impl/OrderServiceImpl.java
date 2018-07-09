@@ -17,7 +17,6 @@ import pzinsta.pizzeria.model.order.Order;
 import pzinsta.pizzeria.model.order.OrderEvent;
 import pzinsta.pizzeria.model.order.OrderEventType;
 import pzinsta.pizzeria.model.order.OrderItem;
-import pzinsta.pizzeria.model.order.Review;
 import pzinsta.pizzeria.model.pizza.BakeStyle;
 import pzinsta.pizzeria.model.pizza.Crust;
 import pzinsta.pizzeria.model.pizza.CutStyle;
@@ -29,7 +28,6 @@ import pzinsta.pizzeria.model.pizza.PizzaSide;
 import pzinsta.pizzeria.model.pizza.PizzaSize;
 import pzinsta.pizzeria.service.OrderService;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
-import pzinsta.pizzeria.service.dto.ReviewDTO;
 import pzinsta.pizzeria.service.exception.OrderNotFoundException;
 import pzinsta.pizzeria.service.impl.strategy.TrackingNumberGenerationStrategy;
 
@@ -158,14 +156,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public void addReviewToOrderByTrackingNumber(String trackingNumber, ReviewDTO reviewDTO) {
+    public void addReviewToOrderByTrackingNumber(String trackingNumber, Long reviewId) {
         Order order = orderDAO.findByTrackingNumber(trackingNumber).orElseThrow(OrderNotFoundException::new);
-        Review review = Optional.ofNullable(order.getReview()).orElseGet(Review::new);
-        review.setOrder(order);
-        review.setMessage(reviewDTO.getMessage());
-        review.setRating(reviewDTO.getRating());
-        review.setImages(reviewDTO.getFiles());
-        order.setReview(review);
+        order.setReviewId(reviewId);
     }
 
     @Override

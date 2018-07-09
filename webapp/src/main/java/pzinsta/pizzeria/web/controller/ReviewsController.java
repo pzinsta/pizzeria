@@ -2,16 +2,19 @@ package pzinsta.pizzeria.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.hateoas.PagedResources;
+import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pzinsta.pizzeria.model.order.Review;
-import pzinsta.pizzeria.service.ReviewService;
 import pzinsta.pizzeria.web.client.FileStorageServiceClient;
+import pzinsta.pizzeria.web.client.ReviewServiceClient;
+import pzinsta.pizzeria.web.client.dto.Review;
 import pzinsta.pizzeria.web.model.ReviewDTO;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,15 +22,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/reviews")
 public class ReviewsController {
 
-    private ReviewService reviewService;
+    private ReviewServiceClient reviewServiceClient;
     private FileStorageServiceClient fileStorageServiceClient;
 
     @Value("${reviews.per.page}")
     private int reviewsPerPage;
 
     @Autowired
-    public ReviewsController(ReviewService reviewService, FileStorageServiceClient fileStorageServiceClient) {
-        this.reviewService = reviewService;
+    public ReviewsController(ReviewServiceClient reviewServiceClient, FileStorageServiceClient fileStorageServiceClient) {
+        this.reviewServiceClient = reviewServiceClient;
         this.fileStorageServiceClient = fileStorageServiceClient;
     }
 
@@ -38,31 +41,25 @@ public class ReviewsController {
 
     @GetMapping("/{pageNumber}")
     public String showReviewsForPage(@PathVariable("pageNumber") int pageNumber, Model model) {
-        int offset = (pageNumber - 1) * reviewsPerPage;
+        PagedResources<Resource<Review>> reviewResources = reviewServiceClient.findAll(reviewsPerPage, pageNumber - 1);
         model.addAttribute("currentPageNumber", pageNumber);
-        model.addAttribute("totalPagesCount", Math.ceil(reviewService.getTotalCount() / reviewsPerPage));
-        model.addAttribute("reviews", getReviews(reviewService.getReviews(offset, reviewsPerPage)));
+        model.addAttribute("totalPagesCount", reviewResources.getMetadata().getTotalPages());
+        model.addAttribute("reviews", getReviews(reviewResources.getContent()));
         return "reviews";
     }
 
-    private List<ReviewDTO> getReviews(List<Review> reviews) {
-        return reviews.stream().map(review -> {
-            ReviewDTO reviewDTO = new ReviewDTO();
-            reviewDTO.setCreatedOn(review.getCreatedOn());
-            reviewDTO.setLastUpdatedOn(review.getLastUpdatedOn());
-            reviewDTO.setMessage(review.getMessage());
-            reviewDTO.setRating(review.getRating());
-            reviewDTO.setImages(review.getImages().stream().map(fileStorageServiceClient::getFile).collect(Collectors.toList()));
-            return reviewDTO;
-        }).collect(Collectors.toList());
-    }
-
-    public ReviewService getReviewService() {
-        return reviewService;
-    }
-
-    public void setReviewService(ReviewService reviewService) {
-        this.reviewService = reviewService;
+    private List<ReviewDTO> getReviews(Collection<Resource<Review>> reviewResources) {
+        return reviewResources.stream()
+                .map(Resource::getContent)
+                .map(review -> {
+                    ReviewDTO reviewDTO = new ReviewDTO();
+                    reviewDTO.setCreatedOn(review.getCreatedOn());
+                    reviewDTO.setLastUpdatedOn(review.getLastUpdatedOn());
+                    reviewDTO.setMessage(review.getMessage());
+                    reviewDTO.setRating(review.getRating());
+                    reviewDTO.setImages(review.getImages().stream().map(fileStorageServiceClient::getFile).collect(Collectors.toList()));
+                    return reviewDTO;
+                }).collect(Collectors.toList());
     }
 
     public int getReviewsPerPage() {

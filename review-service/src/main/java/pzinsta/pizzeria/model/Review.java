@@ -1,17 +1,16 @@
-package pzinsta.pizzeria.model.order;
+package pzinsta.pizzeria.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
-import pzinsta.pizzeria.model.Constants;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -25,11 +24,9 @@ import java.util.Collection;
 public class Review implements Serializable {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
+	@JsonProperty("reviewId") // TODO: workaround for the id field shadowing in the Resource class
 	private Long id;
-    
-    @OneToOne(optional = false)
-	private Order order;
-    
+
     @CreationTimestamp
 	private Instant createdOn;
 
@@ -47,21 +44,13 @@ public class Review implements Serializable {
     @Fetch(FetchMode.SUBSELECT)
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Collection<Long> images = new ArrayList<>();
-	
+
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Order getOrder() {
-		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
 	}
 
 	public Instant getCreatedOn() {

@@ -36,8 +36,7 @@ public class Order implements Serializable {
     @JoinColumn (name = "customer_id")
 	private Customer customer;
 
-    @OneToOne(mappedBy = "order", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    private Review review;
+    private Long reviewId;
 
 	@Fetch(value = FetchMode.SUBSELECT)
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "order", cascade = CascadeType.ALL)
@@ -131,12 +130,12 @@ public class Order implements Serializable {
 		this.trackingNumber = trackingNumber;
 	}
 
-	public Review getReview() {
-		return review;
+	public Long getReviewId() {
+		return reviewId;
 	}
 
-	public void setReview(Review review) {
-		this.review = review;
+	public void setReviewId(Long reviewId) {
+		this.reviewId = reviewId;
 	}
 
     public String getPaymentTransactionId() {

@@ -3,6 +3,7 @@ package pzinsta.pizzeria.web.controller;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,12 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pzinsta.pizzeria.model.order.Order;
-import pzinsta.pizzeria.model.order.Review;
 import pzinsta.pizzeria.service.OrderService;
-import pzinsta.pizzeria.service.dto.ReviewDTO;
 import pzinsta.pizzeria.service.exception.OrderNotFoundException;
 import pzinsta.pizzeria.web.client.FileStorageServiceClient;
+import pzinsta.pizzeria.web.client.ReviewServiceClient;
 import pzinsta.pizzeria.web.client.dto.File;
+import pzinsta.pizzeria.web.client.dto.Review;
 import pzinsta.pizzeria.web.form.ReviewForm;
 import pzinsta.pizzeria.web.validator.ReviewFormValidator;
 
@@ -43,12 +44,14 @@ public class ReviewController {
     private OrderService orderService;
     private FileStorageServiceClient fileStorageServiceClient;
     private ReviewFormValidator reviewFormValidator;
+    private ReviewServiceClient reviewServiceClient;
 
     @Autowired
-    public ReviewController(OrderService orderService, FileStorageServiceClient fileStorageServiceClient, ReviewFormValidator reviewFormValidator) {
+    public ReviewController(OrderService orderService, FileStorageServiceClient fileStorageServiceClient, ReviewFormValidator reviewFormValidator, ReviewServiceClient reviewServiceClient) {
         this.orderService = orderService;
         this.fileStorageServiceClient = fileStorageServiceClient;
         this.reviewFormValidator = reviewFormValidator;
+        this.reviewServiceClient = reviewServiceClient;
     }
 
     @InitBinder("reviewForm")
@@ -82,7 +85,11 @@ public class ReviewController {
     }
 
     private ReviewForm getReviewForm(Order order) {
-        return Optional.ofNullable(order.getReview()).map(ReviewController::transformReviewToReviewForm).orElseGet(ReviewForm::new);
+        return Optional.ofNullable(order.getReviewId())
+                .flatMap(reviewServiceClient::findById)
+                .map(Resource::getContent)
+                .map(ReviewController::transformReviewToReviewForm)
+                .orElseGet(ReviewForm::new);
     }
 
     @PostMapping("/{trackingNumber}")
@@ -90,8 +97,15 @@ public class ReviewController {
         if(bindingResult.hasErrors()) {
             return "orderReviewSubmissionForm";
         }
-        ReviewDTO reviewDTO = transformReviewFormToReviewDTO(reviewForm);
-        orderService.addReviewToOrderByTrackingNumber(trackingNumber, reviewDTO);
+        Order order = orderService.getOrderByTrackingNumber(trackingNumber);
+        Review review = transformReviewFormToReviewDTO(reviewForm);
+        if (isReviewed(order)) {
+            reviewServiceClient.update(order.getReviewId(), review);
+        }
+        else {
+            Review savedReview = reviewServiceClient.save(review).getContent();
+            orderService.addReviewToOrderByTrackingNumber(trackingNumber, savedReview.getReviewId());
+        }
         return "redirect:" + returnUrl;
     }
 
@@ -101,12 +115,16 @@ public class ReviewController {
         return "redirect:/review/order";
     }
 
-    private ReviewDTO transformReviewFormToReviewDTO(ReviewForm reviewForm) {
-        ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setMessage(reviewForm.getMessage());
-        reviewDTO.setRating(reviewForm.getRating());
-        reviewDTO.setFiles(processImages(reviewForm));
-        return reviewDTO;
+    private boolean isReviewed(Order order) {
+        return Optional.ofNullable(order.getReviewId()).flatMap(reviewServiceClient::findById).isPresent();
+    }
+
+    private Review transformReviewFormToReviewDTO(ReviewForm reviewForm) {
+        Review review = new Review();
+        review.setMessage(reviewForm.getMessage());
+        review.setRating(reviewForm.getRating());
+        review.setImages(processImages(reviewForm));
+        return review;
     }
 
     private List<Long> processImages(ReviewForm reviewForm) {
@@ -135,5 +153,13 @@ public class ReviewController {
 
     public void setReviewFormValidator(ReviewFormValidator reviewFormValidator) {
         this.reviewFormValidator = reviewFormValidator;
+    }
+
+    public ReviewServiceClient getReviewServiceClient() {
+        return reviewServiceClient;
+    }
+
+    public void setReviewServiceClient(ReviewServiceClient reviewServiceClient) {
+        this.reviewServiceClient = reviewServiceClient;
     }
 }
