@@ -97,7 +97,7 @@
                             </div>
                             <form:hidden path="${ingredientQuantityPath}.ingredient.id"/>
                             <form:hidden path="${ingredientQuantityPath}.ingredient.name"/>
-
+                            <form:hidden path="${ingredientQuantityPath}.ingredient.imageFileName"/>
                         </div>
                     </c:forEach>
                 </div>
