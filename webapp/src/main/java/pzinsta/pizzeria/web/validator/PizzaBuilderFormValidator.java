@@ -7,12 +7,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import pzinsta.pizzeria.model.pizza.BakeStyle;
-import pzinsta.pizzeria.model.pizza.Crust;
-import pzinsta.pizzeria.model.pizza.CutStyle;
-import pzinsta.pizzeria.model.pizza.Ingredient;
-import pzinsta.pizzeria.model.pizza.PizzaSize;
 import pzinsta.pizzeria.service.OrderService;
+import pzinsta.pizzeria.web.client.PizzaServiceClient;
+import pzinsta.pizzeria.web.client.dto.pizza.BakeStyle;
+import pzinsta.pizzeria.web.client.dto.pizza.Crust;
+import pzinsta.pizzeria.web.client.dto.pizza.CutStyle;
+import pzinsta.pizzeria.web.client.dto.pizza.Ingredient;
+import pzinsta.pizzeria.web.client.dto.pizza.PizzaSize;
 import pzinsta.pizzeria.web.form.PizzaBuilderForm;
 import pzinsta.pizzeria.web.form.PizzaBuilderForm.IngredientQuantity;
 
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class PizzaBuilderFormValidator implements Validator {
 
     private OrderService orderService;
+    private PizzaServiceClient pizzaServiceClient;
 
     @Value("${pizza.ingredients.quantity.min}")
     private int selectedIngredientsQuantityMin;
@@ -60,28 +62,40 @@ public class PizzaBuilderFormValidator implements Validator {
     }
 
     private void validateCrustId(PizzaBuilderForm pizzaBuilderForm, Errors errors) {
-        boolean validCrustId = orderService.getCrusts().stream().map(Crust::getId).anyMatch(pizzaBuilderForm.getCrustId()::equals);
+        boolean validCrustId = pizzaServiceClient.findAllCrusts()
+                .stream()
+                .map(Crust::getId)
+                .anyMatch(pizzaBuilderForm.getCrustId()::equals);
         if (!validCrustId) {
             errors.rejectValue("crustId", "crustId.invalid", ArrayUtils.toArray(pizzaBuilderForm.getCrustId()), "crustId.invalid");
         }
     }
 
     private void validateBakeStyleId(PizzaBuilderForm pizzaBuilderForm, Errors errors) {
-        boolean validBakeStyleId = orderService.getBakeStyles().stream().map(BakeStyle::getId).anyMatch(pizzaBuilderForm.getBakeStyleId()::equals);
+        boolean validBakeStyleId = pizzaServiceClient.findAllBakeStyles()
+                .stream()
+                .map(BakeStyle::getId)
+                .anyMatch(pizzaBuilderForm.getBakeStyleId()::equals);
         if (!validBakeStyleId) {
             errors.rejectValue("bakeStyleId", "bakeStyleId.invalid", ArrayUtils.toArray(pizzaBuilderForm.getBakeStyleId()), "bakeStyleId.invalid");
         }
     }
 
     private void validateCutStyleId(PizzaBuilderForm pizzaBuilderForm, Errors errors) {
-        boolean validCutStyleId = orderService.getCutStyles().stream().map(CutStyle::getId).anyMatch(pizzaBuilderForm.getCutStyleId()::equals);
+        boolean validCutStyleId = pizzaServiceClient.findAllCutStyles()
+                .stream()
+                .map(CutStyle::getId)
+                .anyMatch(pizzaBuilderForm.getCutStyleId()::equals);
         if (!validCutStyleId) {
             errors.rejectValue("cutStyleId", "cutStyleId.invalid", ArrayUtils.toArray(pizzaBuilderForm.getCutStyleId()), "cutStyleId.invalid");
         }
     }
 
     private void validatePizzaSizeId(PizzaBuilderForm pizzaBuilderForm, Errors errors) {
-        boolean validPizzaSizeId = orderService.getPizzaSizes().stream().map(PizzaSize::getId).anyMatch(pizzaBuilderForm.getPizzaSizeId()::equals);
+        boolean validPizzaSizeId = pizzaServiceClient.findAllPizzaSizes()
+                .stream()
+                .map(PizzaSize::getId)
+                .anyMatch(pizzaBuilderForm.getPizzaSizeId()::equals);
         if (!validPizzaSizeId) {
             errors.rejectValue("pizzaSizeId", "pizzaSizeId.invalid", ArrayUtils.toArray(pizzaBuilderForm.getPizzaSizeId()), "pizzaSizeId.invalid");
         }
@@ -114,7 +128,10 @@ public class PizzaBuilderFormValidator implements Validator {
     }
 
     private void validateIngredientIds(Errors errors, List<IngredientQuantity> ingredientQuantities) {
-        Set<Long> ingredientIds = orderService.getIngredients().stream().map(Ingredient::getId).collect(Collectors.toSet());
+        Set<Long> ingredientIds = pizzaServiceClient.findAllIngredients()
+                .stream()
+                .map(Ingredient::getId)
+                .collect(Collectors.toSet());
 
         ingredientQuantities.forEach(ingredientQuantity -> {
             if (!ingredientIds.contains(ingredientQuantity.getIngredient().getId())) {
@@ -130,6 +147,11 @@ public class PizzaBuilderFormValidator implements Validator {
     @Autowired
     public void setOrderService(OrderService orderService) {
         this.orderService = orderService;
+    }
+
+    @Autowired
+    public void setPizzaServiceClient(PizzaServiceClient pizzaServiceClient) {
+        this.pizzaServiceClient = pizzaServiceClient;
     }
 
     public int getSelectedIngredientsQuantityMin() {
@@ -163,4 +185,5 @@ public class PizzaBuilderFormValidator implements Validator {
     public void setPizzaQuantityMax(int pizzaQuantityMax) {
         this.pizzaQuantityMax = pizzaQuantityMax;
     }
+
 }

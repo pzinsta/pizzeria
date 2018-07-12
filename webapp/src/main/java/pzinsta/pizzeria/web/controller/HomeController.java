@@ -6,25 +6,36 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pzinsta.pizzeria.model.order.OrderItemTemplate;
-import pzinsta.pizzeria.service.OrderItemTemplateService;
+import pzinsta.pizzeria.model.order.PizzaTemplate;
+import pzinsta.pizzeria.service.PizzaTemplateService;
+import pzinsta.pizzeria.web.client.PizzaServiceClient;
+import pzinsta.pizzeria.web.model.CartDTO;
+import pzinsta.pizzeria.web.service.OrderServiceImpl;
 
 import java.util.Collection;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
-
-    private OrderItemTemplateService orderItemTemplateService;
+    @Autowired
+    private OrderServiceImpl orderService;
+    private PizzaTemplateService pizzaTemplateService;
+    private PizzaServiceClient pizzaServiceClient;
 
     @Autowired
-    public HomeController(OrderItemTemplateService orderItemTemplateService) {
-        this.orderItemTemplateService = orderItemTemplateService;
+    public HomeController(PizzaTemplateService pizzaTemplateService, PizzaServiceClient pizzaServiceClient) {
+        this.pizzaTemplateService = pizzaTemplateService;
+        this.pizzaServiceClient = pizzaServiceClient;
     }
 
-    @ModelAttribute("orderItemTemplates")
-    public Collection<OrderItemTemplate> orderItemTemplates() {
-        return  orderItemTemplateService.getOrderItemTemplates();
+    @ModelAttribute("pizzaTemplates")
+    public Collection<PizzaTemplate> pizzaTemplates() {
+        return pizzaTemplateService.getOrderItemTemplates();
+    }
+
+    @ModelAttribute("cart")
+    public CartDTO cart() {
+        return orderService.getCartDTO();
     }
 
     @GetMapping
@@ -32,11 +43,19 @@ public class HomeController {
         return "home";
     }
 
-    public OrderItemTemplateService getOrderItemTemplateService() {
-        return orderItemTemplateService;
+    public PizzaTemplateService getPizzaTemplateService() {
+        return pizzaTemplateService;
     }
 
-    public void setOrderItemTemplateService(OrderItemTemplateService orderItemTemplateService) {
-        this.orderItemTemplateService = orderItemTemplateService;
+    public void setPizzaTemplateService(PizzaTemplateService pizzaTemplateService) {
+        this.pizzaTemplateService = pizzaTemplateService;
+    }
+
+    public PizzaServiceClient getPizzaServiceClient() {
+        return pizzaServiceClient;
+    }
+
+    public void setPizzaServiceClient(PizzaServiceClient pizzaServiceClient) {
+        this.pizzaServiceClient = pizzaServiceClient;
     }
 }

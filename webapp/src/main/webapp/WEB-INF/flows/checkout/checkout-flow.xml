@@ -6,10 +6,11 @@
 
     <on-start>
         <evaluate expression="customerService.createNewCustomer()" result="flowScope.customer"/>
+        <evaluate expression="orderService.getCartDTO()" result="flowScope.cart"/>
     </on-start>
 
     <decision-state id="isCartEmpty">
-        <if test="cart.orderItems.isEmpty()" then="endState" else="orderConfirmation"/>
+        <if test="cart.cartItems.isEmpty()" then="endState" else="orderConfirmation"/>
     </decision-state>
 
     <view-state id="orderConfirmation" view="checkout/orderConfirmation">

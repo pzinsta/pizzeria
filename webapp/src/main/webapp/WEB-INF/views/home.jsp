@@ -25,7 +25,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <span class="panel-title"><i class="fa fa-shopping-cart" aria-hidden="true"></i> My Cart</span>
-                    <c:if test="${not empty cart.orderItems}">
+                    <c:if test="${not empty cart.cartItems}">
                         <div>
                             <spring:url value="/checkout" var="checkoutUrl"/>
                             <a href="${checkoutUrl}" class="btn btn-success"><i class="fa fa-credit-card" aria-hidden="true"></i> Checkout</a>
@@ -38,10 +38,9 @@
                 </div>
                 <div class="panel-body">
                     <c:choose>
-                        <c:when test="${not empty cart.orderItems}">
+                        <c:when test="${not empty cart.cartItems}">
                             <div class="row">
-                                    <%--@elvariable id="cart" type="pzinsta.pizzeria.model.order.Cart"--%>
-                                <c:forEach items="${cart.orderItems}" var="orderItem" varStatus="varStatus">
+                                <c:forEach items="${cart.cartItems}" var="orderItem" varStatus="varStatus">
                                     <div class="col-sm-6">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
@@ -105,19 +104,19 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <c:forEach items="${orderItemTemplates}" var="orderItemTemplate">
+                        <c:forEach items="${pizzaTemplates}" var="pizzaTemplate">
                             <div class="col-sm-4 col-md-3">
                                 <div class="thumbnail text-center">
                                     <spring:url value="/builder/template/{orderItemId}" var="pizzaBuilderTemplateUrl">
-                                        <spring:param name="orderItemId" value="${orderItemTemplate.orderItem.id}"/>
+                                        <spring:param name="orderItemId" value="${pizzaTemplate.pizzaId}"/>
                                     </spring:url>
                                     <a href="${pizzaBuilderTemplateUrl}">
                                         <spring:url value="/resources/images/{imageFileName}" var="imageUrl">
-                                            <spring:param name="imageFileName" value="${orderItemTemplate.imageFileName}"/>
+                                            <spring:param name="imageFileName" value="${pizzaTemplate.imageFileName}"/>
                                         </spring:url>
                                         <img src="${imageUrl}">
                                         <div class="caption">
-                                            <h3>${orderItemTemplate.orderItem.pizza.leftPizzaSide.name}</h3>
+                                            <h3>${pizzaTemplate.name}</h3>
                                         </div>
                                         <a href="${pizzaBuilderTemplateUrl}" class="btn btn-primary">Start Building <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
                                     </a>

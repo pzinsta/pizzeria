@@ -12,11 +12,11 @@
             <%@ include file="../fragments/navbar.jspf" %>
             <h1 class="text-center page-header">Checkout</h1>
             <div class="row">
-                <c:forEach items="${cart.orderItems}" var="orderItem">
+                <c:forEach items="${cart.cartItems}" var="cartItem">
                     <div class="col-md-4">
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <%@ include file="../fragments/orderItem.jspf" %>
+                                <%@ include file="../fragments/cartItem.jspf" %>
                             </div>
                         </div>
                     </div>

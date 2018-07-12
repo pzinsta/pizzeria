@@ -1,7 +1,8 @@
 package pzinsta.pizzeria.web.form;
 
-import pzinsta.pizzeria.model.pizza.Ingredient;
-import pzinsta.pizzeria.model.pizza.IngredientType;
+
+import pzinsta.pizzeria.web.client.dto.pizza.Ingredient;
+import pzinsta.pizzeria.web.client.dto.pizza.IngredientType;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

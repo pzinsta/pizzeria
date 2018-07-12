@@ -1,28 +1,12 @@
 package pzinsta.pizzeria.service;
 
 import pzinsta.pizzeria.model.order.Order;
-import pzinsta.pizzeria.model.pizza.BakeStyle;
-import pzinsta.pizzeria.model.pizza.Crust;
-import pzinsta.pizzeria.model.pizza.CutStyle;
-import pzinsta.pizzeria.model.pizza.Ingredient;
-import pzinsta.pizzeria.model.pizza.IngredientType;
-import pzinsta.pizzeria.model.pizza.PizzaSize;
 import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 
 import java.util.Collection;
 import java.util.Optional;
 
 public interface OrderService {
-
-    Collection<Crust> getCrusts();
-
-    Collection<PizzaSize> getPizzaSizes();
-
-    Collection<BakeStyle> getBakeStyles();
-
-    Collection<CutStyle> getCutStyles();
-
-    Collection<Ingredient> getIngredients();
 
     Collection<Integer> getQuantities();
 
@@ -34,11 +18,7 @@ public interface OrderService {
 
     void replaceOrderItem(int orderItemIndex, PizzaOrderDTO pizzaOrderDTO);
 
-    PizzaOrderDTO getPizzaOrderDTOByOrderItemId(int orderItemIndex);
-
-    IngredientType getIngredientTypeByIngredientId(Long ingredientId);
-
-    Ingredient getIngredientById(Long ingredientId);
+    PizzaOrderDTO getPizzaOrderDtoByPizzaTemplateId(int orderItemIndex);
 
     Order postOrder(Order order);
 
@@ -46,5 +26,5 @@ public interface OrderService {
 
     void addReviewToOrderByTrackingNumber(String trackingNumber, Long reviewId);
 
-    Optional<PizzaOrderDTO> getPizzaOrderDTOByOrderItemId(Long orderItemId);
+    Optional<PizzaOrderDTO> getPizzaOrderDtoByPizzaTemplateId(Long orderItemId);
 }

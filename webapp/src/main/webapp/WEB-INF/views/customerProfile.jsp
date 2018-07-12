@@ -95,8 +95,8 @@
                 <div class="panel-body">
                     <div class="row">
                         <c:choose>
-                            <c:when test="${not empty customer.orders}">
-                                <c:forEach items="${customer.orders}" var="order">
+                            <c:when test="${not empty orders}">
+                                <c:forEach items="${orders}" var="order">
                                     <div class="col-sm-12">
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
@@ -132,12 +132,13 @@
                                                                 <div class="panel-body">
                                                                     <%@ include file="fragments/orderItem.jspf" %>
                                                                 </div>
-                                                                <div class="panel-footer">
-                                                                    <spring:url value="/builder/template/{orderItemId}" var="buildFromOrderItemUrl">
-                                                                        <spring:param name="orderItemId" value="${orderItem.id}"/>
-                                                                    </spring:url>
-                                                                    <a href="${buildFromOrderItemUrl}" class="btn btn-primary">Go to builder <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-                                                                </div>
+                                                                <%--todo--%>
+                                                                <%--<div class="panel-footer">--%>
+                                                                    <%--<spring:url value="/builder/template/{orderItemId}" var="buildFromOrderItemUrl">--%>
+                                                                        <%--<spring:param name="orderItemId" value="${orderItem.id}"/>--%>
+                                                                    <%--</spring:url>--%>
+                                                                    <%--<a href="${buildFromOrderItemUrl}" class="btn btn-primary">Go to builder <i class="fa fa-chevron-right" aria-hidden="true"></i></a>--%>
+                                                                <%--</div>--%>
                                                             </div>
                                                         </div>
                                                     </c:forEach>

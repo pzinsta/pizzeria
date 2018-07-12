@@ -1,15 +1,11 @@
 package pzinsta.pizzeria.model.order;
 
 import pzinsta.pizzeria.model.Constants;
-import pzinsta.pizzeria.model.pizza.Pizza;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -24,20 +20,19 @@ public class OrderItem implements Serializable {
     @ManyToOne
     private Order order;
 
-    @JoinColumn(unique = true)
-    @OneToOne(cascade = CascadeType.ALL)
-	private Pizza pizza;
+    @NotNull
+	private Long pizzaId;
 
     @NotNull
     @Min(1)
 	private int quantity;
 
-	public Pizza getPizza() {
-		return pizza;
+	public Long getPizzaId() {
+		return pizzaId;
 	}
 
-	public void setPizza(Pizza pizza) {
-		this.pizza = pizza;
+	public void setPizzaId(Long pizzaId) {
+		this.pizzaId = pizzaId;
 	}
 
 	public int getQuantity() {
@@ -69,11 +64,11 @@ public class OrderItem implements Serializable {
 		if (!(o instanceof OrderItem)) return false;
 		OrderItem orderItem = (OrderItem) o;
 		return getQuantity() == orderItem.getQuantity() &&
-				Objects.equals(getPizza(), orderItem.getPizza());
+				Objects.equals(getPizzaId(), orderItem.getPizzaId());
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(getOrder(), getPizza(), getQuantity());
+		return Objects.hash(getOrder(), getPizzaId(), getQuantity());
 	}
 }

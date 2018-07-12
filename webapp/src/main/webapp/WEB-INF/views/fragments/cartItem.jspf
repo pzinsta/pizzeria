@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-md-6">
+        <label>Size:</label> <span>${cartItem.pizza.size.name}</span>
+        <span>${cartItem.pizza.size.diameterInInches}&Prime;</span>
+    </div>
+    <div class="col-md-6">
+        <label>Bake style:</label>
+        <span>${cartItem.pizza.bakeStyle.name}</span>
+    </div>
+    <div class="col-md-6">
+        <label>Crust:</label>
+        <span>${cartItem.pizza.crust.name}</span>
+    </div>
+    <div class="col-md-6">
+        <label>Cut style:</label>
+        <span>${cartItem.pizza.cutStyle.name}</span>
+    </div>
+</div>
+<div class="row">
+    <c:choose>
+        <c:when test="${cartItem.pizza.leftPizzaSide eq cartItem.pizza.rightPizzaSide}">
+            <div class="col-xs-12">
+                <ul class="list-group">
+                    <c:forEach
+                            items="${cartItem.pizza.leftPizzaSide.pizzaItems}"
+                            var="pizzaItem">
+                        <li class="list-group-item">
+                            <%@ include file="pizzaItem.jspf" %>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div class="col-xs-12">
+                <h4>Left</h4>
+                <ul class="list-group">
+                    <c:if test="${empty cartItem.pizza.leftPizzaSide.pizzaItems}">
+                        <span>No ingredients selected.</span>
+                    </c:if>
+                    <c:forEach
+                            items="${cartItem.pizza.leftPizzaSide.pizzaItems}"
+                            var="pizzaItem">
+                        <li class="list-group-item">
+                            <%@ include file="pizzaItem.jspf" %>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+            <div class="col-xs-12">
+                <h4>Right</h4>
+                <ul class="list-group">
+                    <c:if test="${empty cartItem.pizza.rightPizzaSide.pizzaItems}">
+                        <span>No ingredients selected.</span>
+                    </c:if>
+                    <c:forEach
+                            items="${cartItem.pizza.rightPizzaSide.pizzaItems}"
+                            var="pizzaItem">
+                        <li class="list-group-item">
+                            <%@ include file="pizzaItem.jspf" %>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </div>
+        </c:otherwise>
+    </c:choose>
+</div>

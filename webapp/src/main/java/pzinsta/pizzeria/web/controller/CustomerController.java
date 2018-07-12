@@ -11,19 +11,28 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import pzinsta.pizzeria.model.order.Order;
 import pzinsta.pizzeria.model.user.Customer;
 import pzinsta.pizzeria.service.CustomerService;
 import pzinsta.pizzeria.service.exception.CustomerNotFoundException;
+import pzinsta.pizzeria.web.client.PizzaServiceClient;
+import pzinsta.pizzeria.web.model.OrderDTO;
+import pzinsta.pizzeria.web.model.OrderItemDTO;
 
 import javax.validation.Valid;
 import java.security.Principal;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
 
     private CustomerService customerService;
+    @Autowired
+    private PizzaServiceClient pizzaServiceClient;
 
     @Autowired
     public CustomerController(CustomerService customerService) {
@@ -34,8 +43,24 @@ public class CustomerController {
     public String showUserProfileForm(Model model, Principal principal) {
         Customer customer = customerService.getCustomerByUsername(principal.getName())
                 .orElseThrow(CustomerNotFoundException::new);
+        model.addAttribute("orders", getOrders(customer.getOrders()));
         model.addAttribute("customer", customer);
         return "customerProfile";
+    }
+
+    private Collection<OrderDTO> getOrders(Collection<Order> orders) {
+        return orders.stream().map(order -> {
+            OrderDTO orderDTO = new OrderDTO();
+            List<OrderItemDTO> orderItems = order.getOrderItems().stream().map(orderItem -> {
+                OrderItemDTO orderItemDTO = new OrderItemDTO();
+                orderItemDTO.setPizza(pizzaServiceClient.findPizzaById(orderItem.getPizzaId()));
+                orderItemDTO.setQuantity(orderItem.getQuantity());
+                return orderItemDTO;
+            }).collect(Collectors.toList());
+            orderDTO.setOrderItems(orderItems);
+            orderDTO.setTrackingNumber(order.getTrackingNumber());
+            return orderDTO;
+        }).collect(Collectors.toList());
     }
 
     @PostMapping
