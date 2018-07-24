@@ -42,15 +42,15 @@
                                 <c:forEach var="deliveryAddress" items="${customer.deliveryAddresses}"
                                            varStatus="varStatus">
                                     <div class="col-md-4">
-                                        <spring:url value="/customer/deliveryAddress/{deliveryAddressIndex}/remove"
+                                        <spring:url value="/customer/deliveryAddress/{deliveryAddressId}/remove"
                                                     var="removeDeliveryAddressUrl">
-                                            <spring:param name="deliveryAddressIndex" value="${varStatus.index}"/>
+                                            <spring:param name="deliveryAddressId" value="${deliveryAddress.id}"/>
                                             <spring:param name="returnUrl" value="${returnUrl}"/>
                                         </spring:url>
 
-                                        <spring:url value="/customer/deliveryAddress/{deliveryAddressIndex}"
+                                        <spring:url value="/customer/deliveryAddress/{deliveryAddressId}"
                                                     var="editDeliveryAddressUrl">
-                                            <spring:param name="deliveryAddressIndex" value="${varStatus.index}"/>
+                                            <spring:param name="deliveryAddressId" value="${deliveryAddress.id}"/>
                                             <spring:param name="returnUrl" value="${returnUrl}"/>
                                         </spring:url>
 

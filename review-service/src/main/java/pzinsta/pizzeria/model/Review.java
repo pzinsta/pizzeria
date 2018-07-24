@@ -1,6 +1,5 @@
 package pzinsta.pizzeria.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -24,8 +23,10 @@ import java.util.Collection;
 public class Review implements Serializable {
     @Id
     @GeneratedValue(generator = Constants.ID_GENERATOR)
-	@JsonProperty("reviewId") // TODO: workaround for the id field shadowing in the Resource class
 	private Long id;
+
+    @NotNull
+   	private Long orderId;
 
     @CreationTimestamp
 	private Instant createdOn;
@@ -92,4 +93,12 @@ public class Review implements Serializable {
 	public void setImages(Collection<Long> images) {
 		this.images = images;
 	}
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
+    }
 }

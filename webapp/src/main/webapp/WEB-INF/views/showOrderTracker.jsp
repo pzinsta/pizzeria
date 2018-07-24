@@ -26,10 +26,10 @@
                 </c:forEach>
             </ul>
 
-            <c:if test="${not empty order.delivery}">
+            <c:if test="${not empty delivery}">
                 <h2>Delivery status</h2>
                 <div class="lead">
-                    <spring:message code="deliveryStatus.${order.delivery.status}"/>
+                    <spring:message code="deliveryStatus.${delivery.status}"/>
                 </div>
             </c:if>
 

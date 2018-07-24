@@ -13,11 +13,10 @@
 
             <div class="row">
                 <div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-                    <form:form modelAttribute="order">
+                    <form:form>
                         <div class="form-group">
-                            <form:label path="comment" cssClass="control-label">Comment</form:label>
-                            <form:textarea path="comment" cssClass="form-control" rows="3" cols="20"/>
-                            <form:errors path="comment"/>
+                            <label class="control-label" for="comment">Comment</label>
+                            <textarea id="comment" class="form-control" rows="3" cols="20" name="comment"></textarea>
                         </div>
                         <div class="form-group">
 

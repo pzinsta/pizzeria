@@ -269,3 +269,15 @@ INSERT INTO pizza_side_pizza_items (pizza_side_id, pizza_items_id) VALUES
 
 INSERT INTO pizza (id, bake_style_id, crust_id, cut_style_id, size_id, left_pizzaside_id, right_pizzaside_id)
 VALUES (6, 1, 1, 1, 1, 11, 12);
+
+INSERT INTO pizza_template (id, name, pizza_id, image_file_name) VALUES (1, 'The Veggie', 1, 'the_veggie.jpg');
+
+INSERT INTO pizza_template (id, name, pizza_id, image_file_name) VALUES (2, 'Four Cheese', 2, 'four_cheese.jpg');
+
+INSERT INTO pizza_template (id, name, pizza_id, image_file_name) VALUES (3, 'Pepperoni Classic', 3, 'pepperoni_classic.jpg');
+
+INSERT INTO pizza_template (id, name, pizza_id, image_file_name) VALUES (4, 'White Garden', 4, 'white_garden.jpg');
+
+INSERT INTO pizza_template (id, name, pizza_id, image_file_name) VALUES (5, 'BBQ Chicken', 5, 'bbq_chicken.jpg');
+
+INSERT INTO pizza_template (id, name, pizza_id, image_file_name) VALUES (6, 'Hawaiian', 6, 'hawaiian.jpg');

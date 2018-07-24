@@ -108,7 +108,7 @@
                             <div class="col-sm-4 col-md-3">
                                 <div class="thumbnail text-center">
                                     <spring:url value="/builder/template/{orderItemId}" var="pizzaBuilderTemplateUrl">
-                                        <spring:param name="orderItemId" value="${pizzaTemplate.pizzaId}"/>
+                                        <spring:param name="orderItemId" value="${pizzaTemplate.id}"/>
                                     </spring:url>
                                     <a href="${pizzaBuilderTemplateUrl}">
                                         <spring:url value="/resources/images/{imageFileName}" var="imageUrl">

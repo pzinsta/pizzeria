@@ -1,21 +1,22 @@
 package pzinsta.pizzeria.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import pzinsta.pizzeria.model.order.Order;
-import pzinsta.pizzeria.model.user.Customer;
-import pzinsta.pizzeria.service.CustomerService;
-import pzinsta.pizzeria.service.exception.CustomerNotFoundException;
+import pzinsta.pizzeria.web.client.CustomerServiceClient;
+import pzinsta.pizzeria.web.client.OrderServiceClient;
 import pzinsta.pizzeria.web.client.PizzaServiceClient;
+import pzinsta.pizzeria.web.client.dto.order.Order;
+import pzinsta.pizzeria.web.client.dto.order.OrderItem;
+import pzinsta.pizzeria.web.client.dto.pizza.Pizza;
+import pzinsta.pizzeria.web.client.dto.user.Customer;
+import pzinsta.pizzeria.web.exception.CustomerNotFoundException;
+import pzinsta.pizzeria.web.exception.PizzaNotFoundException;
 import pzinsta.pizzeria.web.model.OrderDTO;
 import pzinsta.pizzeria.web.model.OrderItemDTO;
 
@@ -23,44 +24,28 @@ import javax.validation.Valid;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/customer")
 public class CustomerController {
 
-    private CustomerService customerService;
-    @Autowired
+    private CustomerServiceClient customerServiceClient;
     private PizzaServiceClient pizzaServiceClient;
+    private OrderServiceClient orderServiceClient;
 
     @Autowired
-    public CustomerController(CustomerService customerService) {
-        this.customerService = customerService;
+    public CustomerController(CustomerServiceClient customerServiceClient, PizzaServiceClient pizzaServiceClient, OrderServiceClient orderServiceClient) {
+        this.customerServiceClient = customerServiceClient;
+        this.pizzaServiceClient = pizzaServiceClient;
+        this.orderServiceClient = orderServiceClient;
     }
 
     @GetMapping
     public String showUserProfileForm(Model model, Principal principal) {
-        Customer customer = customerService.getCustomerByUsername(principal.getName())
-                .orElseThrow(CustomerNotFoundException::new);
-        model.addAttribute("orders", getOrders(customer.getOrders()));
-        model.addAttribute("customer", customer);
+        model.addAttribute("orders", getOrders(orderServiceClient.findAllByCustomerId(getCustomer(principal).getId())));
+        model.addAttribute("customer", getCustomer(principal));
         return "customerProfile";
-    }
-
-    private Collection<OrderDTO> getOrders(Collection<Order> orders) {
-        return orders.stream().map(order -> {
-            OrderDTO orderDTO = new OrderDTO();
-            List<OrderItemDTO> orderItems = order.getOrderItems().stream().map(orderItem -> {
-                OrderItemDTO orderItemDTO = new OrderItemDTO();
-                orderItemDTO.setPizza(pizzaServiceClient.findPizzaById(orderItem.getPizzaId()));
-                orderItemDTO.setQuantity(orderItem.getQuantity());
-                return orderItemDTO;
-            }).collect(Collectors.toList());
-            orderDTO.setOrderItems(orderItems);
-            orderDTO.setTrackingNumber(order.getTrackingNumber());
-            return orderDTO;
-        }).collect(Collectors.toList());
     }
 
     @PostMapping
@@ -73,20 +58,66 @@ public class CustomerController {
         return "redirect:customer";
     }
 
-    @ExceptionHandler(CustomerNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void handleCustomerNotFoundException() {
+    private Customer getCustomer(Principal principal) {
+        return customerServiceClient.findByUsername(principal.getName())
+                .orElseThrow(() -> new CustomerNotFoundException(String.format("Customer with username %s not found.", principal.getName())));
+    }
 
+    private Collection<OrderDTO> getOrders(Collection<Order> orders) {
+        return orders.stream()
+                .map(this::transformOrderToOrderDTO)
+                .collect(Collectors.toList());
+    }
+
+    private OrderDTO transformOrderToOrderDTO(Order order) {
+        OrderDTO orderDTO = new OrderDTO();
+        List<OrderItemDTO> orderItems = order.getOrderItems().stream()
+                .map(this::transformOrderItemToOrderItemDTO)
+                .collect(Collectors.toList());
+        orderDTO.setOrderItems(orderItems);
+        orderDTO.setTrackingNumber(order.getTrackingNumber());
+        return orderDTO;
+    }
+
+    private OrderItemDTO transformOrderItemToOrderItemDTO(OrderItem orderItem) {
+        OrderItemDTO orderItemDTO = new OrderItemDTO();
+        Pizza pizza = pizzaServiceClient.findPizzaById(orderItem.getPizzaId())
+                .orElseThrow(() -> new PizzaNotFoundException(orderItem.getPizzaId()));
+        orderItemDTO.setPizza(pizza);
+        orderItemDTO.setQuantity(orderItem.getQuantity());
+        return orderItemDTO;
     }
 
     private void updateExistingCustomer(Customer customer, Principal principal) {
-        Optional<Customer> customerOptional = customerService.getCustomerByUsername(principal.getName());
-        customerOptional.ifPresent(existingCustomer -> {
-            existingCustomer.setFirstName(customer.getFirstName());
-            existingCustomer.setLastName(customer.getLastName());
-            existingCustomer.setEmail(customer.getEmail());
-            existingCustomer.setPhoneNumber(customer.getPhoneNumber());
-            customerService.updateCustomer(existingCustomer);
-        });
+        Customer existingCustomer = getCustomer(principal);
+        existingCustomer.setFirstName(customer.getFirstName());
+        existingCustomer.setLastName(customer.getLastName());
+        existingCustomer.setEmail(customer.getEmail());
+        existingCustomer.setPhoneNumber(customer.getPhoneNumber());
+        customerServiceClient.update(existingCustomer.getId(), existingCustomer);
+    }
+
+    public CustomerServiceClient getCustomerServiceClient() {
+        return customerServiceClient;
+    }
+
+    public void setCustomerServiceClient(CustomerServiceClient customerServiceClient) {
+        this.customerServiceClient = customerServiceClient;
+    }
+
+    public PizzaServiceClient getPizzaServiceClient() {
+        return pizzaServiceClient;
+    }
+
+    public void setPizzaServiceClient(PizzaServiceClient pizzaServiceClient) {
+        this.pizzaServiceClient = pizzaServiceClient;
+    }
+
+    public OrderServiceClient getOrderServiceClient() {
+        return orderServiceClient;
+    }
+
+    public void setOrderServiceClient(OrderServiceClient orderServiceClient) {
+        this.orderServiceClient = orderServiceClient;
     }
 }

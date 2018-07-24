@@ -39,7 +39,12 @@ public class PizzaController {
 
     @GetMapping("/{id}/cost")
     public MonetaryAmount calculateCost(@PathVariable("id") Long id) {
-        return pizzaService.calculatePizzaCostById(id);
+        return pizzaService.calculateCostById(id);
+    }
+
+    @PostMapping("/cost")
+    public MonetaryAmount calculateCost(@RequestBody Pizza pizza) {
+        return pizzaService.calculateCost(pizza);
     }
 
     @PostMapping
@@ -49,8 +54,8 @@ public class PizzaController {
 
     @ExceptionHandler(PizzaNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handlePizzaNotFoundException(PizzaNotFoundException e) {
-        return e.getMessage();
+    public String handlePizzaNotFoundException(PizzaNotFoundException exception) {
+        return exception.getMessage();
     }
 
     public PizzaService getPizzaService() {

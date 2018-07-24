@@ -6,6 +6,7 @@ import java.util.Collection;
 
 public class Review {
     private Long reviewId;
+    private Long orderId;
     private Instant createdOn;
     private Instant lastUpdatedOn;
     private String message;
@@ -58,5 +59,13 @@ public class Review {
 
     public void setImages(Collection<Long> images) {
         this.images = images;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 }

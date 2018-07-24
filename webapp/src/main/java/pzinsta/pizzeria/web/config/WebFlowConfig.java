@@ -1,6 +1,7 @@
 package pzinsta.pizzeria.web.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
@@ -16,6 +17,7 @@ import org.springframework.webflow.security.SecurityFlowExecutionListener;
 import java.util.Collections;
 
 @Configuration
+@AutoConfigureAfter(WebConfig.class)
 public class WebFlowConfig extends AbstractFlowConfiguration {
 
     @Autowired
@@ -48,6 +50,7 @@ public class WebFlowConfig extends AbstractFlowConfiguration {
     public MvcViewFactoryCreator mvcViewFactoryCreator() {
         MvcViewFactoryCreator mvcViewFactoryCreator = new MvcViewFactoryCreator();
         mvcViewFactoryCreator.setViewResolvers(Collections.singletonList(webConfig.viewResolver()));
+        mvcViewFactoryCreator.setUseSpringBeanBinding(true);
         return mvcViewFactoryCreator;
     }
 

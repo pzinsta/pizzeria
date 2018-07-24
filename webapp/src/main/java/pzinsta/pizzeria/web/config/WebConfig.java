@@ -3,12 +3,12 @@ package pzinsta.pizzeria.web.config;
 import feign.Logger;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.Ordered;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.DateFormatter;
+import org.springframework.format.number.money.MonetaryAmountFormatter;
 import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.client.RestTemplate;
@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 
 @Configuration
-@ComponentScan("pzinsta.pizzeria.web")
 public class WebConfig implements WebMvcConfigurer {
 
     @Bean
@@ -41,7 +40,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
         configurer.enable();
     }
-    
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/*").addResourceLocations("/resources");
@@ -79,6 +78,12 @@ public class WebConfig implements WebMvcConfigurer {
         DateFormatter dateFormatter = new DateFormatter();
         dateFormatter.setStyle(DateFormat.MEDIUM);
         registry.addFormatter(dateFormatter);
+        registry.addFormatter(monetaryAmountFormatter());
+    }
+
+    @Bean
+    public MonetaryAmountFormatter monetaryAmountFormatter() {
+        return new MonetaryAmountFormatter();
     }
 
     @Bean

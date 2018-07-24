@@ -1,11 +1,9 @@
 package pzinsta.pizzeria.web.client.dto.pizza;
 
 import javax.money.MonetaryAmount;
-import javax.persistence.Entity;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Entity
 public class PizzaItem implements Serializable {
     private Long id;
     private int quantity;

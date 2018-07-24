@@ -1,33 +1,40 @@
 package pzinsta.pizzeria.web.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.hateoas.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import pzinsta.pizzeria.web.client.dto.Review;
 
+import java.util.Collection;
 import java.util.Optional;
 
 @Component
-@FeignClient(name = "reviews", url = "${review.service.url}", path = "/reviews")
+@FeignClient(
+        name = "review-service",
+        url = "${review.service.url}",
+        path = "/reviews",
+        decode404 = true
+)
 public interface ReviewServiceClient {
 
     @GetMapping("/{id}")
-    Optional<Resource<Review>> findById(@PathVariable("id") Long id);
+    Optional<Review> findById(@PathVariable("id") Long id);
 
     @GetMapping
-    PagedResources<Resource<Review>> findAll(@RequestParam("limit") int limit, @RequestParam("page") int page);
+    Optional<Review> findByOrderId(@RequestParam("orderId") Long orderId);
+
+    @GetMapping
+    Collection<Review> findAll();
+
+    @GetMapping
+    Page<Review> findAll(@RequestParam("size") int size, @RequestParam("page") int page);
 
     @PostMapping
-    Resource<Review> save(Review review);
-
-    @PatchMapping("/{id}")
-    Resource<Review> update(@PathVariable("id") Long id, Review review);
-
+    Review save(@RequestBody Review review);
 
 }

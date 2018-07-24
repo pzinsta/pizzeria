@@ -2,8 +2,7 @@ package pzinsta.pizzeria.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.hateoas.PagedResources;
-import org.springframework.hateoas.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,16 +40,15 @@ public class ReviewsController {
 
     @GetMapping("/{pageNumber}")
     public String showReviewsForPage(@PathVariable("pageNumber") int pageNumber, Model model) {
-        PagedResources<Resource<Review>> reviewResources = reviewServiceClient.findAll(reviewsPerPage, pageNumber - 1);
+        Page<Review> reviews = reviewServiceClient.findAll(reviewsPerPage, pageNumber - 1);
         model.addAttribute("currentPageNumber", pageNumber);
-        model.addAttribute("totalPagesCount", reviewResources.getMetadata().getTotalPages());
-        model.addAttribute("reviews", getReviews(reviewResources.getContent()));
+        model.addAttribute("totalPagesCount", reviews.getTotalPages());
+        model.addAttribute("reviews", getReviews(reviews.getContent()));
         return "reviews";
     }
 
-    private List<ReviewDTO> getReviews(Collection<Resource<Review>> reviewResources) {
+    private List<ReviewDTO> getReviews(Collection<Review> reviewResources) {
         return reviewResources.stream()
-                .map(Resource::getContent)
                 .map(review -> {
                     ReviewDTO reviewDTO = new ReviewDTO();
                     reviewDTO.setCreatedOn(review.getCreatedOn());

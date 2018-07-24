@@ -19,7 +19,7 @@
                         <spring:param name="execution" value="${requestScope.flowExecutionKey}"/>
                     </spring:url>
 
-                    <form:form method="post"><%--@elvariable id="customer" type="pzinsta.pizzeria.model.user.Customer"--%>
+                    <form:form method="post"><%--@elvariable id="customer" type="pzinsta.model.Customer"--%>
                             <div class="panel panel-info">
                                 <div class="panel-body">
                                     <div class="row">

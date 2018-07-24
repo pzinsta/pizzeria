@@ -1,0 +1,5 @@
+package pzinsta.model;
+
+public enum Role {
+	UNREGISTERED_CUSTOMER, REGISTERED_CUSTOMER, MANAGER, DELIVERYPERSON, ADMIN
+}

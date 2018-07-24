@@ -1,10 +1,10 @@
 package pzinsta.pizzeria.web.util;
 
 import com.google.common.collect.Sets;
-import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 import pzinsta.pizzeria.web.client.dto.pizza.Ingredient;
 import pzinsta.pizzeria.web.client.dto.pizza.IngredientType;
 import pzinsta.pizzeria.web.form.PizzaBuilderForm;
+import pzinsta.pizzeria.web.model.PizzaOrderDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;

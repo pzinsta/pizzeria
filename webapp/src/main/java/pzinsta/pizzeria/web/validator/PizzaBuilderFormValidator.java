@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import pzinsta.pizzeria.service.OrderService;
 import pzinsta.pizzeria.web.client.PizzaServiceClient;
 import pzinsta.pizzeria.web.client.dto.pizza.BakeStyle;
 import pzinsta.pizzeria.web.client.dto.pizza.Crust;
@@ -24,7 +23,6 @@ import java.util.stream.Collectors;
 @Component
 public class PizzaBuilderFormValidator implements Validator {
 
-    private OrderService orderService;
     private PizzaServiceClient pizzaServiceClient;
 
     @Value("${pizza.ingredients.quantity.min}")
@@ -138,15 +136,6 @@ public class PizzaBuilderFormValidator implements Validator {
                 errors.reject("ingredientId.invalid", ArrayUtils.toArray(ingredientQuantity.getIngredient().getId()), "ingredientId.invalid");
             }
         });
-    }
-
-    public OrderService getOrderService() {
-        return orderService;
-    }
-
-    @Autowired
-    public void setOrderService(OrderService orderService) {
-        this.orderService = orderService;
     }
 
     @Autowired

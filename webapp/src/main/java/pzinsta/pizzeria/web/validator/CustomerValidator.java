@@ -3,7 +3,7 @@ package pzinsta.pizzeria.web.validator;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
-import pzinsta.pizzeria.model.user.Customer;
+import pzinsta.pizzeria.web.client.dto.user.Customer;
 
 @Component
 public class CustomerValidator {

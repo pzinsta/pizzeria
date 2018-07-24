@@ -5,8 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import pzinsta.pizzeria.model.user.Customer;
-import pzinsta.pizzeria.service.CustomerService;
+import pzinsta.pizzeria.web.client.CustomerServiceClient;
+import pzinsta.pizzeria.web.client.dto.user.Customer;
 import pzinsta.pizzeria.web.form.CustomerRegistrationForm;
 
 import java.util.Optional;
@@ -14,7 +14,7 @@ import java.util.Optional;
 @Component
 public class CustomerRegistrationFormValidator implements Validator {
 
-    private CustomerService customerService;
+    private CustomerServiceClient customerServiceClient;
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -29,7 +29,7 @@ public class CustomerRegistrationFormValidator implements Validator {
     }
 
     private void validateUsername(CustomerRegistrationForm customerRegistrationForm, Errors errors) {
-        Optional<Customer> customerOptional = customerService.getCustomerByUsername(customerRegistrationForm.getUsername());
+        Optional<Customer> customerOptional = customerServiceClient.findByUsername(customerRegistrationForm.getUsername());
 
         if (customerOptional.isPresent()) {
             errors.rejectValue("username", "username.already.exists");
@@ -42,12 +42,12 @@ public class CustomerRegistrationFormValidator implements Validator {
         }
     }
 
-    public CustomerService getCustomerService() {
-        return customerService;
+    public CustomerServiceClient getCustomerServiceClient() {
+        return customerServiceClient;
     }
 
     @Autowired
-    public void setCustomerService(CustomerService customerService) {
-        this.customerService = customerService;
+    public void setCustomerServiceClient(CustomerServiceClient customerServiceClient) {
+        this.customerServiceClient = customerServiceClient;
     }
 }

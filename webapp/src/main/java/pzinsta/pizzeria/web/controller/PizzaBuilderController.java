@@ -1,7 +1,5 @@
 package pzinsta.pizzeria.web.controller;
 
-import com.google.common.base.Joiner;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,14 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pzinsta.pizzeria.service.OrderService;
-import pzinsta.pizzeria.service.dto.PizzaOrderDTO;
 import pzinsta.pizzeria.web.client.PizzaServiceClient;
 import pzinsta.pizzeria.web.client.dto.pizza.BakeStyle;
 import pzinsta.pizzeria.web.client.dto.pizza.Crust;
 import pzinsta.pizzeria.web.client.dto.pizza.CutStyle;
 import pzinsta.pizzeria.web.client.dto.pizza.PizzaSize;
 import pzinsta.pizzeria.web.form.PizzaBuilderForm;
+import pzinsta.pizzeria.web.model.PizzaOrderDTO;
+import pzinsta.pizzeria.web.service.impl.OrderService;
 import pzinsta.pizzeria.web.util.Utils;
 import pzinsta.pizzeria.web.validator.PizzaBuilderFormValidator;
 
@@ -92,7 +90,7 @@ public class PizzaBuilderController {
 
         orderService.addOrderItemToCart(createPizzaOrderDTO(pizzaBuilderForm));
 
-        return Joiner.on(StringUtils.EMPTY).join("redirect:", redirectTo);
+        return "redirect:" + redirectTo;
     }
 
     @GetMapping("/template/{pizzaTemplateId}")

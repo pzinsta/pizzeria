@@ -35,13 +35,7 @@ public class PizzaService {
         return pizzaRepository.save(pizza);
     }
 
-    public MonetaryAmount calculatePizzaCostById(Long pizzaId) {
-        return pizzaRepository.findById(pizzaId)
-                .map(PizzaService::calculatePizzaCost)
-                .orElseThrow(() -> new PizzaNotFoundException(pizzaId));
-    }
-
-    private static MonetaryAmount calculatePizzaCost(Pizza pizza) {
+    public MonetaryAmount calculateCost(Pizza pizza) {
         MonetaryAmount crustCost = pizza.getCrust().getPrice();
         MonetaryAmount pizzaSizeCost = pizza.getSize().getPrice();
 
@@ -50,6 +44,12 @@ public class PizzaService {
         MonetaryAmount rightPizzaSideIngredientsCost = calculatePizzaSideIngredientsCost(pizza.getRightPizzaSide()).multiply(ingredientCostFactor);
 
         return crustCost.add(pizzaSizeCost).add(leftPizzaSideIngredientsCost).add(rightPizzaSideIngredientsCost);
+    }
+
+    public MonetaryAmount calculateCostById(Long pizzaId) {
+        return pizzaRepository.findById(pizzaId)
+                .map(this::calculateCost)
+                .orElseThrow(() -> new PizzaNotFoundException(pizzaId));
     }
 
     private static MonetaryAmount calculatePizzaSideIngredientsCost(PizzaSide pizzaSide) {

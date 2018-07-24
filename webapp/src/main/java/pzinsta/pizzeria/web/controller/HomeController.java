@@ -6,31 +6,28 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pzinsta.pizzeria.model.order.PizzaTemplate;
-import pzinsta.pizzeria.service.PizzaTemplateService;
 import pzinsta.pizzeria.web.client.PizzaServiceClient;
+import pzinsta.pizzeria.web.client.dto.pizza.PizzaTemplate;
 import pzinsta.pizzeria.web.model.CartDTO;
-import pzinsta.pizzeria.web.service.OrderServiceImpl;
+import pzinsta.pizzeria.web.service.impl.OrderService;
 
 import java.util.Collection;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
-    @Autowired
-    private OrderServiceImpl orderService;
-    private PizzaTemplateService pizzaTemplateService;
+    private OrderService orderService;
     private PizzaServiceClient pizzaServiceClient;
 
     @Autowired
-    public HomeController(PizzaTemplateService pizzaTemplateService, PizzaServiceClient pizzaServiceClient) {
-        this.pizzaTemplateService = pizzaTemplateService;
+    public HomeController(OrderService orderService, PizzaServiceClient pizzaServiceClient) {
+        this.orderService = orderService;
         this.pizzaServiceClient = pizzaServiceClient;
     }
 
     @ModelAttribute("pizzaTemplates")
     public Collection<PizzaTemplate> pizzaTemplates() {
-        return pizzaTemplateService.getOrderItemTemplates();
+        return pizzaServiceClient.findAllPizzaTemplates();
     }
 
     @ModelAttribute("cart")
@@ -41,14 +38,6 @@ public class HomeController {
     @GetMapping
     public String home(Model model) {
         return "home";
-    }
-
-    public PizzaTemplateService getPizzaTemplateService() {
-        return pizzaTemplateService;
-    }
-
-    public void setPizzaTemplateService(PizzaTemplateService pizzaTemplateService) {
-        this.pizzaTemplateService = pizzaTemplateService;
     }
 
     public PizzaServiceClient getPizzaServiceClient() {

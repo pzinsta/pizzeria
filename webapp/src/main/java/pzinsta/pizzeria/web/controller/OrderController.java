@@ -1,6 +1,5 @@
 package pzinsta.pizzeria.web.controller;
 
-import com.google.common.base.Joiner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,20 +13,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pzinsta.pizzeria.service.OrderService;
 import pzinsta.pizzeria.web.client.PizzaServiceClient;
 import pzinsta.pizzeria.web.client.dto.pizza.BakeStyle;
 import pzinsta.pizzeria.web.client.dto.pizza.Crust;
 import pzinsta.pizzeria.web.client.dto.pizza.CutStyle;
 import pzinsta.pizzeria.web.client.dto.pizza.PizzaSize;
 import pzinsta.pizzeria.web.form.PizzaBuilderForm;
+import pzinsta.pizzeria.web.service.impl.OrderService;
 import pzinsta.pizzeria.web.util.Utils;
 import pzinsta.pizzeria.web.validator.PizzaBuilderFormValidator;
 
 import javax.validation.Valid;
 import java.util.Collection;
 
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static pzinsta.pizzeria.web.util.Utils.createPizzaOrderDTO;
 
 @Controller
@@ -78,13 +76,13 @@ public class OrderController {
     @GetMapping("/{orderItemId}/remove}")
     public String removeOrderItem(@PathVariable("orderItemId") int orderItemIndex, @RequestParam(value = "redirectTo", defaultValue = "/") String redirectTo, RedirectAttributes redirectAttributes) {
         orderService.removeOrderItem(orderItemIndex);
-        return Joiner.on(EMPTY).join("redirect:", redirectTo);
+        return "redirect:" + redirectTo;
     }
 
     @GetMapping("/clear")
     public String clear(@RequestParam(value = "redirectTo", defaultValue = "/") String redirectTo, RedirectAttributes redirectAttributes) {
         orderService.emptyCart();
-        return Joiner.on(EMPTY).join("redirect:", redirectTo);
+        return "redirect:" + redirectTo;
     }
 
     @GetMapping("/{orderItemId}/edit")
@@ -102,7 +100,7 @@ public class OrderController {
         }
 
         orderService.replaceOrderItem(orderItemIndex, createPizzaOrderDTO(pizzaBuilderForm));
-        return Joiner.on(EMPTY).join("redirect:", redirectTo);
+        return "redirect:" + redirectTo;
     }
 
 

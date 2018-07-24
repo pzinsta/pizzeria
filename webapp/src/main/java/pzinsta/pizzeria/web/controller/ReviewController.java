@@ -3,7 +3,6 @@ package pzinsta.pizzeria.web.controller;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pzinsta.pizzeria.model.order.Order;
-import pzinsta.pizzeria.service.OrderService;
-import pzinsta.pizzeria.service.exception.OrderNotFoundException;
 import pzinsta.pizzeria.web.client.FileStorageServiceClient;
+import pzinsta.pizzeria.web.client.OrderServiceClient;
 import pzinsta.pizzeria.web.client.ReviewServiceClient;
 import pzinsta.pizzeria.web.client.dto.File;
 import pzinsta.pizzeria.web.client.dto.Review;
+import pzinsta.pizzeria.web.client.dto.order.Order;
+import pzinsta.pizzeria.web.exception.OrderNotFoundException;
 import pzinsta.pizzeria.web.form.ReviewForm;
 import pzinsta.pizzeria.web.validator.ReviewFormValidator;
 
@@ -41,14 +40,14 @@ public class ReviewController {
 
     private static final int[] RATINGS = IntStream.rangeClosed(1, 10).toArray();
 
-    private OrderService orderService;
+    private OrderServiceClient orderServiceClient;
     private FileStorageServiceClient fileStorageServiceClient;
     private ReviewFormValidator reviewFormValidator;
     private ReviewServiceClient reviewServiceClient;
 
     @Autowired
-    public ReviewController(OrderService orderService, FileStorageServiceClient fileStorageServiceClient, ReviewFormValidator reviewFormValidator, ReviewServiceClient reviewServiceClient) {
-        this.orderService = orderService;
+    public ReviewController(OrderServiceClient orderServiceClient, FileStorageServiceClient fileStorageServiceClient, ReviewFormValidator reviewFormValidator, ReviewServiceClient reviewServiceClient) {
+        this.orderServiceClient = orderServiceClient;
         this.fileStorageServiceClient = fileStorageServiceClient;
         this.reviewFormValidator = reviewFormValidator;
         this.reviewServiceClient = reviewServiceClient;
@@ -78,34 +77,22 @@ public class ReviewController {
 
     @GetMapping("/{trackingNumber}")
     public String showOrderReviewSubmissionForm(@PathVariable("trackingNumber") String trackingNumber, Model model, @RequestParam(name = "returnUrl", defaultValue = "/reviews") String returnUrl) {
-        Order order = orderService.getOrderByTrackingNumber(trackingNumber);
+        Order order = getOrderByTrackingNumber(trackingNumber);
         model.addAttribute("order", order);
         model.addAttribute("reviewForm", getReviewForm(order));
         return "orderReviewSubmissionForm";
     }
 
-    private ReviewForm getReviewForm(Order order) {
-        return Optional.ofNullable(order.getReviewId())
-                .flatMap(reviewServiceClient::findById)
-                .map(Resource::getContent)
-                .map(ReviewController::transformReviewToReviewForm)
-                .orElseGet(ReviewForm::new);
-    }
 
     @PostMapping("/{trackingNumber}")
     public String processOrderReviewSubmissionForm(@PathVariable("trackingNumber") String trackingNumber, @ModelAttribute("reviewForm") @Valid ReviewForm reviewForm, BindingResult bindingResult, @RequestParam(name = "returnUrl", defaultValue = "/reviews") String returnUrl, RedirectAttributes redirectAttributes) {
-        if(bindingResult.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "orderReviewSubmissionForm";
         }
-        Order order = orderService.getOrderByTrackingNumber(trackingNumber);
         Review review = transformReviewFormToReviewDTO(reviewForm);
-        if (isReviewed(order)) {
-            reviewServiceClient.update(order.getReviewId(), review);
-        }
-        else {
-            Review savedReview = reviewServiceClient.save(review).getContent();
-            orderService.addReviewToOrderByTrackingNumber(trackingNumber, savedReview.getReviewId());
-        }
+        Order order = getOrderByTrackingNumber(trackingNumber);
+        review.setOrderId(order.getId());
+        reviewServiceClient.save(review);
         return "redirect:" + returnUrl;
     }
 
@@ -115,8 +102,22 @@ public class ReviewController {
         return "redirect:/review/order";
     }
 
-    private boolean isReviewed(Order order) {
-        return Optional.ofNullable(order.getReviewId()).flatMap(reviewServiceClient::findById).isPresent();
+    private static ReviewForm transformReviewToReviewForm(Review review) {
+        ReviewForm reviewForm = new ReviewForm();
+        reviewForm.setMessage(review.getMessage());
+        reviewForm.setRating(review.getRating());
+        return reviewForm;
+    }
+
+    private Order getOrderByTrackingNumber(String trackingNumber) {
+        return orderServiceClient.findByTrackingNumber(trackingNumber)
+                .orElseThrow(() -> OrderNotFoundException.withTrackingNumber(trackingNumber));
+    }
+
+    private ReviewForm getReviewForm(Order order) {
+        return reviewServiceClient.findByOrderId(order.getId())
+                .map(ReviewController::transformReviewToReviewForm)
+                .orElseGet(ReviewForm::new);
     }
 
     private Review transformReviewFormToReviewDTO(ReviewForm reviewForm) {
@@ -129,7 +130,7 @@ public class ReviewController {
 
     private List<Long> processImages(ReviewForm reviewForm) {
         return reviewForm.getImages().stream().map(this::saveImage).filter(Optional::isPresent)
-                    .map(Optional::get).map(File::getId).collect(Collectors.toList());
+                .map(Optional::get).map(File::getId).collect(Collectors.toList());
     }
 
     private Optional<File> saveImage(MultipartFile multipartFile) {
@@ -138,13 +139,6 @@ public class ReviewController {
         } catch (IOException e) {
             return Optional.empty();
         }
-    }
-
-    private static ReviewForm transformReviewToReviewForm(Review review) {
-        ReviewForm reviewForm = new ReviewForm();
-        reviewForm.setMessage(review.getMessage());
-        reviewForm.setRating(review.getRating());
-        return reviewForm;
     }
 
     public ReviewFormValidator getReviewFormValidator() {

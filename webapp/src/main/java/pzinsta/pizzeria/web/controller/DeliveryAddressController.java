@@ -1,8 +1,5 @@
 package pzinsta.pizzeria.web.controller;
 
-import com.google.common.base.Joiner;
-import com.google.common.collect.Range;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -17,10 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pzinsta.pizzeria.model.user.Customer;
-import pzinsta.pizzeria.model.user.DeliveryAddress;
-import pzinsta.pizzeria.service.CustomerService;
-import pzinsta.pizzeria.service.exception.CustomerNotFoundException;
+import pzinsta.pizzeria.web.client.CustomerServiceClient;
+import pzinsta.pizzeria.web.client.dto.user.Customer;
+import pzinsta.pizzeria.web.client.dto.user.DeliveryAddress;
+import pzinsta.pizzeria.web.exception.CustomerNotFoundException;
+import pzinsta.pizzeria.web.exception.DeliveryAddressNotFoundException;
 import pzinsta.pizzeria.web.form.DeliveryAddressForm;
 import pzinsta.pizzeria.web.validator.DeliveryAddressFormValidator;
 
@@ -32,15 +30,15 @@ import java.util.List;
 @RequestMapping("/customer/deliveryAddress")
 public class DeliveryAddressController {
 
-    private CustomerService customerService;
+    private CustomerServiceClient customerServiceClient;
     private DeliveryAddressFormValidator deliveryAddressFormValidator;
 
     @Value("${delivery.cities}")
     private List<String> cities;
 
     @Autowired
-    public DeliveryAddressController(CustomerService customerService, DeliveryAddressFormValidator deliveryAddressFormValidator) {
-        this.customerService = customerService;
+    public DeliveryAddressController(CustomerServiceClient customerServiceClient, DeliveryAddressFormValidator deliveryAddressFormValidator) {
+        this.customerServiceClient = customerServiceClient;
         this.deliveryAddressFormValidator = deliveryAddressFormValidator;
     }
 
@@ -54,35 +52,29 @@ public class DeliveryAddressController {
         webDataBinder.addValidators(deliveryAddressFormValidator);
     }
 
-    @GetMapping("/{deliveryAddressIndex}")
-    public String showEditDeliveryAddressForm(@PathVariable("deliveryAddressIndex") int deliveryAddressIndex, Model model, Principal principal) {
-        Customer customer = getCustomerFromPrincipal(principal);
-        DeliveryAddress deliveryAddress = customer.getDeliveryAddresses().get(deliveryAddressIndex);
+    @GetMapping("/{deliveryAddressId}")
+    public String showEditDeliveryAddressForm(@PathVariable("deliveryAddressId") Long deliveryAddressId, Model model, Principal principal) {
+        DeliveryAddress deliveryAddress = getDeliveryAddress(principal, deliveryAddressId);
         model.addAttribute("deliveryAddressForm", transformDeliveryAddressToDeliveryAddressForm(deliveryAddress));
         return "editDeliveryAddress";
     }
 
-    @PostMapping("/{deliveryAddressIndex}")
-    public String updateDeliveryAddress(@ModelAttribute @Valid DeliveryAddressForm deliveryAddressForm, BindingResult bindingResult, @PathVariable("deliveryAddressIndex") int deliveryAddressIndex, @RequestParam(name = "returnUrl", defaultValue = "/customer") String returnUrl, Principal principal, RedirectAttributes redirectAttributes) {
+    @PostMapping("/{deliveryAddressId}")
+    public String updateDeliveryAddress(@ModelAttribute @Valid DeliveryAddressForm deliveryAddressForm, BindingResult bindingResult, @PathVariable("deliveryAddressId") Long deliveryAddressId, @RequestParam(name = "returnUrl", defaultValue = "/customer") String returnUrl, Principal principal, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "editDeliveryAddress";
         }
         Customer customer = getCustomerFromPrincipal(principal);
-        DeliveryAddress deliveryAddressToUpdate = customer.getDeliveryAddresses().get(deliveryAddressIndex);
-        updateDeliveryAddressWithValuesFromDeliveryAddressForm(deliveryAddressForm, deliveryAddressToUpdate);
-        customerService.updateCustomer(customer);
-        return Joiner.on(StringUtils.EMPTY).join("redirect:", returnUrl);
+        DeliveryAddress deliveryAddress = transformDeliveryAddressFormToDeliveryAddress(deliveryAddressForm);
+        customerServiceClient.updateDeliveryAddress(customer.getId(), deliveryAddressId, deliveryAddress);
+        return "redirect:" + returnUrl;
     }
 
-    @GetMapping("/{deliveryAddressIndex}/remove")
-    public String removeDeliveryAddress(@PathVariable("deliveryAddressIndex") int deliveryAddressIndex, @RequestParam(name = "returnUrl", defaultValue = "/customer") String returnUrl, Principal principal, RedirectAttributes redirectAttributes) {
+    @GetMapping("/{deliveryAddressId}/remove")
+    public String removeDeliveryAddress(@PathVariable("deliveryAddressId") Long deliveryAddressId, @RequestParam(name = "returnUrl", defaultValue = "/customer") String returnUrl, Principal principal, RedirectAttributes redirectAttributes) {
         Customer customer = getCustomerFromPrincipal(principal);
-        Range<Integer> indexRange = Range.closedOpen(0, customer.getDeliveryAddresses().size());
-        if (indexRange.contains(deliveryAddressIndex)) {
-            customer.getDeliveryAddresses().remove(deliveryAddressIndex);
-            customerService.updateCustomer(customer);
-        }
-        return Joiner.on(StringUtils.EMPTY).join("redirect:", returnUrl);
+        customerServiceClient.deleteDeliveryAddress(customer.getId(), deliveryAddressId);
+        return "redirect:" + returnUrl;
     }
 
     @GetMapping("/add")
@@ -100,13 +92,20 @@ public class DeliveryAddressController {
         }
 
         Customer customer = getCustomerFromPrincipal(principal);
-        customer.getDeliveryAddresses().add(transformDeliveryAddressFormToDeliveryAddress(deliveryAddressForm));
-        customerService.updateCustomer(customer);
-        return Joiner.on(StringUtils.EMPTY).join("redirect:", returnUrl);
+        DeliveryAddress deliveryAddress = transformDeliveryAddressFormToDeliveryAddress(deliveryAddressForm);
+        customerServiceClient.addDeliveryAddress(customer.getId(), deliveryAddress);
+        return "redirect:" + returnUrl;
+    }
+
+    private DeliveryAddress getDeliveryAddress(Principal principal, Long deliveryAddressId) {
+        Customer customer = getCustomerFromPrincipal(principal);
+        return customerServiceClient.findDeliveryAddressById(customer.getId(), deliveryAddressId)
+                .orElseThrow(() -> new DeliveryAddressNotFoundException(deliveryAddressId));
     }
 
     private Customer getCustomerFromPrincipal(Principal principal) {
-        return customerService.getCustomerByUsername(principal.getName()).orElseThrow(CustomerNotFoundException::new);
+        return customerServiceClient.findByUsername(principal.getName())
+                .orElseThrow(() -> CustomerNotFoundException.withUsername(principal.getName()));
     }
 
     private DeliveryAddressForm transformDeliveryAddressToDeliveryAddressForm(DeliveryAddress deliveryAddress) {
@@ -116,13 +115,6 @@ public class DeliveryAddressController {
         deliveryAddressForm.setHouseNumber(deliveryAddress.getHouseNumber());
         deliveryAddressForm.setApartmentNumber(deliveryAddress.getApartmentNumber());
         return deliveryAddressForm;
-    }
-
-    private void updateDeliveryAddressWithValuesFromDeliveryAddressForm(DeliveryAddressForm deliveryAddressForm, DeliveryAddress deliveryAddressToUpdate) {
-        deliveryAddressToUpdate.setCity(deliveryAddressForm.getCity());
-        deliveryAddressToUpdate.setStreet(deliveryAddressForm.getStreet());
-        deliveryAddressToUpdate.setHouseNumber(deliveryAddressForm.getHouseNumber());
-        deliveryAddressToUpdate.setApartmentNumber(deliveryAddressForm.getApartmentNumber());
     }
 
     private DeliveryAddress transformDeliveryAddressFormToDeliveryAddress(DeliveryAddressForm deliveryAddressForm) {

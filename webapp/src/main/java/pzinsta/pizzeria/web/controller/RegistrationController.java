@@ -2,7 +2,6 @@ package pzinsta.pizzeria.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,24 +12,28 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pzinsta.pizzeria.service.CustomerRegistrationService;
-import pzinsta.pizzeria.service.dto.CustomerRegistrationDTO;
+import org.springframework.web.util.UriComponentsBuilder;
+import pzinsta.pizzeria.web.client.AccountServiceClient;
+import pzinsta.pizzeria.web.client.CustomerServiceClient;
+import pzinsta.pizzeria.web.client.dto.account.Account;
+import pzinsta.pizzeria.web.client.dto.account.Role;
+import pzinsta.pizzeria.web.client.dto.user.CustomerRegistration;
 import pzinsta.pizzeria.web.form.CustomerRegistrationForm;
 import pzinsta.pizzeria.web.service.GoogleReCaptchaService;
 import pzinsta.pizzeria.web.validator.CustomerRegistrationFormValidator;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/account/register")
 public class RegistrationController {
 
-    private CustomerRegistrationService customerRegistrationService;
+    private CustomerServiceClient customerServiceClient;
+    private AccountServiceClient accountServiceClient;
     private CustomerRegistrationFormValidator customerRegistrationFormValidator;
     private GoogleReCaptchaService googleReCaptchaService;
-    private PasswordEncoder passwordEncoder;
 
     @Value("${recaptcha.public.key}")
     private String recaptchaPublicKey;
@@ -53,7 +56,7 @@ public class RegistrationController {
 
     @PostMapping
     public String processRegistrationForm(@Valid @ModelAttribute("customerRegistrationForm") CustomerRegistrationForm customerRegistrationForm,
-                                          BindingResult bindingResult, HttpServletRequest httpServletRequest,
+                                          BindingResult bindingResult,
                                           @RequestParam(name = "returnUrl", defaultValue = "/") String returnUrl,
                                           @RequestParam("g-recaptcha-response") String recaptchaResponse) throws ServletException {
         if (bindingResult.hasErrors()) {
@@ -64,22 +67,30 @@ public class RegistrationController {
             return "register";
         }
 
-        customerRegistrationService.processRegistration(convertRegistrationFormToRegistrationDTO(customerRegistrationForm));
+        accountServiceClient.create(convertRegistrationFormToAccount(customerRegistrationForm));
+        customerServiceClient.register(convertRegistrationFormToRegistrationDTO(customerRegistrationForm));
 
-        httpServletRequest.login(customerRegistrationForm.getUsername(), customerRegistrationForm.getPassword());
-
-        return "redirect:" + returnUrl;
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromPath("/login").queryParam("returnUrl", returnUrl);
+        return "redirect:" + uriComponentsBuilder.toUriString();
     }
 
-    private CustomerRegistrationDTO convertRegistrationFormToRegistrationDTO(CustomerRegistrationForm customerRegistrationForm) {
-        CustomerRegistrationDTO customerRegistrationDTO = new CustomerRegistrationDTO();
-        customerRegistrationDTO.setUsername(customerRegistrationForm.getUsername());
-        customerRegistrationDTO.setPassword(passwordEncoder.encode(customerRegistrationForm.getPassword()));
-        customerRegistrationDTO.setFirstName(customerRegistrationForm.getFirstName());
-        customerRegistrationDTO.setLastName(customerRegistrationForm.getLastName());
-        customerRegistrationDTO.setEmail(customerRegistrationForm.getEmail());
-        customerRegistrationDTO.setPhoneNumber(customerRegistrationForm.getPhoneNumber());
-        return customerRegistrationDTO;
+    private Account convertRegistrationFormToAccount(CustomerRegistrationForm customerRegistrationForm) {
+        Account account = new Account();
+        account.setUsername(customerRegistrationForm.getUsername());
+        account.setPassword(customerRegistrationForm.getPassword());
+        account.setRoles(Collections.singleton(Role.REGISTERED_CUSTOMER));
+        return account;
+    }
+
+    private CustomerRegistration convertRegistrationFormToRegistrationDTO(CustomerRegistrationForm customerRegistrationForm) {
+        CustomerRegistration customerRegistration = new CustomerRegistration();
+        customerRegistration.setUsername(customerRegistrationForm.getUsername());
+        customerRegistration.setPassword(customerRegistrationForm.getPassword());
+        customerRegistration.setFirstName(customerRegistrationForm.getFirstName());
+        customerRegistration.setLastName(customerRegistrationForm.getLastName());
+        customerRegistration.setEmail(customerRegistrationForm.getEmail());
+        customerRegistration.setPhoneNumber(customerRegistrationForm.getPhoneNumber());
+        return customerRegistration;
     }
 
     public GoogleReCaptchaService getGoogleReCaptchaService() {
@@ -91,22 +102,38 @@ public class RegistrationController {
         this.googleReCaptchaService = googleReCaptchaService;
     }
 
-    public PasswordEncoder getPasswordEncoder() {
-        return passwordEncoder;
-    }
-
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    public void setCustomerRegistrationService(CustomerRegistrationService customerRegistrationService) {
-        this.customerRegistrationService = customerRegistrationService;
-    }
-
     @Autowired
     public void setCustomerRegistrationFormValidator(CustomerRegistrationFormValidator customerRegistrationFormValidator) {
         this.customerRegistrationFormValidator = customerRegistrationFormValidator;
+    }
+
+    public CustomerServiceClient getCustomerServiceClient() {
+        return customerServiceClient;
+    }
+
+    @Autowired
+    public void setCustomerServiceClient(CustomerServiceClient customerServiceClient) {
+        this.customerServiceClient = customerServiceClient;
+    }
+
+    public AccountServiceClient getAccountServiceClient() {
+        return accountServiceClient;
+    }
+
+    @Autowired
+    public void setAccountServiceClient(AccountServiceClient accountServiceClient) {
+        this.accountServiceClient = accountServiceClient;
+    }
+
+    public CustomerRegistrationFormValidator getCustomerRegistrationFormValidator() {
+        return customerRegistrationFormValidator;
+    }
+
+    public String getRecaptchaPublicKey() {
+        return recaptchaPublicKey;
+    }
+
+    public void setRecaptchaPublicKey(String recaptchaPublicKey) {
+        this.recaptchaPublicKey = recaptchaPublicKey;
     }
 }

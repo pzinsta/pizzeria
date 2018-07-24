@@ -185,12 +185,6 @@
     </build>
 
     <modules>
-        <module>dao-api</module>
-        <module>dao-impl</module>
-        <module>service-api</module>
-        <module>service-impl</module>
         <module>webapp</module>
-        <module>util</module>
-        <module>model</module>
     </modules>
 </project>
