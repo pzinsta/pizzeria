@@ -40,9 +40,13 @@ public class RegistrationController {
         webDataBinder.addValidators(customerRegistrationFormValidator);
     }
 
+    @ModelAttribute("recaptchaPublicKey")
+    public String recaptchaPublicKey() {
+        return recaptchaPublicKey;
+    }
+
     @GetMapping
     public String showRegistrationForm(Model model) {
-        model.addAttribute("recaptchaPublicKey", recaptchaPublicKey);
         model.addAttribute("customerRegistrationForm", new CustomerRegistrationForm());
         return "register";
     }
