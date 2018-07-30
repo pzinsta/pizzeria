@@ -17,11 +17,11 @@
 
             <dl class="dl-horizontal">
                 <dt>Order:</dt>
-                <dd>${orderCost}</dd>
+                <dd><spring:eval expression="orderCost"/></dd>
                 <dt>Delivery:</dt>
-                <dd>${deliveryCost}</dd>
+                <dd><spring:eval expression="deliveryCost"/></dd>
                 <dt>Total:</dt>
-                <dd><strong>${total}</strong></dd>
+                <dd><strong><spring:eval expression="total"/></strong></dd>
             </dl>
 
             <div class="alert alert-danger">

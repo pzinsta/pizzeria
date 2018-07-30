@@ -1,6 +1,7 @@
 package pzinsta.pizzeria.web.config;
 
 import feign.Logger;
+import org.javamoney.moneta.ToStringMonetaryAmountFormat;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
+import javax.money.format.MonetaryAmountFormat;
 import java.io.IOException;
 import java.text.DateFormat;
 
@@ -79,6 +81,11 @@ public class WebConfig implements WebMvcConfigurer {
         dateFormatter.setStyle(DateFormat.MEDIUM);
         registry.addFormatter(dateFormatter);
         registry.addFormatter(monetaryAmountFormatter());
+    }
+
+    @Bean
+    public MonetaryAmountFormat monetaryAmountFormat() {
+        return ToStringMonetaryAmountFormat.of(ToStringMonetaryAmountFormat.ToStringMonetaryAmountFormatStyle.MONEY);
     }
 
     @Bean

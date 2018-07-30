@@ -1,8 +1,5 @@
 package pzinsta.pizzeria.web.config;
 
-import com.braintreegateway.BraintreeGateway;
-import com.braintreegateway.Environment;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
@@ -26,14 +23,6 @@ public class RootConfig {
     @Scope(value = SCOPE_SESSION, proxyMode = TARGET_CLASS)
     public Cart cart() {
         return new Cart();
-    }
-
-    @Bean
-    public BraintreeGateway braintreeGateway(@Value("${braintree.merchantId}") String merchantId,
-                                             @Value("${braintree.publicKey}") String publicKey,
-                                             @Value("${braintree.privateKey}") String privateKey) {
-
-        return new BraintreeGateway(Environment.SANDBOX, merchantId, publicKey, privateKey);
     }
 
 }

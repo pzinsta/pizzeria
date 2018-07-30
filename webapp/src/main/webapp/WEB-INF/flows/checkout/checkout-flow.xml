@@ -75,7 +75,7 @@
 
     <view-state id="enterGuestDeliveryAddress" view="checkout/enterGuestDeliveryAddress" model="deliveryAddress">
         <on-entry>
-            <set name="flowScope.deliveryAddress" value="new pzinsta.pizzeria.web.client.dto.delivery.DeliveryAddress()"/>
+            <set name="flowScope.deliveryAddress" value="new pzinsta.pizzeria.web.client.dto.user.DeliveryAddress()"/>
             <evaluate expression="environment.getProperty('delivery.cities')" result="viewScope.cities" result-type="java.util.List"/>
         </on-entry>
         <transition on="continue" to="enterComment"/>
@@ -96,7 +96,7 @@
 
     <view-state id="payment" view="checkout/payment">
         <on-render>
-            <set name="flowScope.clientToken" value="braintreeAction.generateClientToken()"/>
+            <set name="flowScope.clientToken" value="paymentAction.generateClientToken()"/>
             <set name="flowScope.total" value="flowScope.deliveryCost.add(flowScope.orderCost)"/>
         </on-render>
         <transition on="continue" to="chargeCustomer">
@@ -107,12 +107,12 @@
     </view-state>
 
     <action-state id="chargeCustomer">
-        <evaluate expression="braintreeAction.chargeCustomer(flowScope.nonce, flowScope.orderCost, flowScope.deliveryCost)" result="flowScope.order.paymentTransactionId"/>
+        <evaluate expression="paymentAction.chargeCustomer(flowScope.nonce, flowScope.total, flowScope.order)" result="flowScope.transactionResult"/>
         <transition to="isPaymentSuccessful"/>
     </action-state>
 
     <decision-state id="isPaymentSuccessful">
-        <if test="braintreeAction.isTransactionSuccessful(flowScope.order.paymentTransactionId)" then="emptyCart" else="payment"/>
+        <if test="paymentAction.isTransactionSuccessful(flowScope.transactionResult)" then="emptyCart" else="payment"/>
     </decision-state>
 
     <action-state id="emptyCart">

@@ -11,7 +11,6 @@
         <spring-webflow.version>2.5.0.RELEASE</spring-webflow.version>
         <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
         <jstl.version>1.2</jstl.version>
-        <braintree-java.version>2.79.0</braintree-java.version>
         <recaptchav2-java.version>1.0.2</recaptchav2-java.version>
         <java-time-jsptags.version>1.1.4</java-time-jsptags.version>
         <jackson-databind.version>2.9.5</jackson-databind.version>
@@ -119,12 +118,6 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>${jstl.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.braintreepayments.gateway</groupId>
-            <artifactId>braintree-java</artifactId>
-            <version>${braintree-java.version}</version>
         </dependency>
 
         <dependency>
