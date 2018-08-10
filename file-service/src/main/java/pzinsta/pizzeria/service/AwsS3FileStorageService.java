@@ -8,7 +8,6 @@ import com.amazonaws.services.s3.model.Permission;
 import com.amazonaws.util.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import pzinsta.pizzeria.repository.FileRepository;
 
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @Service
-@Profile("aws")
 public class AwsS3FileStorageService extends AbstractDaoFileStorageService {
     @Value("${aws.s3.bucket.name}")
     private String bucketName;
