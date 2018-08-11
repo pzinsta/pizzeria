@@ -11,7 +11,6 @@ import pzinsta.pizzeria.web.client.dto.payment.TransactionResult;
 @Component
 @FeignClient(
         name = "payment-service",
-        url = "${payment.service.url}",
         decode404 = true
 )
 public interface PaymentServiceClient {

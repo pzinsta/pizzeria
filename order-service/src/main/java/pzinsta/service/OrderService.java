@@ -48,7 +48,7 @@ public class OrderService {
     public Order post(Order order) {
         OrderEvent orderEvent = new OrderEvent();
         orderEvent.setOccurredOn(Instant.now());
-        orderEvent.setOrderEventType(OrderEventType.PURCHASED);
+        orderEvent.setOrderEventType(OrderEventType.CREATED);
         order.getOrderEvents().add(orderEvent);
 
         order.setTrackingNumber(trackingNumberGenerationStrategy.generateTrackingNumber(order));

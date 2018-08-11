@@ -7,29 +7,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-import pzinsta.pizzeria.web.client.dto.user.User;
-
-import java.util.Collection;
-import java.util.Optional;
+import pzinsta.pizzeria.web.client.dto.File;
 
 @Component
 @FeignClient(
-        name = "user-service",
-        path = "/users",
+        name = "file-service",
+        path = "/files",
         decode404 = true
 )
-public interface UserServiceClient {
-
-    @GetMapping
-    Collection<User> findAll();
-
-    @GetMapping("/{id}")
-    Optional<User> findById(@PathVariable("id") Long id);
-
-    @GetMapping
-    Optional<User> findByUsername(@RequestParam("username") String username);
+public interface FileServiceClient {
 
     @PostMapping
-    User save(@RequestBody User user);
+    public File saveFile(@RequestBody byte[] file, @RequestParam("contentType") String contentType);
 
+    // todo: optional
+    @GetMapping("/{id}")
+    public File getFile(@PathVariable("id") Long id);
 }

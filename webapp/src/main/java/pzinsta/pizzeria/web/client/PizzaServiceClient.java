@@ -21,7 +21,6 @@ import java.util.Optional;
 @Component
 @FeignClient(
         name = "pizza-service",
-        url = "${pizza.service.url}",
         decode404 = true
 )
 public interface PizzaServiceClient {

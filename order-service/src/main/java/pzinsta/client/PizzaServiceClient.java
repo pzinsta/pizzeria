@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import javax.money.MonetaryAmount;
 
 @Component
-@FeignClient(name = "pizza-service", url = "${pizza.service.url}")
+@FeignClient("pizza-service")
 public interface PizzaServiceClient {
 
     @GetMapping("/pizzas/{id}/cost")

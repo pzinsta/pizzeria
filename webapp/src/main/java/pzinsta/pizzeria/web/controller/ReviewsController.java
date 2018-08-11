@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pzinsta.pizzeria.web.client.FileStorageServiceClient;
+import pzinsta.pizzeria.web.client.FileServiceClient;
 import pzinsta.pizzeria.web.client.ReviewServiceClient;
 import pzinsta.pizzeria.web.client.dto.Review;
 import pzinsta.pizzeria.web.model.ReviewDTO;
@@ -22,15 +22,15 @@ import java.util.stream.Collectors;
 public class ReviewsController {
 
     private ReviewServiceClient reviewServiceClient;
-    private FileStorageServiceClient fileStorageServiceClient;
+    private FileServiceClient fileServiceClient;
 
     @Value("${reviews.per.page}")
     private int reviewsPerPage;
 
     @Autowired
-    public ReviewsController(ReviewServiceClient reviewServiceClient, FileStorageServiceClient fileStorageServiceClient) {
+    public ReviewsController(ReviewServiceClient reviewServiceClient, FileServiceClient fileServiceClient) {
         this.reviewServiceClient = reviewServiceClient;
-        this.fileStorageServiceClient = fileStorageServiceClient;
+        this.fileServiceClient = fileServiceClient;
     }
 
     @GetMapping
@@ -55,7 +55,7 @@ public class ReviewsController {
                     reviewDTO.setLastUpdatedOn(review.getLastUpdatedOn());
                     reviewDTO.setMessage(review.getMessage());
                     reviewDTO.setRating(review.getRating());
-                    reviewDTO.setImages(review.getImages().stream().map(fileStorageServiceClient::getFile).collect(Collectors.toList()));
+                    reviewDTO.setImages(review.getImages().stream().map(fileServiceClient::getFile).collect(Collectors.toList()));
                     return reviewDTO;
                 }).collect(Collectors.toList());
     }

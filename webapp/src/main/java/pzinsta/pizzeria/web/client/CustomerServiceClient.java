@@ -17,7 +17,6 @@ import java.util.Optional;
 
 @Component
 @FeignClient(name = "user-service",
-        url = "${user.service.url}",
         path = "/customers",
         qualifier = "customerServiceClient",
         decode404 = true

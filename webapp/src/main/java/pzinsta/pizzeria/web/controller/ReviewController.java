@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pzinsta.pizzeria.web.client.FileStorageServiceClient;
+import pzinsta.pizzeria.web.client.FileServiceClient;
 import pzinsta.pizzeria.web.client.OrderServiceClient;
 import pzinsta.pizzeria.web.client.ReviewServiceClient;
 import pzinsta.pizzeria.web.client.dto.File;
@@ -41,14 +41,14 @@ public class ReviewController {
     private static final int[] RATINGS = IntStream.rangeClosed(1, 10).toArray();
 
     private OrderServiceClient orderServiceClient;
-    private FileStorageServiceClient fileStorageServiceClient;
+    private FileServiceClient fileServiceClient;
     private ReviewFormValidator reviewFormValidator;
     private ReviewServiceClient reviewServiceClient;
 
     @Autowired
-    public ReviewController(OrderServiceClient orderServiceClient, FileStorageServiceClient fileStorageServiceClient, ReviewFormValidator reviewFormValidator, ReviewServiceClient reviewServiceClient) {
+    public ReviewController(OrderServiceClient orderServiceClient, FileServiceClient fileServiceClient, ReviewFormValidator reviewFormValidator, ReviewServiceClient reviewServiceClient) {
         this.orderServiceClient = orderServiceClient;
-        this.fileStorageServiceClient = fileStorageServiceClient;
+        this.fileServiceClient = fileServiceClient;
         this.reviewFormValidator = reviewFormValidator;
         this.reviewServiceClient = reviewServiceClient;
     }
@@ -135,7 +135,7 @@ public class ReviewController {
 
     private Optional<File> saveImage(MultipartFile multipartFile) {
         try {
-            return Optional.ofNullable(fileStorageServiceClient.saveFile(IOUtils.toByteArray(multipartFile.getInputStream()), multipartFile.getContentType()));
+            return Optional.ofNullable(fileServiceClient.saveFile(IOUtils.toByteArray(multipartFile.getInputStream()), multipartFile.getContentType()));
         } catch (IOException e) {
             return Optional.empty();
         }
