@@ -12,7 +12,7 @@
         <hibernate-validator.version>6.0.7.Final</hibernate-validator.version>
         <log4j.version>2.9.1</log4j.version>
         <junit.version>4.12</junit.version>
-        <mockito.version>2.10.0</mockito.version>
+        <mockito.version>5.14.2</mockito.version>
         <postgres.version>42.1.4</postgres.version>
         <apache.commons-lang.version>3.6</apache.commons-lang.version>
         <apache.commons-collections.version>4.1</apache.commons-collections.version>

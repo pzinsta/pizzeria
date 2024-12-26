@@ -87,7 +87,7 @@ The keys above are not valid, so don't try to use them.
 #### 1. Clone the repository
 
 ```
-git clone https://github.com/pzinsta/pizzeria.git
+git clone https://github.com/omarkashour/QAProject
 ```
 
 #### 2. Build the .war file
@@ -115,16 +115,9 @@ We have two options here.
 If you've set the properties as environment variables, you can run the following command to start the app:
 
 ```
-java -jar webapp/target/dependency/webapp-runner.jar --port 8081 --path pizzeria webapp/target/*.war
+ java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED -jar webapp/target/dependency/webapp-runner.jar --port 8081 --path pizzeria webapp/target/*.war
 ```
 
-##### Option 2. Pass the properties as JVM arguments
-
-In this case the command is going to be a bit more complicated.
-
-```
-java -Dbraintree.merchantId=<your Braintree merchant ID> -Dbraintree.publicKey=<your Braintree public key> -Dbraintree.privateKey=<your Braintree private key> -Drecaptcha.private.key=<your reCAPTCHA private key> -Drecaptcha.public.key=<your reCAPTCHA public key> -jar webapp/target/dependency/webapp-runner.jar --port 8081 --path pizzeria webapp/target/*.war
-```
 
 You can modify the port and the context path. Also, there are other [options](https://github.com/jsimone/webapp-runner#options) available.
 
